@@ -1,0 +1,27 @@
+\chapter{Introducci\'on}
+
+Detr\'as de cualquier modelo de regresi\'on, la intenci\'on es explicar una variable dependiente en funci\'on de un conjunto de variables independientes, suponiendo cierto error aleatorio. Ha sido com\'un resumir esta dependencia mediante alguna medida de tendencia central, condicionada a los valores de las covariables.
+
+La medida de tendencia central tradicionalmente usada ha sido la media, dando lugar a los modelos de \textit{regresi\'on sobre la media}, con sus variantes lineal o no lineal, simple o m\'ultiple, homoced\'astica o heteroced\'astica. Este tipo de modelos tiene un buen n\'umero de ventajas, entre las que destacan el bajo costo de calcularlos y la facilidad de interpretaci\'on. Sin embargo, como mencionan \cite{Hao_FrecQuantReg}, tienen tres grandes limitaciones.
+
+La primera es que al resumir la relaci\'on entre la variable dependiente y las independientes con el valor esperado, no necesariamente se puede extender la inferencia a valores lejanos a la media, que suelen ser de inter\'es en ciertos contextos, como los seguros o las finanzas.
+
+La segunda es que los supuestos de este tipo de modelos no siempre se cumplen en el mundo real. Por ejemplo, el supuesto de homocedasticidad; es decir, la varianza no es constante, sino cambia en sincron\'ia con distintos valores de las covariables. Tambi\'en es posible que fen\'omenos de estudio tengan distribuciones de colas pesadas, principalmente en las ciencias sociales. Esto da lugar a valores at\'ipicos, mismos que no suelen ser manejados como se desear\'ia por los modelos de \textit{regresi\'on sobre la media}.
+
+La tercera es que no permiten conocer las propiedades y forma de la distribuci\'on completa. Por ejemplo, la asimter\'ia es una caracter\'istica importante en estudios de ingreso, impuestos, esperanza de vida y, en general, en estudios de desigualdad.
+
+Debido a esto, desde mitades del siglo XVIII han surgido alternativas a este tipo de modelos, siendo la primera los modelos de \textit{regresi\'on sobre la mediana}. De nueva cuenta se busc\'o una medida de tendencia central, pero con otras bondades. Por ejemplo, ser una mejor medida informativa para distribuciones asim\'etricas y menos susceptible a valores at\'ipicos. 
+
+As\'i como los \textit{modelos de regresi\'on sobre la media} son com\'unmente relacionados con la minimizaci\'on de los errores cuadr\'aticos, los \textit{modelos de regresi\'on sobre la mediana} lo son con la minimizaci\'on de los errores absolutos. Debido a la no diferenciabilidad, tuvieron que pasar muchos años para que lograran ser viables, hasta que el poder computacional y los algoritmos de Programaci\'on Lineal lo permitieron.
+
+Cabe recordar que el cuantil $p$-\'esimo es aquel valor tal que una proporci\'on $p$ de los valores est\'an por debajo de \'el, y una proporci\'on $1-p$, por arriba. As\'i, la mediana es un caso particular de un cuantil, espec\'ificamente el $0.5$-\'esimo. Esto abre la idea de que otros cuantiles tambi\'en podr\'ian ser modelados en funci\'on de las covariables, y no necesariamente tienen que ser una medida de tendencia central. 
+
+Los \textit{modelos de regresi\'on sobre cuantiles} fueron introducidos por \cite{Koenker_QuantReg}, y han permitido concentrarse en valores de inter\'es para los modeladores, sin importar que est\'en alejados de la media. Adem\'as, el c\'alculo de diversos cuantiles para un mismo fen\'omeno ha permitido entender mejor la forma y propiedades de las distribuciones condicionales de la variable de respuesta.
+
+En el paradigma bayesiano, el desarrollo de este tipo de modelos ha sido lento. \cite{Walker_BayesAccFail}, \cite{Kottas_BaySemiparamMed} y \cite{Hanson_PolyaTrees} desarrollaron modelos para la mediana, suponiendo una distribuci\'on no param\'etrica del error. \cite{Yu_BayQuantReg} y \cite{Tsionas_BayQuantInf} desarrollaron inferencia param\'etrica, basados en la distribuci\'on asim\'etrica de Laplace para los errores. Por otro lado, \cite{Lavine_LikeQuant} y \cite{Dunson_ApproxBayes} usaron un perspectiva distinta y propusieron una aproximaci\'on de la verosimilitud para cuantiles.
+
+Las limitantes de estos trabajos han sido que, aunque han dado formas flexibles a la distribuci\'on del error, han estado basados en funciones lineales para describir la relaci\'on entre la variable de respuesta y las covariables, o han tenido que recurrir a estimaciones no probabil\'isticas o no bayesianas, para resolver alguna parte del problema.
+
+Entendiendo como \textit{modelo no par\'ametrico} a aquel en el que el n\'umero de par\'ametros no est\'a previamente definido, sino que depende de los datos, esta tesis rescata las ideas de \cite{Kottas_NotParamQuantReg} para proponer un modelo bayesiano totalmente no param\'etrico, \'util en el contexto de \textit{regresi\'on sobre cuantiles}.
+
+\newpage

@@ -1,0 +1,218 @@
+%% Based on a TeXnicCenter-Template by Tino Weinkauf.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% HEADER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[letterpaper,onside,11pt,review]{report}
+% Alternative Options:
+%	Paper Size: a4paper / a5paper / b5paper / letterpaper / legalpaper / executivepaper
+% Duplex: oneside / twoside
+% Base Font Size: 10pt / 11pt / 12pt
+
+
+%% Packages
+\usepackage[paperwidth=17cm, paperheight=22.5cm, bottom=2.5cm, right=2.5cm]{geometry}
+\usepackage{algorithm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm} %paquete para s\'imbolo matem\'aticos
+\usepackage[spanish,es-nodecimaldot]{babel} %francais, polish, spanish, ...
+\usepackage[utf8]{inputenc}
+\usepackage{enumerate}
+\usepackage{fancyhdr} %%Fancy headings
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+%\usepackage{subfig} %%Subfigures inside a figure
+%\usepackage{pst-all} %%PSTricks - not useable with pdfLaTeX
+\usepackage[pdftex,
+            pdfauthor={CARLOS OMAR PARDO G\'OMEZ},
+            pdftitle={T\'iTULO DE LA TESIS},
+            pdfsubject={\'aREA DE LA TESIS},
+            pdfkeywords={PALABRAS CLAVE},
+            pdfproducer={Latex con hyperref},
+            pdfcreator={pdflatex}]{hyperref}
+\usepackage[ansinew]{inputenc}
+\usepackage{lmodern} %Type1-font for non-english texts and characters
+\usepackage{longtable} %%For tables, that exceed one page
+\usepackage[round]{natbib}
+\usepackage{subfig} %para poner subfiguras
+\usepackage[nottoc]{tocbibind}
+\usepackage{url}
+\usepackage{fixltx2e}
+
+\newcommand*{\finalnamedelim}{%
+   \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
+   \addspace\&\space}
+
+%% Espaciado
+\usepackage{setspace}
+%\singlespacing        %% 1-spacing (default)
+\onehalfspacing       %% 1,5-spacing
+%\doublespacing        %% 2-spacing
+
+%%% Norma %%%
+%\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+%%% Valor absoluto %%%
+\usepackage{mathtools}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+%%% %%%
+
+\newtheorem{defin}{Definici\'on}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  Documento
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\pagestyle{empty} %No headings for the first pages.
+
+\title{Tesis} %Con este nombre se guardar\'a el proyecto en writeLaTex
+
+\begin{titlepage}
+\begin{center}
+
+\textsc{\Large Instituto Tecnol\'ogico Aut\'onomo de M\'exico}\\[2em]
+
+%Figura
+\begin{center}
+	\includegraphics{DocumentosLaTex/ITAM_2016}
+\end{center}
+
+\vspace{1em}
+
+{\sc \large {\bf UN M\'ETODO BAYESIANO Y NO PARAM\'ETRICO DE REGRESI\'ON SOBRE CUANTILES, MEDIANTE EL USO DE PROCESOS GAUSSIANOS Y PROCESOS DE DIRICHLET}}\\[3em]
+
+\textsc{\large Tesis}\\[1em]
+
+\textsc{que para obtener el t\'itulo}\\[1em]
+
+\textsc{Licenciado en Matem\'aticas Aplicadas}\\[1em]
+
+\textsc{presenta}\\[1em]
+
+\textsc{\Large Carlos Omar Pardo G\'omez}\\[1em]
+
+\textsc{\large Asesor: Dr. Juan Carlos Mart\'inez Ovando}
+
+\end{center}
+
+\vspace*{\fill}
+\textsc{M\'exico, D.F. \hspace*{\fill} 2017}
+
+\end{titlepage}
+
+
+%----------------------------------------------------------------------------------------
+%   DECLARACI\'oN
+%----------------------------------------------------------------------------------------
+\thispagestyle{empty}
+\vspace*{\fill}
+\begingroup
+Con fundamento en los art\'iculos 21 y 27 de la Ley Federal del Derecho de Autor y como titular de los derechos moral y patrimonial de la obra titulada "\textbf{UN M\'ETODO BAYESIANO Y NO PARAM\'ETRICO DE REGRESI\'ON SOBRE CUANTILES, MEDIANTE EL USO DE PROCESOS GAUSSIANOS Y PROCESOS DE DIRICHLET}", otorgo de manera gratuita y permanente al Instituto Tecnol\'ogico Aut\'onomo de M\'exico y a la Biblioteca Ra\'ul Baill\'eres Jr., la autorizaci\'on para que fijen la obra en cualquier medio, incluido el electr\'onico, y la divulguen entre sus usuarios, profesores, estudiantes o terceras personas, sin que pueda percibir por tal divulgaci\'on una contraprestaci\'on.
+
+\centering
+
+\hspace{3em}
+
+\textsc{Carlos Omar Pardo G\'omez}
+
+\vspace{5em}
+
+\rule[1em]{20em}{0.5pt} % L\'inea para la fecha
+
+\textsc{Fecha}
+ 
+\vspace{8em}
+
+\rule[1em]{20em}{0.5pt} % L\'inea para la firma
+
+\textsc{Firma}
+
+\endgroup
+\vspace*{\fill}
+
+%----------------------------------------------------------------------------------------
+%   DEDICATORIA
+%----------------------------------------------------------------------------------------
+\pagestyle{empty}
+\frontmatter
+
+\chapter*{}
+\begin{flushright}
+\textit{A Mago.}
+\end{flushright}
+
+
+%----------------------------------------------------------------------------------------
+%   AGRADECIMIENTOS
+%----------------------------------------------------------------------------------------
+\chapter*{Agradecimientos}
+%\markboth{AGRADECIMIENTOS23}{AGRADECIMIENTOS} % encabezado 
+¡Muchas gracias a todos!
+
+
+%----------------------------------------------------------------------------------------
+%   PREFACIO
+%----------------------------------------------------------------------------------------
+\pagestyle{plain}
+\chapter*{Prefacio}
+\markboth{PREFACIO23}{PREFACIO} % encabezado 
+
+%%  Contenido
+\addtocontents{toc}{\protect\vspace*{\baselineskip}}
+
+El centro de esta tesis es describir un modelo de \textit{regresi\'on sobre cuantiles}, debido a las bondades que tiene sobre el com\'unmente usado an\'alisis de \textit{regresi\'on sobre la media}. Adem\'as, aceptando los axiomas de la Estad\'istica Bayesiana, permite incorporar conocimiento previo del modelador. Por otra parte, el modelo es no param\'etrico, aumentando la flexibilidad en su forma.
+
+El cap\'itulo 1 introduce la importancia de las aproximaciones disintas a la \textit{regresi\'on sobre la media}, así como la evoluci\'on hist\'orica de este tipo de modelos. El cap\'itulo 2 introduce al Paradigma bayesiano y sus m\'etodos.
+El cap\'itulo 3 se centra en los Procesos Gaussianos, como herramienta para describir la relaci\'on entre una variable dependiente y un conjunto de variables independientes. El cap\'itulo 4 describe a los Procesos de Dirichlet, una distribuci\'on de distribuciones no param\'etricas, que permiten modelar el error aleatorio. El cap\'itulo 5 explora modelos bayesianos para la \textit{regresi\'on sobre cuantiles}, hasta llegar al modelo central de esta tesis, y su respectiva implementaci\'on computacional. El cap\'itulo 6 describe aplicaciones del modelo, as\'i como los resultados obtenidos de evaluarlo en diversos conjuntos de datos. Finalmente, el cap\'itulo 7 hace referencia a las conclusiones finales de esta tesis, adem\'as de describir el trabajo futuro que se podr\'ia desarrollar, retomando las ideas de \'esta.
+
+%----------------------------------------------------------------------------------------
+%   ÍNDICE
+%----------------------------------------------------------------------------------------
+
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%    Capitulos
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{Introduction}
+
+\input{BayesianParadigm}
+
+\input{GaussianProcesses}
+
+\input{DirichletProcesses}
+
+\input{QuantileRegression}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%    Bibliografia
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\nocite{*} %Even non-cited BibTeX-Entries will be shown.
+\bibliographystyle{authordate1} %Style of Bibliography: plain / apalike / amsalpha / ...
+\bibliography{Bibliography} %You need a file 'literature.bib' for this.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  Apendices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\appendix
+
+%\input{apendice1}
+
+
+\end{document}
+

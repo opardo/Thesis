@@ -1,0 +1,38 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ==> Some hints are following:
+
+\chapter{Some small hints}\label{hints}
+
+\section{German Umlauts and other Language Specific Characters}\label{umlauts}
+You can type german umlauts like '�', '�', or '�' directly in this file.
+This is also true for other language specific characters like '�', '�' etc.
+
+There are problems with automatic hyphenation when using language
+specific characters and OT1-encoded fonts. In this case, use a
+T1-encoded Type1-font like the Latin Modern font family (\verb#\usepackage{lmodern}#).
+
+
+\section{References}\label{references}
+Using the commands \verb#\label{name}# and \verb#\ref{name}# you are able
+to use references in your document. Advantage: You do not need to think
+about numerations, because \LaTeX\ is doing that for you.
+
+For example, in section \ref{dividing} on page \pageref{dividing} hints for
+dividing large documents are given.
+
+Certainly, references do also work for tables, figures, formulas\ldots
+
+Please notice, that \LaTeX\ usually needs more than one run (mostly 2) to
+resolve those references correctly.
+
+
+\section{Dividing Large Documents}\label{dividing}
+You can divide your \LaTeX-Document into an arbitrary number of \TeX-Files
+to avoid too big and therefore unhandy files (e.g. one file for every chapter).
+
+For this, you insert in your main file (this one) for every subfile
+the command '\verb#\input{subfile}#'. This leads to the same behavior
+as if the content of the subfile would be at the place of the \verb#\input#-Command.
+
+%% <== End of hints
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
