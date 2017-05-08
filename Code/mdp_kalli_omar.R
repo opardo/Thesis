@@ -3,10 +3,10 @@
 # load("C:/Users/mate/Downloads/I/sentimiento-master/probabilistic.topic/codigo/mydp/data/galaxy.rda")
 
 rm(list=ls())
-mywd <- "/run/media/jmartineov/JC.ITAM/JCMO.Amafore/Proyecto01/sentimiento/probabilistic.topic/codigo/"
+mywd <- "C:/Users/PardoO/Documents/Personal/Thesis/Code/"
 setwd(mywd)
 
-load(paste(mywd,"galaxy.rda",set=""))
+load(paste0(mywd,"galaxy.rda",set=""))
 
 y <- unlist(galaxy)
 rm(galaxy)
