@@ -4,7 +4,7 @@
 library(pscl)
 
 rm(list=ls())
-mywd <- "C:/Users/PardoO/Documents/Personal/Thesis/Code/"
+mywd <- "/Users/opardo/Documents/Projects/Personal/Thesis/Code/"
 setwd(mywd)
 
 load(paste0(mywd,"galaxy.rda",set=""))
@@ -74,7 +74,6 @@ KGWss <- function(
         size = 1,
         prob = (zeta[1:N] > u[j]) *
           w / zeta[1:N] *
-          # w *
           dalp(y[j], sigma = sigma, p = p)
       )
       Ni[j] <- max((1:nz)[zeta > u[j]])
