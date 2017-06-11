@@ -138,4 +138,4 @@ ggplot(data = comparisson, aes(x = x)) +
 
 library(readr)
 setwd("/Users/opardo/Documents/Projects/Personal/Thesis/Code/")
-write_rds(MCMC_output, "MCMC_QuantGPDPReg_Osc_975.rds")
+write_rds(MCMC_output, "MCMC_QuantGPDPReg_Osc_025.rds")
