@@ -22,7 +22,7 @@ qerror <- function(p, alpha_error, beta_error) qgamma(p, alpha_error, beta_error
 m <- 40
 
 # Define error's parameters
-alpha_error <- 3/2
+alpha_error <- 1
 beta_error <- 1
 
 # Define x's range

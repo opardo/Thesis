@@ -9,11 +9,11 @@ library(GPDPQuantReg)
 # Recreate simulated data
 set.seed(2017)
 
-f_x <- function(x) return(exp(abs(x/8)))
+f_x <- function(x) return(0.5 * x * cos(x) - exp(0.1 * x))
 error <- function(m, alpha_error, beta_error) rgamma(m, alpha_error, beta_error)
 qerror <- function(p, alpha_error, beta_error) qgamma(p, alpha_error, beta_error)
 m <- 40
-alpha_error <- 3/2
+alpha_error <- 1
 beta_error <- 1
 x_range <- seq(-15, 15, 0.005)
 x <- sample(x_range, m)
@@ -69,35 +69,35 @@ plot_fitted_model <- function(MCMC_output, p) {
 
 setwd(paste0(
   "/Users/opardo/Documents/Projects/Personal/",
-  "Thesis/Applications/Simulation/simple_f_complex_error/fitted_models/"
+  "Thesis/Applications/Simulation/complex_f_complex_error/fitted_models/"
 ))
 
 # Load fitted models
-MCMC_sfce_250 <- read_rds("MCMC_sfce_250.rds")
-MCMC_sfce_500 <- read_rds("MCMC_sfce_500.rds")
-MCMC_sfce_950 <- read_rds("MCMC_sfce_950.rds")
+MCMC_cfce_250 <- read_rds("MCMC_cfce_250.rds")
+MCMC_cfce_500 <- read_rds("MCMC_cfce_500.rds")
+MCMC_cfce_950 <- read_rds("MCMC_cfce_950.rds")
 
 # Get MCMC diagnostics
-gpdp_mcmc_diagnostics(MCMC_sfce_250)
-gpdp_mcmc_diagnostics(MCMC_sfce_500)
-gpdp_mcmc_diagnostics(MCMC_sfce_950)
+gpdp_mcmc_diagnostics(MCMC_cfce_250)
+gpdp_mcmc_diagnostics(MCMC_cfce_500)
+gpdp_mcmc_diagnostics(MCMC_cfce_950)
 
 # Plot fitted models
-sfce_250_results <- plot_fitted_model(MCMC_sfce_250, 0.250)
-sfce_500_results <- plot_fitted_model(MCMC_sfce_500, 0.500)
-sfce_950_results <- plot_fitted_model(MCMC_sfce_950, 0.950)
+cfce_250_results <- plot_fitted_model(MCMC_cfce_250, 0.250)
+cfce_500_results <- plot_fitted_model(MCMC_cfce_500, 0.500)
+cfce_950_results <- plot_fitted_model(MCMC_cfce_950, 0.950)
 
-sfce_250_results
-sfce_500_results
-sfce_950_results
+cfce_250_results
+cfce_500_results
+cfce_950_results
 
 # # Save results
-# 
+#
 # setwd(paste0(
 #   "/Users/opardo/Documents/Projects/Personal/",
-#   "Thesis/Applications/Simulation/simple_f_complex_error/results/"
+#   "Thesis/Applications/Simulation/complex_f_complex_error/results/"
 # ))
-# 
-# ggsave(filename="sfce_250_results.png", plot=sfce_250_results)
-# ggsave(filename="sfce_500_results.png", plot=sfce_500_results)
-# ggsave(filename="sfce_950_results.png", plot=sfce_950_results)
+#
+# ggsave(filename="cfce_250_results.png", plot=cfce_250_results)
+# ggsave(filename="cfce_500_results.png", plot=cfce_500_results)
+# ggsave(filename="cfce_950_results.png", plot=cfce_950_results)

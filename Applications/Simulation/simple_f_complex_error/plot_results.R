@@ -9,11 +9,11 @@ library(GPDPQuantReg)
 # Recreate simulated data
 set.seed(2017)
 
-f_x <- function(x) return(exp(abs(x/8)))
+f_x <- function(x) return(0.5 * x)
 error <- function(m, alpha_error, beta_error) rgamma(m, alpha_error, beta_error)
 qerror <- function(p, alpha_error, beta_error) qgamma(p, alpha_error, beta_error)
 m <- 40
-alpha_error <- 3/2
+alpha_error <- 1
 beta_error <- 1
 x_range <- seq(-15, 15, 0.005)
 x <- sample(x_range, m)
@@ -92,12 +92,12 @@ sfce_500_results
 sfce_950_results
 
 # # Save results
-# 
+#
 # setwd(paste0(
 #   "/Users/opardo/Documents/Projects/Personal/",
 #   "Thesis/Applications/Simulation/simple_f_complex_error/results/"
 # ))
-# 
+#
 # ggsave(filename="sfce_250_results.png", plot=sfce_250_results)
 # ggsave(filename="sfce_500_results.png", plot=sfce_500_results)
 # ggsave(filename="sfce_950_results.png", plot=sfce_950_results)
