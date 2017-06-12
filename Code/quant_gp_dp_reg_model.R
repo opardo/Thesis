@@ -313,13 +313,13 @@ set.seed(19930318)
 # GENERATE DATA 
 
 # Define base function
-f_x <- function(x) return(10*sin(x/2) +  x - 2 * log(1/x))
+f_x <- function(x) return(x * cos(x) - sqrt(exp(x/5)) - 0.1 * (x-10)^2)
 
 # Define error function
 error <- function(m, sigma) rnorm(m, 0, sigma)
 
 # Define number of observations
-m <- 45
+m <- 60
 
 # Define error's variance
 sigma <- 2
@@ -359,7 +359,7 @@ ggplot(data = original_data, aes(x = x)) +
 X <- scale(as.matrix(sample_data[, -which(colnames(sample_data) == "y")]))
 Y <- as.vector(scale(sample_data[["y"]]))
 
-p <- 0.5
+p <- 0.025
 c_DP <- 2
 d_DP <- 1
 c_lambda <- 2

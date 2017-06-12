@@ -92,12 +92,13 @@ cfce_500_results
 cfce_950_results
 
 # # Save results
-#
+# 
+# local_path <- "C:/Users/PardoO/Documents/Personal/"
 # setwd(paste0(
-#   "/Users/opardo/Documents/Projects/Personal/",
+#   local_path,
 #   "Thesis/Applications/Simulation/complex_f_complex_error/results/"
 # ))
-#
+# 
 # ggsave(filename="cfce_250_results.png", plot=cfce_250_results)
 # ggsave(filename="cfce_500_results.png", plot=cfce_500_results)
 # ggsave(filename="cfce_950_results.png", plot=cfce_950_results)

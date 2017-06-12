@@ -69,14 +69,15 @@ MCMC_sfce_250 <- MCMC_GPDPQuantReg(X, Y, p = 0.250)
 MCMC_sfce_500 <- MCMC_GPDPQuantReg(X, Y, p = 0.500)
 MCMC_sfce_950 <- MCMC_GPDPQuantReg(X, Y, p = 0.950)
 
-# Save fitted models
-library(readr)
-
-setwd(paste0(
-  "/Users/opardo/Documents/Projects/Personal/",
-  "Thesis/Applications/Simulation/simple_f_complex_error/fitted_models/"
-))
-
-write_rds(MCMC_sfce_250, "MCMC_sfce_250.rds")
-write_rds(MCMC_sfce_500, "MCMC_sfce_500.rds")
-write_rds(MCMC_sfce_950, "MCMC_sfce_950.rds")
+# # Save fitted models
+# library(readr)
+# 
+# local_path <- "C:/Users/PardoO/Documents/Personal/"
+# setwd(paste0(
+#   local_path,
+#   "Thesis/Applications/Simulation/simple_f_complex_error/fitted_models/"
+# ))
+# 
+# write_rds(MCMC_sfce_250, "MCMC_sfce_250.rds")
+# write_rds(MCMC_sfce_500, "MCMC_sfce_500.rds")
+# write_rds(MCMC_sfce_950, "MCMC_sfce_950.rds")

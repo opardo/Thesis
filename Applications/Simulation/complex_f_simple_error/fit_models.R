@@ -68,14 +68,15 @@ MCMC_cfse_250 <- MCMC_GPDPQuantReg(X, Y, p = 0.250)
 MCMC_cfse_500 <- MCMC_GPDPQuantReg(X, Y, p = 0.500)
 MCMC_cfse_950 <- MCMC_GPDPQuantReg(X, Y, p = 0.950)
 
-# Save fitted models
-library(readr)
-
-setwd(paste0(
-  "/Users/opardo/Documents/Projects/Personal/",
-  "Thesis/Applications/Simulation/complex_f_simple_error/fitted_models/"
-))
-
-write_rds(MCMC_cfse_250, "MCMC_cfse_250.rds")
-write_rds(MCMC_cfse_500, "MCMC_cfse_500.rds")
-write_rds(MCMC_cfse_950, "MCMC_cfse_950.rds")
+# # Save fitted models
+# library(readr)
+# 
+# local_path <- "C:/Users/PardoO/Documents/Personal/"
+# setwd(paste0(
+#   local_path,
+#   "Thesis/Applications/Simulation/complex_f_simple_error/fitted_models/"
+# ))
+# 
+# write_rds(MCMC_cfse_250, "MCMC_cfse_250.rds")
+# write_rds(MCMC_cfse_500, "MCMC_cfse_500.rds")
+# write_rds(MCMC_cfse_950, "MCMC_cfse_950.rds")

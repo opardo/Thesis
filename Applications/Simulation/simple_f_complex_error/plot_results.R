@@ -68,7 +68,7 @@ plot_fitted_model <- function(MCMC_output, p) {
 }
 
 setwd(paste0(
-  "/Users/opardo/Documents/Projects/Personal/",
+  "C:/Users/PardoO/Documents/Personal/",
   "Thesis/Applications/Simulation/simple_f_complex_error/fitted_models/"
 ))
 
@@ -92,12 +92,13 @@ sfce_500_results
 sfce_950_results
 
 # # Save results
-#
+# 
+# local_path <- "C:/Users/PardoO/Documents/Personal/"
 # setwd(paste0(
-#   "/Users/opardo/Documents/Projects/Personal/",
+#   local_path,
 #   "Thesis/Applications/Simulation/simple_f_complex_error/results/"
 # ))
-#
+# 
 # ggsave(filename="sfce_250_results.png", plot=sfce_250_results)
 # ggsave(filename="sfce_500_results.png", plot=sfce_500_results)
 # ggsave(filename="sfce_950_results.png", plot=sfce_950_results)

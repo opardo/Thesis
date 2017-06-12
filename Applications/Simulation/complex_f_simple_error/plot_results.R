@@ -67,7 +67,7 @@ plot_fitted_model <- function(MCMC_output, p) {
 }
 
 setwd(paste0(
-  "/Users/opardo/Documents/Projects/Personal/",
+  "C:/Users/PardoO/Documents/Personal/",
   "Thesis/Applications/Simulation/complex_f_simple_error/fitted_models/"
 ))
 
@@ -92,8 +92,9 @@ cfse_950_results
 
 # # Save results
 # 
+# local_path <- "C:/Users/PardoO/Documents/Personal/"
 # setwd(paste0(
-#   "/Users/opardo/Documents/Projects/Personal/",
+#   local_path,
 #   "Thesis/Applications/Simulation/complex_f_simple_error/results/"
 # ))
 # 

@@ -1,5 +1,5 @@
 library(devtools)
-install_github("opardo/GPDPQuantReg")
+install_github("opardo/GPDPQuantReg", force = TRUE)
 
 library(GPDPQuantReg)
 library(ggplot2)
@@ -68,15 +68,15 @@ MCMC_sfse_250 <- MCMC_GPDPQuantReg(X, Y, p = 0.250)
 MCMC_sfse_500 <- MCMC_GPDPQuantReg(X, Y, p = 0.500)
 MCMC_sfse_950 <- MCMC_GPDPQuantReg(X, Y, p = 0.950)
 
-# Save fitted models
-library(readr)
-library(lattice)
-
-setwd(paste0(
-  "/Users/opardo/Documents/Projects/Personal/",
-  "Thesis/Applications/Simulation/simple_f_simple_error/fitted_models/"
-))
-
-write_rds(MCMC_sfse_250, "MCMC_sfse_250.rds")
-write_rds(MCMC_sfse_500, "MCMC_sfse_500.rds")
-write_rds(MCMC_sfse_950, "MCMC_sfse_950.rds")
+# # Save fitted models
+# library(readr)
+# 
+# local_path <- "C:/Users/PardoO/Documents/Personal/"
+# setwd(paste0(
+#   local_path,
+#   "Thesis/Applications/Simulation/simple_f_simple_error/fitted_models/"
+# ))
+# 
+# write_rds(MCMC_sfse_250, "MCMC_sfse_250.rds")
+# write_rds(MCMC_sfse_500, "MCMC_sfse_500.rds")
+# write_rds(MCMC_sfse_950, "MCMC_sfse_950.rds")
