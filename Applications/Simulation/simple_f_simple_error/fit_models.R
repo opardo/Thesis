@@ -13,16 +13,16 @@ set.seed(2017)
 f_x <- function(x) return((1/40) * x^2 - (1/20) * x - 2)
 
 # Define error function
-error <- function(m, sigma) rnorm(m, 0, sigma)
+error <- function(m, params) rnorm(m, 0, params[1])
 
 # Define inverse error function
-qerror <- function(p, sigma) qnorm(p, 0, sigma)
+qerror <- function(p, params) qnorm(p, 0, params[1])
 
 # Define number of observations
 m <- 40
 
 # Define error's variance
-sigma <- 1
+params <- c(1)
 
 # Define x's range
 x_range <- seq(-15, 15, 0.005)
@@ -40,7 +40,7 @@ original_data <- data_frame(
 # Define sample values, including error
 sample_data <- data_frame(
   x = x,
-  y = f_x(x) + error(m, sigma)
+  y = f_x(x) + error(m, params)
 )
 
 # Join datasets to plot
@@ -53,8 +53,8 @@ simulated_dataset <- dplyr::left_join(
 # Plot the simulated data
 ggplot(data = simulated_dataset, aes(x = x)) +
   geom_line(aes(y = f), color = "red") +
-  geom_line(aes(y = f + qerror(0.975, sigma)), color = "blue") +
-  geom_line(aes(y = f + qerror(0.025, sigma)), color = "blue") +
+  geom_line(aes(y = f + qerror(0.975, params)), color = "blue") +
+  geom_line(aes(y = f + qerror(0.025, params)), color = "blue") +
   geom_point(aes(y = y))
 
 # MCMC ALGORITHM
@@ -64,19 +64,19 @@ X <- as.matrix(sample_data[, -which(colnames(sample_data) == "y")])
 Y <- as.vector(sample_data[["y"]])
 
 # Fit models
-MCMC_sfse_250 <- MCMC_GPDPQuantReg(X, Y, p = 0.250)
-MCMC_sfse_500 <- MCMC_GPDPQuantReg(X, Y, p = 0.500)
-MCMC_sfse_950 <- MCMC_GPDPQuantReg(X, Y, p = 0.950)
+GPDP_sfse_250 <- fit_GPDP(X, Y, p = 0.250)
+GPDP_sfse_500 <- fit_GPDP(X, Y, p = 0.500)
+GPDP_sfse_950 <- fit_GPDP(X, Y, p = 0.950)
 
-# # Save fitted models
-# library(readr)
-# 
-# local_path <- "C:/Users/PardoO/Documents/Personal/"
-# setwd(paste0(
-#   local_path,
-#   "Thesis/Applications/Simulation/simple_f_simple_error/fitted_models/"
-# ))
-# 
-# write_rds(MCMC_sfse_250, "MCMC_sfse_250.rds")
-# write_rds(MCMC_sfse_500, "MCMC_sfse_500.rds")
-# write_rds(MCMC_sfse_950, "MCMC_sfse_950.rds")
+# Save fitted models
+library(readr)
+
+local_path <- "/Users/opardo/Documents/Projects/Personal/"
+setwd(paste0(
+  local_path,
+  "Thesis/Applications/Simulation/simple_f_simple_error/fitted_models/"
+))
+
+write_rds(GPDP_sfse_250, "GPDP_sfse_250.rds")
+write_rds(GPDP_sfse_500, "GPDP_sfse_500.rds")
+write_rds(GPDP_sfse_950, "GPDP_sfse_950.rds")
