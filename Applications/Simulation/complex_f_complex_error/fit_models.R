@@ -13,17 +13,16 @@ set.seed(2017)
 f_x <- function(x) return(0.5 * x * cos(x) - exp(0.1 * x))
 
 # Define error function
-error <- function(m, alpha_error, beta_error) rgamma(m, alpha_error, beta_error)
+error <- function(m, params) rgamma(m, params[1], params[2])
 
 # Define inverse error function
-qerror <- function(p, alpha_error, beta_error) qgamma(p, alpha_error, beta_error)
+qerror <- function(p, params) qgamma(p, params[1], params[2])
 
 # Define number of observations
 m <- 40
 
 # Define error's parameters
-alpha_error <- 1
-beta_error <- 1
+params <- c(1, 1)
 
 # Define x's range
 x_range <- seq(-15, 15, 0.005)
@@ -41,7 +40,7 @@ original_data <- data_frame(
 # Define sample values, including error
 sample_data <- data_frame(
   x = x,
-  y = f_x(x) + error(m, alpha_error, beta_error)
+  y = f_x(x) + error(m, params)
 )
 
 # Join datasets to plot
@@ -53,9 +52,9 @@ simulated_dataset <- dplyr::left_join(
 
 # Plot the simulated data
 ggplot(data = simulated_dataset, aes(x = x)) +
-  geom_line(aes(y = f + qerror(0.500, alpha_error, beta_error)), color = "red") +
-  geom_line(aes(y = f + qerror(0.975, alpha_error, beta_error)), color = "blue") +
-  geom_line(aes(y = f + qerror(0.025, alpha_error, beta_error)), color = "blue") +
+  geom_line(aes(y = f + qerror(0.500, params)), color = "red") +
+  geom_line(aes(y = f + qerror(0.975, params)), color = "blue") +
+  geom_line(aes(y = f + qerror(0.025, params)), color = "blue") +
   geom_point(aes(y = y))
 
 # MCMC ALGORITHM
@@ -65,19 +64,19 @@ X <- as.matrix(sample_data[, -which(colnames(sample_data) == "y")])
 Y <- as.vector(sample_data[["y"]])
 
 # Fit models
-MCMC_cfce_250 <- MCMC_GPDPQuantReg(X, Y, p = 0.250)
-MCMC_cfce_500 <- MCMC_GPDPQuantReg(X, Y, p = 0.500)
-MCMC_cfce_950 <- MCMC_GPDPQuantReg(X, Y, p = 0.950)
+GPDP_cfce_250 <- fit_GPDP(X, Y, p = 0.250)
+GPDP_cfce_500 <- fit_GPDP(X, Y, p = 0.500)
+GPDP_cfce_950 <- fit_GPDP(X, Y, p = 0.950)
 
-# # Save fitted models
-# library(readr)
-# 
-# local_path <- "C:/Users/PardoO/Documents/Personal/"
-# setwd(paste0(
-#   local_path,
-#   "Thesis/Applications/Simulation/complex_f_complex_error/fitted_models/"
-# ))
-# 
-# write_rds(MCMC_cfce_250, "MCMC_cfce_250.rds")
-# write_rds(MCMC_cfce_500, "MCMC_cfce_500.rds")
-# write_rds(MCMC_cfce_950, "MCMC_cfce_950.rds")
+# Save fitted models
+library(readr)
+
+local_path <- "/Users/opardo/Documents/Projects/Personal/"
+setwd(paste0(
+  local_path,
+  "Thesis/Applications/Simulation/complex_f_complex_error/fitted_models/"
+))
+
+write_rds(GPDP_cfce_250, "GPDP_cfce_250.rds")
+write_rds(GPDP_cfce_500, "GPDP_cfce_500.rds")
+write_rds(GPDP_cfce_950, "GPDP_cfce_950.rds")

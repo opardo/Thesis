@@ -4,101 +4,94 @@ install_github("opardo/GPDPQuantReg")
 library(ggplot2)
 library(tibble)
 library(readr)
+library(dplyr)
+library(R.utils)
 library(GPDPQuantReg)
+
+local_path <- "/Users/opardo/Documents/Projects/Personal/"
+
+setwd(paste0(
+  local_path,
+  "Thesis/Applications/Simulation/"
+))
+
+function_files <- sourceDirectory("utils")
+for (file in function_files){
+  source(file, local = TRUE)
+}
+
+setwd(paste0(
+  local_path,
+  "Thesis/Applications/Simulation/simple_f_complex_error/fitted_models/"
+))
+
+# Load fitted models
+GPDP_sfce_250 <- read_rds("GPDP_sfce_250.rds")
+GPDP_sfce_500 <- read_rds("GPDP_sfce_500.rds")
+GPDP_sfce_950 <- read_rds("GPDP_sfce_950.rds")
+
+# Get GPDP diagnostics
+diagnostic_GPDP(GPDP_sfce_250)
+diagnostic_GPDP(GPDP_sfce_500)
+diagnostic_GPDP(GPDP_sfce_950)
+
+# Predict
+Xp <- as.matrix(seq(-15, 15, 0.1))
+credibility <- 0.90
+sfce_250_prediction <- predict_GPDP(GPDP_sfce_250, Xp, credibility)
+sfce_500_prediction <- predict_GPDP(GPDP_sfce_500, Xp, credibility)
+sfce_950_prediction <- predict_GPDP(GPDP_sfce_950, Xp, credibility)
 
 # Recreate simulated data
 set.seed(2017)
 
 f_x <- function(x) return(0.5 * x)
-error <- function(m, alpha_error, beta_error) rgamma(m, alpha_error, beta_error)
-qerror <- function(p, alpha_error, beta_error) qgamma(p, alpha_error, beta_error)
+error <- function(m, params) rgamma(m, params[1], params[2])
+qerror <- function(p, params) qgamma(p, params[1], params[2])
 m <- 40
-alpha_error <- 1
-beta_error <- 1
+params <- c(1, 1)
 x_range <- seq(-15, 15, 0.005)
 x <- sample(x_range, m)
 x <- x[order(x)]
 
 original_data <- data_frame(
-  x = x_range,
+  x = round(x_range, 3),
   f = f_x(x_range)
 )
 
 sample_data <- data_frame(
   x = x,
-  y = f_x(x) + error(m, alpha_error, beta_error)
+  y = f_x(x) + error(m, params)
 )
 
-plot_fitted_model <- function(MCMC_output, p) {
-
-  # Get f's values from the model
-  f_data <- data.frame(matrix(
-    unlist(MCMC_output$f),
-    nrow=length(MCMC_output$f),
-    byrow=T
-  ))
-
-  # Calculate mean for each observation, and its confidence interval (f)
-  f_mean <- unname(apply(f_data, 2, mean))
-  f_025 <- unname(apply(f_data, 2, function(column) as.numeric(quantile(column, 0.025))))
-  f_975 <- unname(apply(f_data, 2, function(column) as.numeric(quantile(column, 0.975))))
-
-  # Generate comparisson data frame
-  comparisson <- dplyr::left_join(
+plot_sfce_results <- function(prediction, p) {
+  return(plot_fitted_model(
+    prediction = prediction,
+    credibility,
     original_data,
-    data_frame(
-      x = sample_data$x,
-      f_mean = f_mean,
-      f_025 = f_025,
-      f_975 = f_975
-    ),
-    by = "x"
-  )
-
-  # Get plot
-  fitted_model_plot <- ggplot(data = comparisson, aes(x = x)) +
-    geom_line(aes(y = f + qerror(p, alpha_error, beta_error)), color = "blue") +
-    geom_point(aes(y = f_mean), color = "gray") +
-    geom_errorbar(aes(ymax = f_975, ymin = f_025), color = "gray") +
-    geom_point(data = sample_data, aes(y = y), color = "black") +
-    ggtitle(paste0("Quantile = ", p)) +
-    theme(plot.title = element_text(hjust = 0.5))
-
-  return(fitted_model_plot)
+    sample_data,
+    qerror, 
+    params, 
+    p = p
+  ))
 }
 
-setwd(paste0(
-  "C:/Users/PardoO/Documents/Personal/",
-  "Thesis/Applications/Simulation/simple_f_complex_error/fitted_models/"
-))
-
-# Load fitted models
-MCMC_sfce_250 <- read_rds("MCMC_sfce_250.rds")
-MCMC_sfce_500 <- read_rds("MCMC_sfce_500.rds")
-MCMC_sfce_950 <- read_rds("MCMC_sfce_950.rds")
-
-# Get MCMC diagnostics
-gpdp_mcmc_diagnostics(MCMC_sfce_250)
-gpdp_mcmc_diagnostics(MCMC_sfce_500)
-gpdp_mcmc_diagnostics(MCMC_sfce_950)
-
 # Plot fitted models
-sfce_250_results <- plot_fitted_model(MCMC_sfce_250, 0.250)
-sfce_500_results <- plot_fitted_model(MCMC_sfce_500, 0.500)
-sfce_950_results <- plot_fitted_model(MCMC_sfce_950, 0.950)
+sfce_250_results <- plot_sfce_results(sfce_250_prediction, 0.250)
+sfce_500_results <- plot_sfce_results(sfce_500_prediction, 0.500)
+sfce_950_results <- plot_sfce_results(sfce_950_prediction, 0.950)
 
 sfce_250_results
 sfce_500_results
 sfce_950_results
 
-# # Save results
-# 
-# local_path <- "C:/Users/PardoO/Documents/Personal/"
-# setwd(paste0(
-#   local_path,
-#   "Thesis/Applications/Simulation/simple_f_complex_error/results/"
-# ))
-# 
-# ggsave(filename="sfce_250_results.png", plot=sfce_250_results)
-# ggsave(filename="sfce_500_results.png", plot=sfce_500_results)
-# ggsave(filename="sfce_950_results.png", plot=sfce_950_results)
+# Save results
+
+setwd(paste0(
+  local_path,
+  "Thesis/Applications/Simulation/simple_f_complex_error/results/"
+))
+
+ggsave(filename="sfce_250_results.png", plot=sfce_250_results)
+ggsave(filename="sfce_500_results.png", plot=sfce_500_results)
+ggsave(filename="sfce_950_results.png", plot=sfce_950_results)
