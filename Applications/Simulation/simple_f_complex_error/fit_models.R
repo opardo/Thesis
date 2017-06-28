@@ -4,6 +4,19 @@ install_github("opardo/GPDPQuantReg")
 library(GPDPQuantReg)
 library(ggplot2)
 library(tibble)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(R.utils)
+
+# Define local_path where the repo lives (user dependent)
+local_path <- "/Users/opardo/Documents/Projects/Personal/"
+
+# Import utils
+source(paste0(local_path,"Thesis/Applications/Simulation/utils.R"), local = TRUE)
+
+# Setwd for simple function and simple error folder
+setwd(paste0(local_path,"Thesis/Applications/Simulation/simple_f_complex_error/"))
 
 set.seed(2017)
 
@@ -12,71 +25,88 @@ set.seed(2017)
 # Define base function
 f_x <- function(x) return(0.5 * x)
 
-# Define error function
-error <- function(m, params) rgamma(m, params[1], params[2])
-
-# Define inverse error function
-qerror <- function(p, params) qgamma(p, params[1], params[2])
+# Define error function and inverse error function
+error <- function(m) rgamma(m, 2, 1)
+qerror <- function(p) qgamma(p, 2, 1)
 
 # Define number of observations
 m <- 40
 
-# Define error's parameters
-params <- c(1, 1)
+# Sample x and generate y with f_x + random error
+values_range <- round(seq(-15, 15, 0.005), 3)
+x <- sort(sample(values_range, m))
+sample_data <- data_frame(x = x, y = f_x(x) + error(m))
 
-# Define x's range
-x_range <- seq(-15, 15, 0.005)
-
-# Sample x inside the range
-x <- sample(x_range, m)
-x <- x[order(x)]
-
-# Define original values (without error) inside the x's range
-original_data <- data_frame(
-  x = x_range,
-  f = f_x(x_range)
-)
-
-# Define sample values, including error
-sample_data <- data_frame(
-  x = x,
-  y = f_x(x) + error(m, params)
-)
-
-# Join datasets to plot
-simulated_dataset <- dplyr::left_join(
-  original_data,
-  sample_data,
-  by = "x"
-)
-
-# Plot the simulated data
-ggplot(data = simulated_dataset, aes(x = x)) +
-  geom_line(aes(y = f + qerror(0.500, params)), color = "red") +
-  geom_line(aes(y = f + qerror(0.975, params)), color = "blue") +
-  geom_line(aes(y = f + qerror(0.025, params)), color = "blue") +
-  geom_point(aes(y = y))
+plot_sample(sample_data, values_range, q_error)
 
 # MCMC ALGORITHM
 
-# Define parameters
-X <- as.matrix(sample_data[, -which(colnames(sample_data) == "y")])
-Y <- as.vector(sample_data[["y"]])
-
 # Fit models
-GPDP_sfce_250 <- fit_GPDP(X, Y, p = 0.250)
-GPDP_sfce_500 <- fit_GPDP(X, Y, p = 0.500)
-GPDP_sfce_950 <- fit_GPDP(X, Y, p = 0.950)
+GPDP_sfce_250 <- GPDPQuantReg(y ~ x, sample_data, p = 0.250)
+GPDP_sfce_500 <- GPDPQuantReg(y ~ x, sample_data, p = 0.500)
+GPDP_sfce_950 <- GPDPQuantReg(y ~ x, sample_data, p = 0.950)
 
 # Save fitted models
-library(readr)
+write_rds(GPDP_sfce_250, "models/GPDP_sfce_250.rds")
+write_rds(GPDP_sfce_500, "models/GPDP_sfce_500.rds")
+write_rds(GPDP_sfce_950, "models/GPDP_sfce_950.rds")
+#
+# # Load fitted models
+# GPDP_sfce_250 <- read_rds("models/GPDP_sfce_250.rds")
+# GPDP_sfce_500 <- read_rds("models/GPDP_sfce_500.rds")
+# GPDP_sfce_950 <- read_rds("models/GPDP_sfce_950.rds")
 
-local_path <- "/Users/opardo/Documents/Projects/Personal/"
-setwd(paste0(
-  local_path,
-  "Thesis/Applications/Simulation/simple_f_complex_error/fitted_models/"
-))
+# Diagnose GPDP_MCMC
+diagnose(GPDP_sfce_250)
+diagnose(GPDP_sfce_500)
+diagnose(GPDP_sfce_950)
 
-write_rds(GPDP_sfce_250, "GPDP_sfce_250.rds")
-write_rds(GPDP_sfce_500, "GPDP_sfce_500.rds")
-write_rds(GPDP_sfce_950, "GPDP_sfce_950.rds")
+# Predict
+predictive_data <- data_frame(x = seq(-15, 15, 0.2))
+credibility <- 0.90
+prediction_sfce_250 <- predict(GPDP_sfce_250, predictive_data, credibility)
+prediction_sfce_500 <- predict(GPDP_sfce_500, predictive_data, credibility)
+prediction_sfce_950 <- predict(GPDP_sfce_950, predictive_data, credibility)
+
+# Save prediction
+write_rds(prediction_sfce_250, "predictions/prediction_sfce_250.rds")
+write_rds(prediction_sfce_500, "predictions/prediction_sfce_500.rds")
+write_rds(prediction_sfce_950, "predictions/prediction_sfce_950.rds")
+#
+# # Load prediction
+# GPDP_sfce_250 <- read_rds("predictions/prediction_sfce_250.rds")
+# GPDP_sfce_500 <- read_rds("predictions/prediction_sfce_500.rds")
+# GPDP_sfce_950 <- read_rds("predictions/prediction_sfce_950.rds")
+
+plot_sfce_results <- function(prediction, p) {
+  return(plot_fitted_model(
+    prediction = prediction,
+    credibility,
+    f_x,
+    sample_data,
+    qerror,
+    p = p
+  ))
+}
+
+# Plot fitted models
+sfce_250_results <- plot_sfce_results(prediction_sfce_250, 0.250)
+sfce_500_results <- plot_sfce_results(prediction_sfce_500, 0.500)
+sfce_950_results <- plot_sfce_results(prediction_sfce_950, 0.950)
+sfce_gral_results <- plot_multiple_quantiles(
+  prediction_sfce_250,
+  prediction_sfce_500,
+  prediction_sfce_950,
+  title = "Simple f & Complex error"
+)
+
+sfce_250_results
+sfce_500_results
+sfce_950_results
+sfce_gral_results
+
+# Save plots
+ggsave(filename = "results/sfce_250_results.png", plot = sfce_250_results)
+ggsave(filename = "results/sfce_500_results.png", plot = sfce_500_results)
+ggsave(filename = "results/sfce_950_results.png", plot = sfce_950_results)
+ggsave(filename = "results/sfce_gral_results.png", plot = sfce_gral_results)
