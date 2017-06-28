@@ -1,0 +1,238 @@
+\chapter[Modelos de regresi\'on]{Modelos de regresi\'on}
+
+\section{Concepto general}
+
+Los modelos de regresi\'on tienen como objetivo describir la distribuci\'on de una variable aleatoria $y \in \mathbb{R}$, normalmente conocida como la \textit{variable de respuesta}, condicional a los valores de las variables $x \in \mathbb{R}^n$, conocidas como \textit{covariables} o \textit{variables de entrada}. Visto en t\'erminos matem\'aticos, se puede expresar como
+\begin{equation*}
+    y|x \sim \mathbb{P}(y|x).
+\end{equation*}
+Si bien esta relaci\'on se da por hecha y es fija, normalmente es desconocida. Por lo tanto, la intenci\'on de estos modelos es realizar alguna aproximaci\'on de ella. Dado que es complicado aproximar con exactitud toda la distribuci\'on, com\'unmente se enfocan en una medici\'on particular, como la media o la mediana.
+
+\section{Regresión a la media}
+
+La \textit{regresi\'on a la media} es el caso particular m\'as usado de los modelos de regresi\'on, tanto en el paradigma bayesiano, como en otros. Esto sucede debido al bajo uso de recursos, adem\'as de su capacidad interpretativa.
+
+En notaci\'on probabil\'istica, retomando el hecho de que $y|x \sim \mathbb{P}(y|x)$, busca aproximar a la funci\'on $f$, tal que 
+\begin{equation*}
+    \mathbb{E}(y|x) = f(x).
+\end{equation*}
+Para hacer esto, normalmente se vale del supuesto que
+\begin{equation*}
+    y = f(x) + \varepsilon,
+\end{equation*}
+con $\varepsilon \in \mathbb{R} \sim \mathcal{N}(0,\sigma^2)$ (denominado com\'unmente como el \textit{error aleatorio}), y siendo $f(x) \in \mathbb{R}$ y $\sigma^2 \in \mathbb{R^+}$ desconocidas, de forma que
+\begin{equation*}
+    y \sim \mathcal{N}(f(x),\sigma^2).
+\end{equation*}
+
+Adem\'as, retomando lo visto en el cap\'itulo anterior, se supone independencia condicional. Es decir, sean $\bar{x}$ las covariables asociadas a la variable de respuesta $\bar{y}$, y $\hat{x}$ las asociadas a $\hat{y}$, se tiene que $\bar{y} | \bar{x}, f, \sigma^2$ es condicionalmente independiente a $\hat{y} | \hat{x}, f, \sigma^2$. Y, por lo tanto, $\bar{\varepsilon}$ es independiente de $\hat{\varepsilon}$.
+
+
+\subsection[Modelo tradicional]{
+    Modelo tradicional
+    \footnote{Algunas ideas de esta subsecci\'on son retomadas de \cite{Denison_BayesMethods} y \cite{Bannerjee_BayLinMod}.}
+}
+
+La \textit{regresi\'on lineal a la media} es el caso particular m\'as usado en el contexto de \textit{regresi\'on a la media}. Consiste en definir
+\begin{equation*}
+    f(x) = \beta^Tx,
+\end{equation*}
+donde $\beta \in \mathbb{R}^n$ se piensa con valores constantes, pero desconocidos, y la tarea es estimarlos, al igual que $\sigma^2$.
+
+Para hacer esto, el enfoque bayesiano le asigna una distribución inicial de probabilidad a ambos par\'ametros, reflejando la incertidumbre que tiene el modelador acerca de su valor real. Es decir, sea $H$ la hip\'otesis o el conocimiento previo al que tiene acceso el modelador, se tiene que 
+\begin{equation*}
+    \beta,\sigma^2 \sim \mathbb{P}(\beta,\sigma^2|H).
+\end{equation*}
+
+A partir de este momento se omitir\'a escribir la distribuci\'on condicional respecto a $H$ por simplificaci\'on de la notaci\'on, pero es importante no olvidar su existencia.
+
+Sea $\{(x_i,y_i)| x_i \in \mathbb{R}^n, y_i \in \mathbb{R}, i \in \{1,...,m\} \}$ el conjunto de datos observados, condicionalmente independientes e id\'enticamente distribuidos, de las variables de respuesta y de las covariables. Es posible representar este mismo conjunto con la notaci\'on matricial $\{X,Y | X \in \mathbb{R}^{m \times n}, Y \in \mathbb{R}^m\}$. Sea $\mathcal{E} \in \mathbb{R}^m$ el vector de errores aleatorios, tal que $\mathcal{E} \sim \mathcal{N}(0,\sigma^2 I)$. El modelo se puede reescribir como:
+\begin{equation*}
+    Y = X\beta + \mathcal{E} \sim \mathcal{N}(X\beta,\sigma^2 I).
+\end{equation*}
+
+Por el Teorema de Bayes,
+\begin{equation*}
+\begin{aligned}
+    \mathbb{P}(\beta,\sigma^2 | Y, X) 
+    &= \frac{\mathbb{P}(Y| X, \beta, \sigma^2) \times \mathbb{P}(\beta, \sigma^2 | X)}{P(Y | X)} \\
+    &= \frac{\mathbb{P}(Y| X, \beta, \sigma^2) \times \mathbb{P}(\beta, \sigma^2)}{\mathbb{P}(Y | X)} \\
+    &\propto \mathbb{P}(Y| X, \beta, \sigma^2) \times \mathbb{P}(\beta, \sigma^2), \\
+\end{aligned}
+\end{equation*}
+donde $\mathbb{P}(Y| X, \beta, \sigma^2)$ es la verosimilitud de los datos observados y se puede calcular como $\mathbb{P}(Y| X, \beta, \sigma^2) = \mathcal{N}(X\beta,\sigma^2 I) = \prod_{i=1}^m \mathcal{N}(x_i^T\beta,\sigma^2)$. Por otro lado, $\mathbb{P}(\beta,\sigma^2)$ es la distribuci\'on inicial de los par\'ametros.
+
+Por conveniencia anal\'itica, hay una distribuci\'on inicial com\'unmente usada para los par\'ametros $\beta$ y $\sigma$ debido a que es conjugada respecto a la distribuci\'on Normal de los datos. Su nombre es \textit{Normal-Gamma Inversa (NGI)} y se dice que $\beta,\sigma^2 \sim \mathcal{NGI}(M,V,a,b)$, si
+\begin{equation*}
+\begin{aligned}
+    \mathbb{P}(\beta,\sigma^2) 
+    &= \mathbb{P}(\beta|\sigma^2) \times \mathbb{P}(\sigma^2) \\
+    &= \mathcal{N}(\beta|M, \sigma^2 V) \times \mathcal{GI}(\sigma ^2|a,b) \\
+    &= \frac{1}{((2\pi)^n|\sigma^2 V|)^\frac{1}{2}}
+       \exp\left(-\frac{1}{2}(\beta-M)^T{(\sigma^2 V)}^{-1}(\beta-M)\right) \\
+    &  \text{ }\text{ }\text{ } \times
+       \frac{b^a}{\Gamma(a)}(\sigma^2)^{-(a+1)}\exp\left(-\frac{b}{\sigma^2}\right) \\
+    &= \frac{b^a}{(2\pi)^\frac{n}{2}{|V|}^\frac{1}{2}\Gamma(a)}(\sigma^2)^{-(a+    (n/2)+1)} \\
+    & \text{ }\text{ }\text{ } \times
+      \exp\left(-\frac{(\beta-M)^TV^{-1}(\beta-M) + 2b}{2\sigma^2}\right) \\
+    &\propto (\sigma^2)^{-(a+(n/2)+1)} \exp\left(-\frac{(\beta-M)^TV^{-1}(\beta-M) + 2b}{2\sigma^2}\right),
+\end{aligned}
+\end{equation*}
+donde $M$ es la media inicial de los coeficientes, $\sigma^2 V$ su varianza, y $a$ y $b$ son los par\'ametros iniciales de forma y medida de $\sigma ^2$. 
+
+Aprovechando la propiedad conjugada, es posible escribir la probabilidad posterior de los par\'ametros como:
+\begin{equation*}
+\begin{aligned}
+    \mathbb{P}(\beta,\sigma^2 | Y, X) 
+    &\propto \mathbb{P}(Y| X, \beta, \sigma^2) \times \mathbb{P}(\beta, \sigma^2), \\
+    &\propto (\sigma^2)^{-(\bar{a}+(n/2)+1)} \exp\left(-\frac{(\beta-\bar{M})^T\bar{V}^{-1}(\beta-\bar{M}) + 2\bar{b}}{2\sigma^2}\right),
+\end{aligned}
+\end{equation*}
+donde
+\begin{equation*}
+\begin{aligned}
+    \bar{M} &= (V^{-1} + X^TX)^{-1} (V^{-1}M + X^TY), \\
+    \bar{V} &= (V^{-1} + X^TX)^{-1}, \\
+    \bar{a} &= a + n/2, \\
+    \bar{b} &= b + \frac{\bar{M}^TV^{-1}M + Y^TY - \bar{M}^T\bar{V}^{-1}\bar{M}}{2}.
+\end{aligned}
+\end{equation*}
+
+Es decir, la distribuci\'on posterior de $(\beta,\sigma^2)$ es \textit{Normal - Gamma Inversa}, con par\'ametros $\mathcal{NGI}(\bar{M},\bar{V},\bar{a},\bar{b})$.
+
+Si se tiene una nueva matriz de covariables $X_*$ y se desea hacer predicci\'on de las respectivas variables de salida $Y_*$, es posible hacer inferencia con los datos observados de la siguiente manera:
+\begin{equation*}
+\begin{aligned}
+    \mathbb{P}(Y_*|X_*,Y,X)
+    &= \int \int \mathbb{P}(Y_*|X_*,\beta,\sigma^2) \times \mathbb{P}(\beta,\sigma^2|Y,X) d\sigma^2 d\beta \\
+    &= \int \int \mathcal{N}(Y_*|X_*\beta,\sigma^2I) \times \mathbb{P}(\beta,\sigma^2|Y,X) d\sigma^2 d\beta.
+\end{aligned}
+\end{equation*}
+
+Particularmente, si se contin\'ua con el modelo conjugado \textit{Normal - Gamma Inversa / Normal}, es posible encontrar la soluci\'on anal\'itica:
+\begin{equation*}
+\begin{aligned}
+    \mathbb{P}(Y_*|X_*,Y,X)
+    &= \int \int \mathcal{N}(Y_*|X_*\beta,\sigma^2I) \times \mathbb{P}(\beta,\sigma^2|Y,X) d\sigma^2 d\beta \\
+    &= \int \int \mathcal{N}(Y_*|X_*\beta,\sigma^2I) \times \mathcal{NGI}(\beta,\sigma^2|\bar{M},\bar{V},\bar{a},\bar{b}) d\sigma^2 d\beta \\
+    &= MVSt_{2\bar{a}} 
+       \left(
+        X_*\bar{M},\frac{\bar{b}}{\bar{a}}\left(I + X_*\bar{V}X_*^T\right)
+       \right),
+\end{aligned}
+\end{equation*}
+donde $MVSt$ es la distribuci\'on \textit{t-Student} multivariada, y cuya definici\'on se describe a continuaci\'on. 
+
+\begin{defin}
+    Sea $X \in \mathbb{R}^p$ un vector aleatorio, con media, mediana y moda $\mu$, matriz de covarianzas $\Sigma $, y $\nu$ grados de libertad, entonces $X \sim MVSt_{\nu}(\mu,\Sigma)$ si y s\'olo si su funci\'on de densidad es:
+\begin{equation*}
+    f(x|\mu,\sigma,\nu) = 
+    \frac{\Gamma((\nu+p)/2)}{\Gamma(\nu/2)\nu^{p/2}\pi^{p/2}|\Sigma|^{1/2}}
+    \left[1 + \frac{1}{\nu} (x-\mu)^T\Sigma^{-1}(x-\mu)\right]^{-\frac{\nu+p}{2}}.
+\end{equation*}
+\end{defin}
+
+\section{Regresión sobre cuantiles}
+
+\begin{defin}
+El cuantil $p$-\'esimo de la variable aleatoria $Y$ es aquel valor $q_p$ tal que
+\begin{equation*}
+    F_Y(q_p) = p.
+\end{equation*}
+Equivalentemente, la funci\'on que regresa el cuantil p-\'esimo de la variable aleatoria $Y$ se escribe
+\begin{equation*}
+    q_p(Y) = F_Y^{-1}(p),
+\end{equation*}
+cuando $F_Y^{-1}$ est\'a bien definida.
+\end{defin}
+Dicho en otras palabras, si se tiene un conjunto grande de realizaciones de una variable aleatoria $Y$, se esperar\'a que el $p \times 100\%$ est\'e por debajo de $q_p(Y)$ y el $(1-p) \times 100\%$ est\'e por arriba. Por ejemplo, la mediana es un caso particular de un cuantil, espec\'ificamente el $0.5$-\'esimo. 
+
+La \textit{regresi\'on sobre cuantiles} es una alternativa que se ha desarrollado reci\'entemente y que permite enfocarse a otros aspectos de la distribuci\'on, como lo que pasa en las colas. Adem\'as relaja supuestos de la \textit{regresi\'on a la media}, como la simetr\'ia inducida por el error normal.
+
+En notaci\'on probabil\'istica, busca aproximar a la funci\'on $f$, tal que 
+\begin{equation*}
+    q_p(y|x) = f(x),
+\end{equation*}
+para $p \in (0,1)$ fijo arbitrario.
+
+Para hacer esto, normalmente se vale del supuesto que
+\begin{equation*}
+    y = f(x) + \varepsilon,
+\end{equation*}
+con $\varepsilon \in \mathbb{R} \sim E(\theta)$, de manera que $E$ es una variable aleatoria con vector de par\'ametros $\theta$, tal que $q_p(E) = 0$. 
+
+Es importante aclarar que $f(x) \in \mathbb{R}$ y $\theta$ son desconocidos. Asimismo, al igual que con la \textit{regresi\'on a la media}, se supone independencia condicional entre observaciones.
+
+\subsection{Modelo tradicional}
+
+Cuando surgi\'o entre la comunidad estad\'istica el problema de \textit{regresi\'on sobre cuantiles}, inicialmente fue modelado bajo un enfoque no bayesiano, como se describe en \cite{Yu_BayQuantReg}.  Posteriormente, Koenker \& Bassett (1978) retomaron esas ideas, y las aplicaron en el paradigma bayesiano. 
+
+Al igual que en la \textit{regresi\'on a la media}, el primer y m\'as popular modelo ha sido el lineal. Es decir, para $p \in (0,1)$ fijo arbitrario, se define
+\begin{equation*}
+    f(x) = x^T\beta_p, 
+\end{equation*}
+donde $\beta_p$ es el vector de coeficientes, dependiente de $p$.
+
+\begin{defin}
+    Se define a la funci\'on
+    \begin{equation*}
+        \rho_p(u) = u \times [pI_{(u>0)} - (1-p) I_{(u<0)})].
+    \end{equation*}
+    Se dice que una variable aleatoria U sigue una distribuci\'on asim\'etrica de Laplace ($U \sim AL_p(\sigma)$) si su funci\'on de densidad se escribe como
+    \begin{equation*}
+        f_p(u|\sigma) = 
+        \frac{p(1-p)}{\sigma}
+        exp\left[
+        -\rho_p
+        \left(
+        \frac{u}{\sigma}
+        \right)
+        \right],
+    \end{equation*}
+con $\sigma$ par\'ametro de escala.
+\end{defin}
+
+Es posible demostrar que si $E \sim AL_p(\sigma)$, entonces $q_p(E) = 0$. Recordando que esta es la \'unica caracter\'istica necesaria para la distribuci\'on del error aleatoria, entonces se definir\'a
+\begin{equation*}
+    \varepsilon \sim AL_p(\sigma).
+\end{equation*}
+
+El modelo se puede reescribir como:
+\begin{equation*}
+    y | x, \beta_p, \sigma 
+    \sim 
+    AL_p(y - x^T\beta_p|\sigma).
+\end{equation*}
+
+Sea $\{X,Y | X \in \mathbb{R}^{m \times n}, Y \in \mathbb{R}^m\}$ el conjunto de datos observados. Por el Teorema de Bayes,
+\begin{equation*}
+\begin{aligned}
+    \mathbb{P}(\beta_p,\sigma | Y, X) 
+    &\propto \mathbb{P}(Y| X, \beta_p, \sigma) \times \mathbb{P}(\beta_p, \sigma), \\
+\end{aligned}
+\end{equation*}
+donde $\mathbb{P}(Y| X, \beta_p, \sigma)$ es la verosimilitud de los datos observados y se puede calcular como 
+\begin{equation*}
+    \mathbb{P}(Y| X, \beta_p, \sigma)
+    =
+    \prod_{i=1}^m AL_p(y_i - x_i^T\beta_p|\sigma).
+\end{equation*}
+
+Por otro lado, $\mathbb{P}(\beta_p,\sigma^2)$ es la distribuci\'on inicial de los par\'ametros, para los que normalmente se usa
+\begin{equation*}
+    \beta_p,\sigma \sim \mathcal{NGI}(M,V,a,b). 
+\end{equation*}
+
+A diferencia de la \textit{regresi\'on a la media}, este modelo no es conjugado y, de hecho, no es posible obtener una distribuci\'on posterior anal\'itica. Por lo tanto se requieren m\'etodos computacionales (como los que ser\'an descritos en el cap\'itulo 5) para aproximarla.
+
+En el caso de la predicci\'on, si se tiene una nueva matriz de covariables $X_* \in \mathbb{R}^{r \times n}$, la inferencia con los datos observados se realiza de la siguiente manera:
+\begin{equation*}
+\begin{aligned}
+    \mathbb{P}(Y_*|X_*,Y,X)
+    &= \int \int \mathbb{P}(Y_*|X_*,\beta_p,\sigma) \times \mathbb{P}(\beta_p,\sigma|Y,X) d\sigma d\beta_p \\
+    &= \int \int \prod_{i=1}^r AL_p(y_i - x_i^T\beta_p|\sigma) \times \mathbb{P}(\beta_p,\sigma|Y,X) d\sigma d\beta_p,
+\end{aligned}
+\end{equation*}
+que tampoco tiene soluci\'on anal\'itica.
+
+Si bien este modelo representa un gran avance, a\'un queda la posibilidad de retomar estas ideas y crear modelos m\'as precisos. La intenci\'on de esta tesis es encontrar un modelo para la \textit{regresi\'on sobre cuantiles} que sea completamente bayesiano y no param\'etrico, con la intenci\'on de poder representar distribuciones m\'as complejas.

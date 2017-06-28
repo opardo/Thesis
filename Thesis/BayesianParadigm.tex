@@ -1,0 +1,73 @@
+\chapter[Paradigma bayesiano]{Paradigma bayesiano\raisebox{.3\baselineskip}{\normalsize\footnotemark}}\footnotetext{Las ideas de este cap\'itulo son retomadas de \cite{Denison_BayesMethods}.}
+
+
+\section{Axiomas}
+Esta tesis da como aceptados los axiomas de la Estad\'istica Bayesiana, detallados durante muchos años en la literatura. Por ejemplo, pueden ser encontrados en \cite{Fishburn_Axioms}. Por lo tanto, entiende a dicho paradigma como el coherente para hacer estad\'istica, cuando una toma de decisi\'on con incertidumbre es el objetivo final del estudio. 
+
+\section{Inferencia}
+
+Un problema clásico de la estad\'istica es el de hacer predicci\'on, utilizando la informaci\'on de los datos que ya han sido observados. Por ejemplo, es posible pensar que ya se tiene el conjunto de $n$ datos observados $\{y_1, ..., y_n\}$ y se desea hacer predicci\'on acerca del valor del dato $y_{n+1}$, que a\'un no ha sido observado. Para esto, se podr\'ia usar la probabilidad condicional
+\begin{equation*}
+    \mathbb{P}(y_{n+1}|y_1,...,y_n) =
+    \frac{\mathbb{P}(y_{n+1} \cap \{y_1, ..., y_n\})}{\mathbb{P}(y_1, ..., y_n)} =
+    \frac{\mathbb{P}(y_1, ..., y_n,y_{n+1})}{\mathbb{P}(y_1, ..., y_n)},
+\end{equation*}
+pero esto requerir\'ia conocer la funci\'on conjunta, misma que puede ser compleja por la estructura de dependencia de los datos.
+
+No tiene mucho sentido suponer una estructura de independencia entre ellos, porque entonces el conjunto de observaciones $\{y_1, ..., y_n\}$ no dar\'ia informaci\'on alguna para $y_{n+1}$. Pero se puede suponer una distribuci\'on condicionalmente independiente. Es decir, se supone que cada una de las $y_i$'s tiene una misma distribuci\'on param\'etrica, con vector de par\'ametros $\theta$, y se cumple que
+\begin{equation*}
+    \mathbb{P}(y_{k+1},y_k | \theta) =  \mathbb{P}(y_k | \theta) \times \mathbb{P}(y_{k+1} | \theta).
+\end{equation*}
+
+Siguiendo el mismo razonamiento, es posible obtener que
+\begin{equation*}
+    \mathbb{P}(y_1,...,y_n | \theta) = \prod_{i=1}^n \mathbb{P}(y_i|\theta). 
+\end{equation*}
+
+Dado que se desea hacer inferencia, y al igual que en otros paradigmas, se supone a $\theta$ como constante, pero desconocido. Una particularidad del paradigma bayesiano es expresar la incertidumbre que tiene el modelador acerca del valor verdadero mediante la asignaci\'on de una distribuci\'on a $\theta$, sujeta la informaci\'on inicial o conocimiento previo que se tenga del fen\'omeno $(H)$. Es decir, $\mathbb{P}(\theta|H)$. Como una simplificaci\'on de la notaci\'on, en la literatura normalmente se escribe como $\mathbb{P}(\theta) = \mathbb{P}(\theta|H)$ y se conoce como la \textit{probabilidad inicial} del par\'ametro.
+
+Regresando al problema inicial, y bajo los supuestos reci\'en mencionados, es importante notar que es posible escribir
+\begin{equation*}
+    \mathbb{P}(y_{n+1} | y_1,...,y_n) =
+    \int_{\Theta} 
+    \mathbb{P}(y_{n+1}|\theta) \mathbb{P}(\theta|y_1,...y_n)d\theta,
+\end{equation*}
+donde a su vez, usando el \textbf{Teorema de Bayes}, se obtiene que
+\begin{equation*}
+\begin{aligned}
+    \mathbb{P}(\theta|y_1,...y_n) &=
+    \frac{\mathbb{P}(y_1,...y_n|\theta)\times\mathbb{P}(\theta)}
+    {\mathbb{P}(y_1,...y_n)},
+\end{aligned}
+\end{equation*}
+que en el paradigma bayesiano se conoce como la \textit{probabilidad posterior} del par\'ametro. 
+
+Se puede observar que el denominador no depende de $\theta$, por lo que normalmente la probabilidad no se expresa como una igualdad, sino con la proporcionalidad
+\begin{equation*}
+    \mathbb{P}(\theta|y_1,...,y_n) 
+    \propto 
+    \mathbb{P}(y_1,...y_n|\theta) \times \mathbb{P}(\theta),
+\end{equation*}
+y s\'olo difiere de la igualdad por una constante que permita que al integrar sobre todo el soporte de $\theta$ el resultado sea igual a 1.
+
+Cabe resaltar que el factor $\mathbb{P}(y_1,...y_n|\theta)$ es lo que se conoce tambi\'en en otros paradigmas como \textit{verosimilitud}, y que en caso de independencia condicional puede ser reescrito como
+\begin{equation*}
+    \mathbb{P}(y_1,...,y_n|\theta)  = \prod_{i=1}^n \mathbb{P}(y_i|\theta).
+\end{equation*}
+Por lo tanto, es posible afirmar que el aprendizaje en el paradigma bayesiano se obtiene como
+\begin{equation*}
+    Posterior \propto Verosimilitud \times Inicial,
+\end{equation*}
+es decir, surge de conjuntar el conocimiento inicial con la informaci\'on contenida en los datos.
+
+Es importante notar que bajo este enfoque se obtiene una distribuci\'on de probabilidad completa para  el pron\'ostico de $y_{n+1}$. Esta se puede utilizar para el c\'alculo de estimaciones puntuales o intervalos, que en el caso del paradigma bayesiano son llamados de \textit{probabilidad}, mediante el uso de funciones de utilidad o p\'erdida, mismas hacen uso de la Teor\'ia de la Decisi\'on.
+
+\section{Propiedad conjugada}
+
+En los casos en los que la probabilidad posterior tiene la misma familia de distribuci\'on que la inicial, s\'olo siendo distintas en el valor de los par\'ametros, se dice que la distribuci\'on inicial y la posterior son \textbf{conjugadas}.
+
+Esta propiedad es conveniente, porque permite a la distribuci\'on posterior tener forma anal\'itica cerrada, evitando tener que usar m\'etodos num\'ericos para aproximarla. Adem\'as permite ver de forma m\'as clara c\'omo afectan los datos la actualizaci\'on respecto a la distribuci\'on inicial.
+
+Es demostrable que todas las distribuciones de la familia exponencial para los datos, tienen distribuciones iniciales conjugadas para los par\'ametros. Algunas de las m\'as conocidas la \textit{Normal-Normal}, \textit{Normal-Gamma} o la \textit{Normal-Gamma Inversa}, donde la primer distribuci\'on es la de los datos y la segunda la de los par\'ametros. Tambi\'en en el caso discreto es popular el uso de la \textit{Bernoulli-Beta} o la \textit{Poisson-Gamma}.
+
+\newpage

@@ -40,6 +40,7 @@
 \usepackage[nottoc]{tocbibind}
 \usepackage{url}
 \usepackage{fixltx2e}
+\usepackage{dsfont}
 
 \newcommand*{\finalnamedelim}{%
    \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
@@ -93,7 +94,7 @@
 
 \vspace{1em}
 
-{\sc \large {\bf UN M\'ETODO BAYESIANO Y NO PARAM\'ETRICO DE REGRESI\'ON SOBRE CUANTILES, MEDIANTE EL USO DE PROCESOS GAUSSIANOS Y PROCESOS DE DIRICHLET}}\\[3em]
+{\sc \large {\bf UN MODELO BAYESIANO Y NO PARAM\'ETRICO DE REGRESI\'ON SOBRE CUANTILES}}\\[3em]
 
 \textsc{\large Tesis}\\[1em]
 
@@ -121,7 +122,7 @@
 \thispagestyle{empty}
 \vspace*{\fill}
 \begingroup
-Con fundamento en los art\'iculos 21 y 27 de la Ley Federal del Derecho de Autor y como titular de los derechos moral y patrimonial de la obra titulada "\textbf{UN M\'ETODO BAYESIANO Y NO PARAM\'ETRICO DE REGRESI\'ON SOBRE CUANTILES, MEDIANTE EL USO DE PROCESOS GAUSSIANOS Y PROCESOS DE DIRICHLET}", otorgo de manera gratuita y permanente al Instituto Tecnol\'ogico Aut\'onomo de M\'exico y a la Biblioteca Ra\'ul Baill\'eres Jr., la autorizaci\'on para que fijen la obra en cualquier medio, incluido el electr\'onico, y la divulguen entre sus usuarios, profesores, estudiantes o terceras personas, sin que pueda percibir por tal divulgaci\'on una contraprestaci\'on.
+Con fundamento en los art\'iculos 21 y 27 de la Ley Federal del Derecho de Autor y como titular de los derechos moral y patrimonial de la obra titulada "\textbf{UN MODELO BAYESIANO Y NO PARAM\'ETRICO DE REGRESI\'ON SOBRE CUANTILES}", otorgo de manera gratuita y permanente al Instituto Tecnol\'ogico Aut\'onomo de M\'exico y a la Biblioteca Ra\'ul Baill\'eres Jr., la autorizaci\'on para que fijen la obra en cualquier medio, incluido el electr\'onico, y la divulguen entre sus usuarios, profesores, estudiantes o terceras personas, sin que pueda percibir por tal divulgaci\'on una contraprestaci\'on.
 
 \centering
 
@@ -176,8 +177,7 @@ Con fundamento en los art\'iculos 21 y 27 de la Ley Federal del Derecho de Autor
 
 El centro de esta tesis es describir un modelo de \textit{regresi\'on sobre cuantiles}, debido a las bondades que tiene sobre el com\'unmente usado an\'alisis de \textit{regresi\'on sobre la media}. Adem\'as, aceptando los axiomas de la Estad\'istica Bayesiana, permite incorporar conocimiento previo del modelador. Por otra parte, el modelo es no param\'etrico, aumentando la flexibilidad en su forma.
 
-El cap\'itulo 1 introduce la importancia de las aproximaciones disintas a la \textit{regresi\'on sobre la media}, así como la evoluci\'on hist\'orica de este tipo de modelos. El cap\'itulo 2 introduce al Paradigma bayesiano y sus m\'etodos.
-El cap\'itulo 3 se centra en los Procesos Gaussianos, como herramienta para describir la relaci\'on entre una variable dependiente y un conjunto de variables independientes. El cap\'itulo 4 describe a los Procesos de Dirichlet, una distribuci\'on de distribuciones no param\'etricas, que permiten modelar el error aleatorio. El cap\'itulo 5 explora modelos bayesianos para la \textit{regresi\'on sobre cuantiles}, hasta llegar al modelo central de esta tesis, y su respectiva implementaci\'on computacional. El cap\'itulo 6 describe aplicaciones del modelo, as\'i como los resultados obtenidos de evaluarlo en diversos conjuntos de datos. Finalmente, el cap\'itulo 7 hace referencia a las conclusiones finales de esta tesis, adem\'as de describir el trabajo futuro que se podr\'ia desarrollar, retomando las ideas de \'esta.
+El cap\'itulo 1 describe la importancia de las aproximaciones disintas a la \textit{regresi\'on sobre la media}, así como la evoluci\'on hist\'orica de este tipo de modelos. El cap\'itulo 2 introduce al paradigma bayesiano y sus m\'etodolog\'ias generales. El cap\'itulo 3 se centra en los modelos bayesianos tradicionales de regresi\'on, tanto a la media, como sobre cuantiles. El cap\'itulo 4 plantea la especificaci\'on no param\'etrica espec\'ifica del modelo de esta tesis, separ\'andolo de los tradicionales. El cap\'itulo 5 introduce las variables latentes y algoritmos necesarios para realizar inferencia y predicci\'on con lo expuesto en los cap\'itulos anteriores. El cap\'itulo 6 muestra algunas aplicaciones del modelo, as\'i como los resultados obtenidos de evaluarlo en diversos conjuntos de datos. Finalmente, el cap\'itulo 7 hace referencia a las conclusiones finales de esta tesis, adem\'as de describir el trabajo futuro que se podr\'ia desarrollar, retomando las ideas de \'esta.
 
 %----------------------------------------------------------------------------------------
 %   ÍNDICE
@@ -193,11 +193,13 @@ El cap\'itulo 3 se centra en los Procesos Gaussianos, como herramienta para desc
 
 \input{BayesianParadigm}
 
-\input{GaussianProcesses}
+\input{Regression}
 
-\input{DirichletProcesses}
+%\input{GaussianProcesses}
 
-\input{QuantileRegression}
+%\input{DirichletProcesses}
+
+%\input{QuantileRegression}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%    Bibliografia
