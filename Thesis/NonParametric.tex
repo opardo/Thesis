@@ -1,0 +1,700 @@
+\chapter[Especificaci\'on no param\'etrica]{Especificaci\'on no param\'etrica}
+
+\section{Motivaci\'on}
+
+En el cap\'itulo anterior se analizaron para realizar regresi\'on hacia una variable de respuesta $y$, dado un cierto conjunto de covariables $x$. Si bien son modelos con muchas ventajas, es relevante no olvidar que cuentan con un supuesto fuerte: la relación entre la variable dependiente $y$ y las variables independientes $x$ \'unicamente se da de forma lineal. Pero las funciones lineales s\'olo son un pequeño subconjunto del conjunto infinito no-numerable de funciones existentes. Por ello, valdr\'ia la pena analizar si es posible relajar este supuesto y tener un modelo m\'as general.
+
+Una idea inicial para darle la vuelta es redefinir variables, de tal manera que se pueda obtener un polinomio. Por ejemplo, se supone que $\hat{x}$ es un buen predictor de $y$, pero como polinomio de orden 3, es decir:
+\begin{equation*}
+    y = \beta_0 + \beta_1\hat{x} + \beta_2\hat{x}^2 + \beta_3\hat{x}^3 + \varepsilon.
+\end{equation*}
+
+Entonces, se puede definir el vector $x$ de covariables como $x = (1,\hat{x},\hat{x}^2,\hat{x}^3)$ y aplicar las t\'ecnicas de regresi\'on lineal ya mencionadas.
+
+Otra cr\'itica que se le podr\'ia hacer a este modelo es la rigidez en la interacci\'on entre variables. Para ejemplificar esto, se podr\'ia pensar en un modelo de la forma:
+\begin{equation*}
+    y = \beta_0 + \beta_1\hat{x}_1 + \beta_2\hat{x}_2 + \beta_3\hat{x_1}\hat{x_2} + \varepsilon.
+\end{equation*}
+
+Es posible entonces declarar el vector $x$ de variables de entrada de la forma $x = (1,\hat{x}_1,\hat{x}_2,\hat{x}_1\hat{x}_2)$, y el procedimiento ser\'ia an\'alogo.
+
+Y a\'un es posible dar un siguiente paso, saliendo del terreno de los polinomios y entrando en el de las funciones biyectivas. Se podr\'ia pensar en un caso como el siguiente (donde siempre se cumpla que $\hat{y} > 1$):
+\begin{equation*}
+\begin{aligned}
+    ln(\hat{y}) &= \hat{\beta_0}\hat{x}_1^{\beta_1}\hat{x}_2^{\beta_2} e^{\varepsilon} \\
+    \implies ln(ln(\hat{y})) &= ln(\hat{\beta_0}) + \beta_1 ln(\hat{x}_1) + \beta_2 ln(\hat{x}_2) + \varepsilon \\
+    \implies y &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon, 
+\end{aligned}
+\end{equation*}
+con
+\begin{equation*}
+\begin{aligned}
+    y &= ln(ln(\hat{y})), \\
+    \beta_0 &= ln(\hat{\beta_0}), \\
+    x_1 &= ln(\hat{x}_1), \\
+    x_2 &= ln(\hat{x}_2),
+\end{aligned}
+\end{equation*}
+y el procedimiento se convierte en el ya conocido.
+
+Si bien estos ejemplos permiten ampliar el conjunto de funciones que es posible cubrir usando el modelo tradicional de regresi\'on lineal, permiten darse cuenta de c\'omo se puede complicar la relaci\'on de dependencia entre $y$ y las covariables $x$, de tal manera que muchas funciones pueden no ser descritas con el m\'etodo antes planteado.
+
+As\'i surge la necesidad de buscar un m\'etodo que permita encontrar cualquier tipo relaci\'on entre $y$ y $x$, sin restringirla a un pequeño subconjunto de funciones. El reto es que \'unicamente se tiene tiempo finito para encontrar la mejor estimaci\'on, entre una infinidad no-numerable de opciones.
+
+Por otro lado, en cuanto al error aleatorio $\varepsilon_p$, la distribuci\'on asim\'etrica de Laplace cumple el cometido de que el cuantil $p$-\'esimo sea igual a 0, es decir, impl\'icitamente provoca la asimetr\'ia necesaria para que el valor esperado de los valores por debajo de $f_p(x)$ sean el $p \times 100\%$, y por encima, el $(1-p) \times 100\%$.
+
+Si bien esta es una caracter\'istica necesaria, puede no ser suficiente debido a que la forma de la distribuci\'on queda totalmente determinada por un \'unico par\'ametro $\sigma$. Por lo que si bien puede coincidir con la distribuci\'on \textit{real} en que el cuantil $p$-\'esimo $q_p$ sea el mismo para ambas e igual a $0$, la forma de la distribuci\'on podr\'ia ser totalmente distinta. Por ejemplo, en el peso que le asigna a las colas.
+
+Dicha problem\'atica podr\'ia ser mitigada mediante el uso de una mezcla de distribuciones, particularmente asim\'etricas de Laplace, en la que se usen varios valores para $\sigma$ y la probabilidad asociada a cada valor vaya de acuerdo a su factibilidad. Entonces surgen algunas preguntas como ¿cu\'antos valores de $\sigma$ deber\'ia de contener el modelo y cu\'ales deber\'ian ser esos valores? Normalmente no existe una respuesta definitiva a ambas preguntas y se deja la decisi\'on arbitraria al modelador. Pero, ¿qu\'e pasar\'ia si se planteara un modelo de mezclas infinitas de distribuciones? As\'i, se podr\'ia encontrar la mezcla \'optima, ya que cualquier mezcla con n\'umero fijo de par\'ametros ser\'ia un caso particular.
+
+En resumen, tanto la estimaci\'on de $f_p$, como la de $\varepsilon_p$ podr\'ian mejorarse usando modelos de infinitos par\'ametros, que generalizan a los modelos con un n\'umero de par\'ametros predefinido. Con el paradigma estad\'istico tradicional es imposible hacerlo, y m\'as si el tiempo es finito. Pero esto abre la puerta a una visi\'on menos explorada para hacer estad\'istica: el \textbf{paradigma no param\'etrico}.
+
+Como menciona \cite{Wasserman_Nonparametric}: \textit{La idea b\'asica de la inferencia no param\'etrica es usar los datos para inferir una medida desconocida, haciendo los menos supuestos posibles. Normalmente esto significa usar modelos estad\'isticos de dimensi\'on infinita. De hecho, un mejor nombre para la inferencia no param\'etrica podr\'ia ser inferencia de dimensi\'on infinita.}
+
+Y si bien esto puede sonar irreal, la idea intuitiva que est\'a detr\'as de este tipo de modelos es que el modelador no deber\'ia fijar el n\'umero de par\'ametros antes de analizar la informaci\'on, sino que los datos deben ser los que indiquen cu\'antos y cu\'ales son los par\'ametros significativos.
+
+\section[En $f_p$, v\'ia Procesos Gaussianos]{
+    En $f_p$, v\'ia Procesos Gaussianos
+    \footnote{Las ideas de esta secci\'on son inspiradas por \cite{Rasmussen_GauProc}.}
+}
+
+\subsection{Procesos Gaussianos}
+
+Retomando las ideas del cap\'itulo anterior, los modelos de regresi\'on tienen como objetivo describir la distribuci\'on de una variable aleatoria $y$, condicional a los valores de las covariables $x$, es decir $y|x \sim \mathbb{P}(y|x)$. Dado que es complicado aproximar con exactitud toda la distribuci\'on, com\'unmente se enfocan en una medici\'on particular representada por la funci\'on $f_p$, que en el caso de la \textit{regresi\'on sobre cuantiles} se define como $q_p(y|x) = f_p(x)$.
+
+Con el objetivo de ajustar un modelo, se utiliza el supuesto que
+\begin{equation*}
+    y = f_p(x) + \varepsilon_p,
+\end{equation*}
+tal que $q_p(\varepsilon_p)=0$. 
+
+En el modelo tradicional se utiliza el supuesto de relaci\'on lineal $f_p(x) = x^T\beta_p$, mismo que se buscar\'a relajar en esta secci\'on, para obtener un modelo m\'as general.
+
+Es importante recordar que la función $f_p$ es pensada constante, pero desconocida. De nueva cuenta, para reflejar la incertidumbre del modelador, es posible darle una distribución de probabilidad. Pero a diferencia del modelo lineal, ya no existir\'a el parámetro $\beta_p$ al cual canalizarle esta incertidumbre, por lo que ahora tendrá que ser sobre toda la función. 
+
+Es de utilidad, entonces, pensar a $f_p(x)$ como una variable aleatoria. Particularmente se le puede asignar una distribución \textit{Normal}, donde la media $m(x)$ y la covarianza $k(x,x')$ reflejen el conocimiento previo que se tenga del fenómeno de estudio. Cabe resaltar que dicha media $m(x)$ y covarianza $k(x,x')$ están en función de $x$, es decir, podrían variar de acuerdo al valor de las covariables. 
+
+Para continuar con la notación matricial del cap\'itulo anterior, sean $Y \in \mathbb{R}^m$ y $X \in \mathbb{R}^{m \times n}$, y $\mathcal{E}_p \in \mathbb{R}^m$ el vector de errores aleatorios, es posible describir al modelo como
+\begin{equation*}
+    Y = f_p(X) + \mathcal{E}_p
+\end{equation*}
+donde
+\begin{equation*}
+    f_p(X) =     
+    \left[
+        \begin{array}{c}
+        f_p(x_1)  \\
+        ... \\
+        f_p(x_m)
+        \end{array}
+    \right], 
+    x_i \in \mathbb{R}^n, \forall i \in \{1,...,m\}.
+\end{equation*}
+
+Por lo tanto, bajo el supuesto de que cada $f_p(x_i)$ es una variable aleatoria, $f_p(X) \in \mathbb{R}^n$ es un vector aleatorio. Adem\'as, depende de variables de entrada, por lo que $\bm{f_p(X)}$ \textbf{es un proceso estoc\'astico}. Asimismo, debido a que cada $f_p(x_i)$ tiene una distribuci\'on \textit{Normal univariada}, d\'andole una estructura de covarianza, $f_p(X)$ se distribuir\'a \textit{Normal Multivariada}, donde el vector de medias $M_{f_p}(X)$ y la matriz de covarianzas $K_{f_p}(X,X)$ reflejar\'an el conocimiento inicial del modelador.
+
+\begin{defin}
+    Un \textbf{proceso gaussiano} ($Y \in \mathbb{R}^m$), es una colección finita de \texit{m}-variables aleatorias que tienen una distribución gaussiana (normal) conjunta.
+\end{defin}
+
+\begin{obs*}
+    De acuerdo a la construcci\'on del vector $f_p(X) \in \mathbb{R}^m$, y tomando en cuenta la Definici\'on 3, además de ser un proceso estoc\'astico, $\bm{f_p(X)}$ \textbf{es un proceso gaussiano}.
+\end{obs*}
+
+% ****************************************************
+
+\subsection{Definiciones y notaci\'on}
+
+Para las siguientes definiciones se supondrá que $f_p(x)$ es una variable aleatoria y $f_p(X)$ un vector aleatorio, con medias y covarianzas conocidas y finitas.
+
+\begin{defin*}
+Sean $x,x' \in \mathbb{R}^n$. \\
+
+La \textbf{función de medias de $\bm{f_p}$ (m\textsubscript{$\bm{f_p}$})} se define como 
+\begin{equation*}
+    m_{f_p}: \mathbb{R}^n \rightarrow \mathbb{R} 
+    \mid
+    m_{f_p}(x) = \mathbb{E}[f_p(x)].
+\end{equation*}
+
+La \textbf{función de covarianzas de $\bm{f_p}$ (k\textsubscript{$\bm{f_p}$})} se define como 
+\begin{equation*}
+    k_{f_p}: \mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R} 
+    \mid
+    k_{f_p}(x, x') = Cov({f_p}(x),{f_p}(x')).
+\end{equation*}
+\end{defin*}
+
+\begin{defin*}
+Sea $X \in \mathbb{R}^m \times \mathbb{R}^n$ y $X' \in \mathbb{R}^r \times \mathbb{R}^n$, es decir,
+\begin{equation*}
+    X =     
+    \left[
+        \begin{array}{c}
+        x_1  \\
+        ... \\
+        x_m
+        \end{array}
+    \right],
+\end{equation*}
+\begin{equation*}
+    X' =     
+    \left[
+        \begin{array}{c}
+        x_1  \\
+        ... \\
+        x_r
+        \end{array}
+    \right].
+\end{equation*}
+
+La \textbf{función vector de medias de $\bm{f_p}$ (M\textsubscript{$\bm{f_p}$})} se define como
+\begin{equation*}
+    M_{f_p}: \mathbb{R}^m \times \mathbb{R}^n: \mathbb{R}^m
+    \mid
+    M_{f_p}(X) =     
+    \left[
+        \begin{array}{c}
+        m_{f_p}(x_1)  \\
+        ... \\
+        m_{f_p}(x_m)
+        \end{array}
+    \right].
+\end{equation*}
+
+La \textbf{función matriz de covarianzas de $\bm{f_p}$ (K\textsubscript{$\bm{f_p}$})} se define como
+\begin{equation*}
+    K_{f_p}: \mathbb{R}^m \times \mathbb{R}^n: \mathbb{R}^m \times \mathbb{R}^m
+    \mid
+    K_{f_p}(X,X') =     
+    \left[
+        \begin{array}{ccc}
+        k_{f_p}(x_1,x_1') & ... & k_{f_p}(x_1,x_r')  \\
+        ... & ... & ... \\
+        k_{f_p}(x_m,x_1') & ... & k_{f_p}(x_m,x_r')
+        \end{array}
+    \right].
+\end{equation*}
+\end{defin*}
+
+Dadas estas definiciones, se puede observar que el \textit{proceso gaussiano} $f_p(X) \in \mathbb{R}^m$ está completamente caracterizado por su función de medias $m_{f_p}$ y su función de covarianzas $k_{f_p}$. Por lo tanto, la manera en que se definan estas dos funciones representar\'a el conocimiento inicial que se tiene del objeto de estudio. 
+
+A partir de este punto, y cuando el contexto lo permita, por simplicidad de notaci\'on se omitirá el uso del subíndice $f_p$ en las funciones reci\'en definidas. Además, cuando se des\'ee referirse al proceso estoc\'astico $f_p(X)$ que se distribuye como un \textit{proceso gaussiano}, se har\'a con la siguiente notaci\'on:
+\begin{equation*}
+    f_p(X) \sim \mathcal{GP} (m_{f_p},k_{f_p}).
+\end{equation*}
+
+\subsection{Funciones de covarianza}
+
+Hasta el momento, no se han descrito las caracter\'isticas de la funci\'on de covarianzas $k$. Cabe resaltar que $k$ no es una \textit{covarianza} en general, ni cumple con todas las propiedades, sino \'unicamente describe la covarianza entre dos vectores aleatorios $f_p(x)$ y $f_p(x')$, con la misma $f_p$, sin la intervenci\'on, por ejemplo, de constantes. Para explicar de mejor manera este punto, se da el siguiente ejemplo:
+\begin{equation*}
+\begin{aligned}
+    Cov(af_p(x) + f_p(x'), f_p(x')) &=
+    Cov(af_p(x), f_p(x')) + Cov(f_p(x), f_p(x'))\\
+     &= a \times Cov(f_p(x), f_p(x')) +  Cov(f_p(x'), f_p(x')) \\
+     &= a \times k(x,x') + k(x',x')
+\end{aligned}
+\end{equation*}
+
+En este orden de ideas, las propiedades que $k(x,x')$ tiene que cumplir son
+\begin{equation*}
+\begin{aligned}
+    k(x,x') &= k(x',x) \text{ (simetr\'ia),} \\
+    k(x,x) &= Var({f_p}(x)) \geq 0.
+\end{aligned}
+\end{equation*}
+
+Si bien es cierto que dadas esas restricciones hay una variedad muy grande de funciones con las que se puede describir $k(x,x')$, por practicidad, y tomando en cuenta que es un supuesto sensato para la mayor\'ia de los casos, es com\'un describir a la funci\'on $k$ en relaci\'on a la distancia entre $x$ y $x'$, $\norm{x,x'}_\gamma$. Es decir, $k(x,x') = k(\norm{x,x'}_\gamma)$. A este tipo de funciones de covarianza se les denomina \textbf{estacionarias}.
+
+Adem\'as, esta relaci\'on entre covarianza y distancia suele ser inversa, es decir, entre menor sea la distancia, mayor ser\'a la covarianza, y viceversa. De esta manera, para valores $x \approx x'$, se obtendr\'a que $f_p(x) \approx f_p(x')$ en la mayor\'ia de los casos, lo que tiene el supuesto impl\'icito de que $f_p$ es una funci\'on continua.
+
+Un ejemplo de este tipo de funciones son las $\bm{\gamma}$\textbf{\textit{-exponencial}}, mismas que se definen de la siguiente manera:
+\begin{equation*}
+    k(x,x') = 
+    k(\norm{x,x'}_\gamma;\gamma,\lambda, \tau) = 
+    \lambda \times \exp\left(-
+    \tau \norm{x,x'}_\gamma
+    \right),
+\end{equation*}
+donde $\lambda$ es un par\'ametro de escala y $\tau$ de rango. 
+
+Las de uso m\'as com\'un suelen ser la $1$ y $2$\textit{-exponencial}. Ambas tienen la ventaja de ser continuas, pero la $2$\textit{-exponencial} tiene adem\'as la peculiaridad de ser infinitamente diferenciable y, por lo tanto, es suave.
+
+El siguiente ejemplo de funciones estacionarias es la \textbf{\textit{clase de Matérn}}, descrita como
+\begin{equation*}
+\begin{aligned}
+    k(x,x') 
+    &= k(\norm{x,x'}_1;\nu,\lambda,\tau) \\
+    &= 
+    \lambda \times \frac{2^{1-\nu}}{\Gamma(\nu)}
+    \left(\tau\sqrt{2\nu}\norm{x,x'}_1\right)^\nu
+    \times 
+    {\left[K_{\nu}\left(\tau\sqrt{2\nu}\norm{x,x'}_1\right)\right]}^\nu,
+\end{aligned}
+\end{equation*}
+donde $K_{\nu}$ es la funci\'on modificada de Bessel y $\Gamma(.)$ es la funci\'on \textit{gamma}. Los casos m\'as utilizados son
+\begin{equation*}
+\begin{aligned}
+    k\left(\norm{x,x'}_1;\nu = \frac{3}{2},\lambda,\tau \right) 
+    &= 
+    \lambda \times \left(1 + \tau\sqrt{3}\norm{x,x'}_1\right) \times
+    exp\left(-\tau\sqrt{3}\norm{x,x'}_1\right), \\
+    k\left(\norm{x,x'}_1;\nu = \frac{5}{2},\lambda,\tau \right) 
+    &= 
+    \lambda \times 
+    \left(1 + \tau\sqrt{3}\norm{x,x'}_1 + \tau^2\frac{5}{3}\norm{x,x'}_1^2\right) \\
+    &\text{ }\text{ }\text{ }\text{ } \times exp\left(-\tau\sqrt{5}\norm{x,x'}_1\right). \\
+\end{aligned}
+\end{equation*}
+
+Otra posible funci\'on de covarianza es la \textbf{\textit{racional cudr\'atica}}, caracterizada como 
+\begin{equation*}
+    k(x,x') = k(\norm{x,x'}_2;\alpha,\lambda,\tau) = 
+    \lambda \times \left(1 + \tau \frac{\norm{x,x'}_2^2}{2\alpha}\right)^{-\alpha},
+\end{equation*}
+con $\alpha,\lambda,\tau > 0$.
+
+Existen otro tipo de funciones estacionarias que no guardan una relaci\'on inversa entre distancia y covarianza, sino que capturan un componente \textbf{estacional}, normalmente usado en series de tiempo. De esta manera, y siendo $t$ la covariable del tiempo, es posible pensar en una funci\'on de la forma
+\begin{equation*}
+    k(x,x',t,t';E,\lambda) = \bar{k}(x,x') + \lambda \times \delta_{\{(|t'-t| \text{ mod } E) = 0\}},
+\end{equation*}
+donde $\bar{k}$ es alguna de las funciones estacionarias antes mencionadas, $\delta$ es la \textit{delta de Kroenecker} y $E$ es el periodo de estacionalidad. Por ejemplo, $E = 12$ para una serie mensual.
+
+Si se desea suavizar esta componente de estacionalidad para que no sea \'unicamente puntual, es posible describir la covarianza con una funci\'on como la siguiente:
+\begin{equation*}
+    k(x,x',t,t';E,\lambda,\tau) = 
+    \bar{k}(x,x') + 
+    \lambda \times
+    exp\left(-\tau\frac{E}{\pi}sin^2\left(\frac{\pi}{E}|t'-t|\right)\right).
+\end{equation*}
+
+\subsection{Predicción}
+
+Para esta subsecci\'on se supondr\'a que se cuenta con datos de $f_p(X)$, mismos que en la pr\'actica son imposibles de observar directamente y \'unicamente se pueden aproximar con el modelo descrito anteriormente. La intenci\'on de este supuesto es sentar las bases te\'oricas para realizar predicci\'on con el modelo central de esta tesis (GPDP), tema que ser\'a explorado con m\'as detalle en el siguiente cap\'itulo.
+
+Sea un conjunto de observaciones $\{(x_i,f_p(x_i))|i=1,...,m \}$. De forma matricial, se puede escribir como $\{(X,f_p(X))\}$, con $X \in \mathbb{R}^{m \times n}$ y $f_p(X) \in \mathbb{R}^{m}$. Por otro lado, se tiene un conjunto de covariables $X_* \in \mathbb{R}^{r \times n}$, y se desea predecir $f_p(X_*) \in \mathbb{R}^r$, suponiendo que sigue la misma función $f_p$ de los datos observados.
+
+La distribución inicial conjunta de los datos de entrenamiento $f_p(X)$ y los datos a predecir $f_p(X_*)$ es: 
+\begin{equation*}
+    \left[
+        \begin{array}{c}
+        f_p(X)  \\
+        f_p(X_*) 
+        \end{array}
+    \right]  
+    \sim \mathcal{N}  
+    \left(
+        \left[
+            \begin{array}{c} 
+            M(X) \\ 
+            M(X_*) 
+            \end{array}
+        \right],
+        \left[
+            \begin{array}{cc}
+            K(X,X) & K(X,X_*)  \\
+            K(X_*,X) & K(X_*,X_*) 
+            \end{array}
+        \right]
+    \right) 
+\end{equation*}
+
+Es momento oportuno para recordar algunas propiedades de la distribuci\'on \textit{Normal condicional}. 
+
+\newtheorem{prop}{Propiedad}
+
+\begin{prop}
+    Sea $X \in \mathbb{R}^m$ un vector aleatorio que tiene distribuci\'on Normal conjunta y est\'a particionado de la siguiente manera:
+
+    \begin{equation*}
+        X = 
+        \left[
+        \begin{array}{c}
+            X_1  \\
+            X_2
+        \end{array}
+        \right], 
+        \text{ con dimensiones }
+            \left[
+        \begin{array}{c}
+            (m-q)  \\
+            q
+        \end{array}
+        \right],
+    \end{equation*}
+    
+    Entonces, la media $\mu \in \mathbb{R}^m$ y varianza $\Sigma \in \mathbb{R}^{m \times m}$ de $X$ se pueden escribir
+    \begin{equation*}
+    \begin{aligned}
+        \mu &= 
+        \left[
+        \begin{array}{c}
+            \mu_1  \\
+            \mu_2
+        \end{array}
+        \right], 
+        \text{ dimensiones }
+            \left[
+        \begin{array}{c}
+            (m-q)  \\
+            q
+        \end{array}
+        \right], \\
+        \Sigma &= 
+        \left[
+        \begin{array}{cc}
+            \Sigma_{11} & \Sigma_{12}  \\
+            \Sigma_{21} & \Sigma_{22}
+        \end{array}
+        \right], 
+        \text{ dimensiones }
+            \left[
+        \begin{array}{cc}
+            (m-q) \times (m-q)  & (m-q) \times q  \\
+            q \times (m-q) & q \times q
+        \end{array}
+        \right].
+    \end{aligned}
+    \end{equation*}
+    
+    La distribuci\'on condicional de $X_2$, sujeta a que $X_1 = a$ es Normal con $X_2|X_1=a \sim \mathcal{N}(X_2|\bar{\mu},\bar{\Sigma})$, donde
+    
+    \begin{equation*}
+    \begin{aligned}
+        \bar{\mu} &= \mu_2 + \Sigma_{2,1}\Sigma_{11}^{-1}(a-\mu_1) \\
+        \bar{\Sigma} &= \Sigma_{22} - \Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}
+    \end{aligned}
+    \end{equation*}
+\end{prop}
+
+De regreso al modelo, bajo el supuesto que ya se conocen los valores de $f_p(X)$, es posible condicionar la distribución conjunta, dadas esas observaciones. Utilizando las propiedades de la distribución Normal condicional, se obtiene que:
+\begin{equation*}
+    f_p(X_*)|f_p(X) 
+    \sim \mathcal{N}
+    (\bar{M}(X,X_*),\bar{K}(X,X_*)),
+\end{equation*}
+con
+\begin{equation*}
+\begin{aligned}
+    \bar{M}(X,X_*) &= M(X_*) + K(X_*,X)K(X,X)^{-1}(f_p(X) - M(X)), \\
+    \bar{K}(X,X_*) &= K(X_*,X_*) - K(X_*,X)K(X,X)^{-1}K(X,X_*).
+\end{aligned}
+\end{equation*}
+
+\begin{obs*}
+    $f(X_*)|f(X)$ es una colección finita de r-variables aleatorias que tienen una distribuci\'on Normal multivariada conjunta, por lo tanto, $\bm{f(X_*)|f(X)}$ \textbf{es un proceso gaussiano}.
+\end{obs*}
+
+\section[En $\varepsilon_p$, v\'ia Procesos de Dirichlet]{
+    En $\varepsilon_p$, v\'ia Procesos de Dirichlet
+    \footnote{Las ideas de esta secci\'on son retomadas de \cite{Yee_DirProc}.}
+}
+
+Un Proceso de Dirichlet, visto de manera general, es una distribuci\'on sobre distribuciones. Es decir, cada realizaci\'on de él es en sí misma una distribuci\'on de probabilidad. Adem\'as, cada una de esas distribuciones ser\'a no param\'etrica, debido a que no ser\'a posible describirla con un n\'umero finito de par\'ametros.
+
+En el caso particular de esta tesis y de su misi\'on de encontrar un modelo bayesiano y no param\'etrico para la \textit{regresi\'on sobre cuantiles}, los Procesos de Dirichlet ser\'an utilizados para ajustar la distribuci\'on del error aleatorio $\varepsilon_p$.
+
+\subsection{Procesos de Dirichlet}
+
+Antes de revisar la definici\'on formal de los Procesos de Dirichlet, es conveniente recordar la definici\'on de la distribuci\'on de Dirichlet.
+
+\begin{defin}
+    Se dice que un vector aleatorio $x \in \mathbb{R}^n$ se distribuye de acuerdo a la \textbf{distribuci\'on de Dirichlet}  $\mathbf{(x \sim Dir(\alpha))}$ con vector de par\'ametros $\alpha$, espec\'ificamente,
+    \begin{equation*}
+        x = 
+        \left(\begin{array}{c}
+            x_1  \\
+            \cdots \\
+            x_n
+        \end{array}\right),
+        \qquad
+        \alpha = 
+        \left(\begin{array}{c}
+            \alpha_1  \\
+            \cdots \\
+            \alpha_n
+        \end{array}\right),
+    \end{equation*}
+    para los cuales se cumplen las restricciones
+    \begin{equation*}
+    \begin{aligned}
+        x_i > 0, \forall i &\in \{1,...,n\} \\
+        \sum_{i=1}^n x_i &= 1 \\
+        \alpha_i > 0, \forall i &\in \{1,...,n\},
+    \end{aligned}
+    \end{equation*}
+    si su funci\'on de densidad  es
+    \begin{equation*}
+        f(x|\alpha) = 
+        \frac {1}{\mathrm {B} (\alpha)}
+        \prod _{i=1}^{n}x_{i}^{\alpha _{i}-1},
+    \end{equation*}
+    donde $\mathrm{B}$ es la funci\'on Beta multivariada, y puede ser expresada en t\'erminos de la funci\'on $\Gamma$ como 
+    \begin{equation*}
+       \mathrm{B}(\alpha)=
+       \frac {\prod _{i=1}^{n}\Gamma (\alpha _{i})}
+       {\Gamma \left(\sum _{i=1}^{n}\alpha _{i}\right)},
+       \qquad 
+       \alpha =(\alpha _1,\cdots ,\alpha _n). 
+    \end{equation*}
+    
+    La esperanza y varianza de cada $x_i$ son los siguientes:
+    
+    \begin{equation*}
+    \begin{aligned}
+        \mathbb{E}[x_i] &= \frac{\alpha_i}{\sum_{k=1}^n \alpha_k} \\
+        Var(x_i) &= \frac
+        {\alpha_i \left( \sum_{k=1}^n \alpha_k - \alpha_i \right)}
+        {\left( \sum_{k=1}^n \alpha_k \right)^2 (\left( \sum_{k=1}^n \alpha_k + 1 \right)}
+    \end{aligned}
+    \end{equation*}
+    
+\end{defin}
+Es com\'un que esta distribuci\'on sea usada como la inicial conjugada de la distribuci\'on multinomial, debido a que el vector $x$ tiene las mismas propiedades de una distribuci\'on de probabilidad discreta (elementos positivos y que en conjunto suman 1).
+
+Retomando el tema central, en t\'erminos generales, para que una distribuci\'on de probabilidad $G$ se distribuya de acuerdo a un Proceso de Dirichlet, sus distribuciones marginales tienen que tener una distribuci\'on Dirichlet. A continuaci\'on se enuncia una definici\'on m\'as detallada.
+
+\begin{defin}
+    Sean $G$ y $H$ dos distribuciones cuyo soporte es el conjunto $\Theta$ y sea $\alpha \in \mathbb{R}^+$. Entonces, si se toma una partici\'on finita cualquiera $A_1,...,A_r$ del conjunto $\Theta$, el vector $(G(A_1),...,G(A_r))$ es aleatorio, porque $G$ tambi\'en lo es.
+    
+    Se dice que $G$ se distribuye de acuerdo a un \textbf{Proceso de Dirichlet} $\bm{(G \sim DP(\alpha,H))}$, con distribuci\'on media $H$ y par\'ametro de concentraci\'on $\alpha$, si
+    \begin{equation*}
+        (G(A_1),...,G(A_r)) \sim Dir(\alpha H(A_1),...,\alpha H(A_r)), 
+    \end{equation*}
+    para cualquier partici\'on finita $A_1,...,A_r$ del conjunto $\Theta$.
+\end{defin}
+
+Es momento de analizar el papel que juegan los par\'ametros. Sea $Ai \subset \Theta$, uno de los elementos de la partici\'on anterior, y recordando las propiedades de la distribuci\'on de Dirichlet, entonces
+\begin{equation*}
+\begin{aligned}
+    E[G(A_i)] 
+    &= \frac{\alpha H(A_i)}{\sum_{k=1}^p \alpha H(A_k)} \\
+    &= H(A_i) \\
+\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+\begin{aligned}
+    Var(G(A_i)) 
+    &= \frac{\alpha H(A_i)\left(\sum_{k=1}^p(\alpha H(A_k)) - \alpha H(A_i)\right)}
+       {\left(\sum_{k=1}^p \alpha H(A_k)\right)^2\left(\sum_{k=1}^p(\alpha H(A_k)) + 1\right)} \\
+    &= \frac{\alpha^2 [H(A_i)(1 - H(A_i))]}
+       {\alpha^2 (1)^2(\alpha + 1)} \\
+    &= \frac{H(A_i)(1 - H(A_i))}
+       {\alpha + 1}.
+\end{aligned}
+\end{equation*}
+
+En este orden de ideas, es posible darse cuenta que la distribuci\'on $H$ representa la \textit{distribuci\'on media} del Proceso de Dirichlet. Por otro lado, el par\'ametro $\alpha$ tiene una relaci\'on inversa con la varianza. As\'i, a una mayor $\alpha$, corresponde una menor varianza del Proceso de Dirichlet, y, por lo tanto, una mayor concentraci\'on respecto a la distribuci\'on media $H$. 
+
+Siguiendo la secuencia l\'ogica, si $\alpha \rightarrow \infty$, entonces $G(A_i) \rightarrow H(A_i)$ para cualquier elemento $A_i$ de la partici\'on. Es decir, $G \rightarrow H$ en distribuci\'on. Sin embargo, cabe aclarar que esto no es lo mismo que $G \rightarrow H$. Por un lado, $H$ puede ser una distribuci\'on de probabilidad continua, mientras que, como se ver\'a m\'as adelante, $G$ puede arrojar dos muestras iguales con probabilidad mayor a 0, por lo que es una distribuci\'on discreta.
+
+\subsection{Distribuci\'on posterior}
+
+Sea $G \sim DP(\alpha,H)$. Dado que $G$ es (aunque aleatoria) una distribuci\'on, es posible obtener realizaciones de ella. Sean $\phi_1,..., \phi_n$ una secuencia de realizaciones independientes de $G$, que toman valores dentro de su soporte $\Theta$. Sea de nuevo $A_1,...,A_r$ una partici\'on finita cualquiera del conjunto $\Theta$, y sea $n_k = |\{i: \phi_i \in A_k\}|$ el n\'umero de valores observados dentro del conjunto $A_k$. Por la propiedad conjugada entre la distribuci\'on de \textit{Dirichlet} y la distribuci\'on \textit{Multinomial}, se obtiene que
+\begin{equation*}
+   (G(A_1),...,G(A_r))|\phi_1,...,\phi_n \sim Dir(\alpha H(A_1) + n_1,...,\alpha H(A_r) + n_r). 
+\end{equation*}
+
+Es posible reescribir $n_k = \sum_{i=1}^n \delta_i(A_k)$, donde $\delta_i(A_k) = 1$ si $\phi_i \in A_k$, y $0$ en cualquier otro caso. As\'i,
+\begin{equation*}
+\begin{aligned}
+    \alpha H(A_k) + n_k 
+    &= \alpha H(A_k) + \sum_{i=1}^n \delta_i(A_k) \\
+    &= (\alpha + n)
+    \left[
+        \frac{\alpha \times H(A_k) + n \times \frac{\sum_{i=1}^n \delta_i(A_k)}{n}}{\alpha + n}
+    \right] \\
+    &= \bar{\alpha} \bar{H}(A_k),
+\end{aligned}
+\end{equation*}
+con
+\begin{equation*}
+\begin{aligned}
+    \bar{\alpha} &= \alpha + n \\
+    \bar{H}(A_k) &=  
+        \left(\frac{\alpha}{\alpha + n}\right)H(A_k) + 
+        \left(\frac{n}{\alpha + n}\right)\frac{\sum_{i=1}^n \delta_i(A_k)}{n}.
+\end{aligned}
+\end{equation*}
+
+Por lo tanto, $G|\phi_1,...,\phi_n \sim DP(\bar{\alpha},\bar{H})$. Es decir, la probabilidad posterior de $G$ sigue distribuy\'endose mediante un Proceso de Dirichlet, con par\'ametros actualizados. Asimismo, se puede interpretar a la distribuci\'on media posterior $\bar{H}$ como una mezcla entre la distribuci\'on media inicial, con peso proporcional al par\'ametro de concentraci\'on inicial $\alpha$, y la distribuci\'on emp\'irica de los datos, con peso proporcional al n\'umero de observaciones $n$. 
+
+\subsection{Distribuci\'on predictiva}
+
+Continuando con la idea de la secci\'on anterior de que ya se conoce el valor de $\phi_i,...,\phi_n$ realizaciones provenientes de la distribuci\'on aleatoria $G$, se desea hacer predicci\'on de la observaci\'on $\phi_{n+1}$, condicionada a los valores observados. As\'i,
+\begin{equation*}
+\begin{aligned}
+   P(\phi_{n+1} \in A_k|\phi_1,...,\phi_n)
+   &= \int P(\phi_{n+1} \in A_k|G) P(G|\phi_1,...,\phi_n) dG \\ 
+   &= \int G(A_k) P(G|\phi_1,...,\phi_n) dG \\ 
+   &= \mathbb{E}[G(A_k)|\phi_1,...,\phi_n] \\
+   &= \bar{H}(A_k),
+\end{aligned}    
+\end{equation*}
+es decir, 
+\begin{equation*}
+    \phi_{n+1}|\phi_1,...,\phi_n \sim 
+    \left(\frac{\alpha}{\alpha + n}\right)H(\phi_{n+1}) + 
+    \left(\frac{n}{\alpha + n}\right)\frac{\sum_{i=1}^n \delta_i(\phi_{n+1})}{n}.
+\end{equation*}
+
+Cabe resaltar que dicha distribuci\'on predictiva tiene puntos de masa localizados en $\phi_1,...,\phi_n$. Esto significa que la probabilidad de que $\phi_{n+1}$ tome un valor que ya ha sido observado es mayor a $0$, independientemente de la forma de $H$. Yendo a\'un m\'as all\'a, es posible darse cuenta que si se obtienen realizaciones infinitas de $G$, cualquier valor obtenido ser\'a repetido eventualmente, con probabilidad igual a $1$. Por lo tanto, $G$ es una distribuci\'on discreta.
+
+\subsection{Esquema de urna de Blackwell-MacQueen}
+
+En esta secci\'on se revisar\'a la equivalencia entre los Procesos de Dirichlet y otro problema famoso en la literatura, lo que ayudar\'a con la intiuici\'on que hay detr\'as de los Procesos de Dirichlet, as\'i como la resoluci\'on y demostraci\'on de algunas propiedades pendientes.
+
+Sea $\Theta$ un conjunto (finito o infinito) cuyos elementos son colores distintos al negro y al blanco, y donde cada color es distinto entre s\'i. Existe una m\'aquina llamada $H$ que cada que se le oprime \textit{Play} arroja de manera aleatoria una pelota con algún color perteneciente al conjunto $\Theta$, siguiendo una regla de probabilidad dada previamente. Se tienen 2 urnas: una llamada \textit{probabilidades}, que contiene $\alpha$ bolas negras. Otra llamada \textit{resultados}, que en un principio se encuentra vac\'ia. 
+
+Se oprime \textit{Play} a la m\'aquina, y se obtiene una pelota, la cual se arroja a la urna \textit{resultados}. A $\phi_1$ se le aginar\'a el color de dicha pelota. Posteriormente se añade una pelota de color blanca a la urna \textit{probabilidades} y se pasa a la segunda ronda.  
+
+Las siguientes rondas, por ejemplo la ronda $n+1$, comienza tomando al azar una pelota de la urna \textit{probabilidades}. Si el color de la pelota es negra (probabilidad proporcional a $\alpha$), se obtiene una nueva pelota de la m\'aquina $H$ y se repite lo sucedido en la primera ronda, incluyendo el asignar el color de la pelota a $\phi_{n+1}$. Si es blanca, se toma al azar una pelota de la urna \textit{resultados}, se asigna el color de esa pelota a $\phi_{n+1}$ y se regresa a la urna de \textit{resultados} esa misma pelota, as\'i como una nueva pintada del mismo color. En ambos casos, después de hacer lo antes mencionado, se introduce una nueva pelota blanca a la urna \textit{probabilidades} y se pasa a la siguiente ronda. 
+
+Así, despu\'es de $n$ rondas, se obtiene la secuencia $\phi_1,...,\phi_n$. Es importante notar que cada $\phi_{k+1}$ es una variable aleatoria que depende de las $k$ anteriores, y cuya distribuci\'on es
+\begin{equation*}
+    \phi_{k+1}|\phi_1,...,\phi_k \sim 
+    \left(\frac{\alpha}{\alpha + k}\right)H(\phi_{k+1}) + 
+    \left(\frac{k}{\alpha + k}\right)\frac{\sum_{i=1}^k \delta_i(\phi_{k+1})}{k}.
+\end{equation*}
+
+La distribuci\'on conjunta de $\phi_1,...,\phi_n$ se puede obtener como
+\begin{equation*}
+    P(\phi_1,...,\phi_n) = 
+    P(\phi_1)
+    \prod_{i=2}^n
+    P(\phi_i|\phi_1,...,\phi_{i-1}).
+\end{equation*}
+
+\begin{defin*}
+    Sea $\phi_1,...,\phi_n$, una secuencia de $n$ variables aleatorias, cuya distribuci\'on de probabilidad conjunta est\'a dada por $P(\phi_1,...,\phi_n)$. Sea $\psi$ una funci\'on biyectiva, que va de $\{1,...,n\} \rightarrow \{1,...,n\}$, es decir, una funci\'on que crea una permutaci\'on del conjunto $\{1,...,n\}$.  
+    Entonces, se dice que $\phi_1,...,\phi_n$ es una \textbf{secuencia aleatoria infinitamente intercambiable} si se cumple que 
+    \begin{equation*}
+        P(\phi_1,...,\phi_n) = P(\phi_{\psi(1)},...,\phi_{\psi(n)}),
+    \end{equation*}
+    para cualquier permutaci\'on $\psi$.
+\end{defin*}
+
+Regresando al juego de urnas, es importante observar que si bien $\phi_{k+1}$ es dependiente de las $k$ observaciones anteriores, esta dependencia s\'olo se da en t\'erminos de los valores observados previamente y la frecuencia de dichas observaciones, pero el orden en que hayan sido obtenidos no es relevante. Por lo tanto, es posible afirmar que $\phi_1,...,\phi_n$ es una secuencia aleatoria infinitamente intercambiable. Dicho esto, es conveniente recordar el \textbf{\textit{Teorema de represesentaci\'on general de de Finetti}}.\footnote{Una demostraci\'on de este teorema puede ser encontrada en \cite{Schervish_TheoryStats}.}
+
+\begin{theorem*}
+    Sea $\phi_1, ...,\phi_n$ una secuencia aleatoria infinitamente intercambiable de valores reales. Entonces existe una distribuci\'on de probabilidad $G$ sobre $\mathcal{F}$, el espacio de todas las distribuciones, de forma que la probabilidad conjunta de $\phi_1, ...,\phi_n$ se puede expresar como
+    \begin{equation*}
+        P(\phi_1, ...,\phi_n) =
+        \int_{\mathcal{F}}\left[\prod_{k=1}^n G(\phi_k)\right]dP(G),
+    \end{equation*}
+    con
+    \begin{equation*}
+        P(G) = \lim_{n \to \infty} P(G_n),
+    \end{equation*}
+    donde $P(G_n)$ es una funci\'on de distribuci\'on evaluada en la funci\'on de distribuci\'on emp\'irica definida por
+    \begin{equation*}
+        G_n = \frac{1}{n} \sum_{i=1}^n I(y_i \leq y).
+    \end{equation*}
+    En otras palabras, el Teorema de de Finetti dice que existe una distribuci\'on $G$ tal que $\phi_1, ...,\phi_n$ son condicionalmente independientes, dada dicha $G$. A su vez dicha $G$ es aleatoria y sigue una distribuci\'on $P(G)$.
+\end{theorem*}
+
+Una vez dicho esto, y sean $\phi_1,...,\phi_n$ una secuencia de colores obtenida con la rutina de esta secci\'on, es posible darse cuenta que cada $\phi_k \sim G$. Adem\'as $P(G) = DP(\alpha,H)$, seg\'un lo visto en la secci\'on anterior. Con esto, queda demostrada la existencia de los Procesos de Dirichlet.
+
+\subsection{Proceso estoc\'astico de rompimiento de un palo}
+Es importante recordar que una realizaci\'on $G$ de un Proceso de Dirichlet es discreta con probabilidad $1$, debido a que toda muestra tiene probabilidad mayor a $0$ de ser repetida. Por lo tanto, se puede expresar a $G$ como una suma de centros de masa, de la siguiente manera:
+\begin{equation*}
+\begin{aligned}
+G(\phi) &= \sum_{k=1}^\infty \pi_k \delta_{\phi_k^*}(\phi),\\
+   \phi_k^* &\sim H,
+\end{aligned}
+\end{equation*}
+siendo $\pi_k$ la probabilidad de ocurrencia de $\phi_k$.
+
+Dicha probabilidad de ocurrencia ser\'a generada con la siguiente met\'afora. Se piensa un palo de longitud 1. Se genera una n\'umero aleatorio $\beta_1 \sim Beta(1,\alpha)$, mismo que estar\'a en el intervalo $(0,1)$. Esa ser\'a la magnitud del pedazo que ser\'a separado del palo de longitud 1, y le ser\'a asignado a $\pi_1 = \beta_1$. As\'i, quedar\'a un palo de magnitud $(1-\beta_1)$ a repartir. Posteriormente se vuelve a generar un n\'umero aleatorio $\beta_2 \sim Beta(1,\alpha)$, que representar\'a la proporci\'on del palo restante que le ser\'a asignada a $\pi_2$. Es decir, $\pi_2 = \beta_2(1-\beta_1)$. En general, para $k \geq 2$,
+\begin{equation*}
+\begin{aligned}
+   \beta_k &\sim Beta(1,\alpha),\\
+   \pi_k &= \beta_k \prod_{i=1}^{k-1}(1 - \beta_i).
+\end{aligned}
+\end{equation*}
+Dada su construcci\'on, es inmediato darse cuenta que $\sum_{k=1}^\infty \pi_k = 1$. Algunas ocasiones se nombra a esta distribuci\'on $\pi \sim GEM(\alpha)$, en honor a Griffiths, Engen y McCloskey.
+
+\subsection{Modelo general de mezclas infinitas de Dirichlet}
+
+Sean $\{y_1,...,y_n\}$ un conjunto de observaciones con distribuci\'on $F$, condicionalmente independientes, y que se suponen vienen del \textit{Modelo de mezclas de Dirichlet}:
+\begin{equation*}
+\begin{aligned}
+   y_i | \phi_i &\sim F(y_i | \phi_i), \\
+   \phi_i | G &\sim G(\phi_i), \\
+   G | \alpha, H &\sim DP(\alpha,H).
+\end{aligned}
+\end{equation*}
+Se dice que este es un \textit{modelo de mezclas} debido a que existen $y_i's$ que comparten un mismo valor para $\phi_i$ (por la propiedad discreta de $G$), y entonces estas $y_i's$ pueden ser consideradas pertenecientes a una misma subpoblaci\'on.
+
+Es posible reescribir este modelo usando la equivalencia entre los Procesos de Dirichlet y el Proceso estoc\'astico de rompimiento de un palo, visto anteriormente. Sea $z_i$ el \textit{cluster} al que pertenece $y_i$ entre los $\Phi_1^*,\Phi_2^*,...$ posibles, se tiene entonces que $P(z_i = \Phi_k^*) = \pi_k$. Y si $\phi_k^*$ es el valor que comparten los miembros de $\Phi_k^*$, se usar\'a la notaci\'on $\phi_{z_i} = \phi_k^*$, cuando $z_i = \Phi_k^*$. Por lo tanto, el modelo se puede ahora escribir como
+\begin{equation*}
+\begin{aligned}
+   y_i | z_i, \phi_k^* &\sim F(y_i | \phi_{z_i}), \\
+   z_i | \pi &\sim Mult(\pi), \\
+   \pi | \alpha &\sim GEM(\alpha), \\
+   \phi_k^* | H &\sim H.
+\end{aligned}
+\end{equation*}
+
+De esta manera, el Modelo de mezclas de Dirichlet es un modelo de mezclas infinitas, debido a que tiene un n\'umero infinito numerable de posibles \textit{clusters}, pero donde intuitivamente la importancia realmente recae s\'olo en aquellos que tienen un peso $\pi$ posterior mayor a cierto umbral, pero qson detectados hasta despu\'es de observar los datos; a diferencia de los modelos de mezclas finitas, que ya tienen un n\'umero de \textit{clusters} definidos previamente.
+
+\subsection{Modelo de mezclas infinitas de Dirichlet para la \textit{regresi\'on sobre cuantiles}}
+
+Aterrizando las ideas anteriores al caso particular de los modelos de \textit{regresi\'on sobre cuantiles}, se busca describir a $\varepsilon_p$ como producto de una mezcla infinita de distribuciones \textit{Asim\'etricas de Laplace}, de la manera siguiente. Sea $w_p^{AL} | \sigma$ la funci\'on de densidad de la distribuci\'on \textit{Asim\'etrica de Laplace}, condicional en el valor del par\'ametro $\sigma$. Sea $h_p|G$ la funci\'on de densidad de $\varepsilon_p$ condicional en una distribuci\'on $G(\sigma)$, realizaci\'on de un proceso de Dirichlet con par\'ametro de concentraci\'on $\alpha$ y distribuci\'on media $H$. Se tiene entonces que
+\begin{equation*}
+\begin{aligned}
+    h_p(\varepsilon|G) &= \int w_p^{AL}(\varepsilon|\sigma)dG(\sigma), \\
+    G &\sim DP(\alpha,H).
+\end{aligned}
+\end{equation*}
+Cabe resaltar que a pesar de la mezcla, se sigue cumpliendo la condici\'on de que $q_p(\varepsilon_p|G) = 0$, para toda $G$.
+
+Adem\'as, por construcci\'on, esta formulaci\'on es equivalente al modelo de mezclas infinitas de Dirichlet (visto en la subsecci\'on anterior), por lo que se puede reescribir como
+\begin{equation*}
+\begin{aligned}
+   {\varepsilon_p}_i | z_i, \sigma_k^* &\sim AL_p({\varepsilon_p}_i | \sigma_{z_i}), \\
+   z_i | \pi &\sim Mult(\pi), \\
+   \pi | \alpha &\sim GEM(\alpha), \\
+   \sigma_k^* | H &\sim H.
+\end{aligned}
+\end{equation*}
+
+En este orden de ideas, la tarea del modelador \'unicamente consistir\'a en definir el valor del par\'ametro de concentraci\'on $\alpha$, as\'i como a la distribuci\'on de $H$ y sus respectivos par\'ametros, con la restricci\'on de que su soporte deber\'a ser un subconjunto de $\mathbb{R}^+$. Por lo tanto, la distribuci\'on \textit{Gamma} o la \textit{Gamma-Inversa} se postulan como opciones convenientes.
+
+\section{Modelo GPDP de \textit{regresi\'on sobre cuantiles}}
+
+Despu\'es de analizar la introducci\'on de componentes no param\'etricos, tanto para la funci\'on $f_p$, como para el error $\varepsilon_p$, a continuaci\'on se enunciar\'a el modelo central de esta tesis, con sus especificaciones correspondientes.
+
+A partir de este punto, a dicho modelo se le denominar\'a \textbf{Modelo GPDP} (por las siglas en ingl\'es de Procesos Gaussianos y Procesos de Dirichlet).
+
+Sea $\{(y_i,x_i)|i=1,...,m\}$ el conjunto de observaciones de la variable de respuesta y sus respectivas covariables, cuya relaci\'on se supone como
+\begin{equation*}
+    y = f_p(x) + {\varepsilon_p},
+\end{equation*}
+donde $f_p: \mathbb{R}^n \times \mathbb{R}$ es la funci\'on base y ${\varepsilon_p} \in \mathbb{R}$ es el error aleatorio, ambos desconocidos.
+
+Para reflejar la incertidumbre y el conocimiento previo del modelador, se supone a $f_p(X) \sim \mathcal{GP}(m_{f_p},k_{f_p})$, con funci\'on de medias $m_{f_p}$ dada por el modelador y funci\'on de covarianza $k_{f_p}$ 2-\textit{exponencial}, con par\'ametro de rango fijo $\tau = 1$. Es decir,
+\begin{equation*}
+    k_{f_p}(x_i, x_j | \lambda, \tau=1) = \lambda  \times exp\{-\norm{x_i - x_j}_2\},
+\end{equation*}
+con $\lambda \sim GI(c_\lambda,d_\lambda)$; siendo $c_\lambda$ y $d_\lambda$ los par\'ametros de forma y escala de una \textit{Gamma-Inversa}. 
+
+La raz\'on de fijar $\tau = 1$ es para simplificar el proceso de inferencia que se ver\'a en el siguiente cap\'itulo, pero bien podr\'ia tambi\'en ser una variable aleatoria.
+
+En cuanto a la distribuci\'on inicial de $\varepsilon_p$, se supondr\'a un modelo de mezclas infinitas de Dirichlet, cuya distribuci\'on media $H$ del proceso de Dirichlet ser\'a una \textit{Gamma-Inversa}, con par\'ametros de forma $c_{DP}$ y escala $d_{DP}$.
+
+En resumen, el \textbf{Modelo GPDP} queda descrito de la siguiente forma:
+
+\begin{equation*}
+\begin{aligned}
+    y_i| f_p(x_i), z_i, \sigma_k^* &\sim w_p^{AL}({\varepsilon_p}_i = y_i - f_p(x_i) | \sigma_{z_i}), \\
+    f_p(X)|m_{f_p}, \lambda &\sim \mathcal{GP}(m_{f_p},k_{f_p}|\lambda), \\
+    \lambda &\sim GI(c_\lambda,d_\lambda), \\
+    z_i | \pi &\sim Mult(\pi), \\
+    \pi | \alpha &\sim GEM(\alpha), \\
+    \sigma_k^* | c_{DP}, d_{DP} &\sim GI(\sigma_k|c_{DP}, d_{DP}),\\
+\end{aligned}
+\end{equation*}
+con $k_{f_p}(x_i, x_j | \lambda) = \lambda  \times exp\{-\norm{x_i - x_j}_2\}$.
+\newpage
