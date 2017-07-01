@@ -662,39 +662,4 @@ Adem\'as, por construcci\'on, esta formulaci\'on es equivalente al modelo de mez
 
 En este orden de ideas, la tarea del modelador \'unicamente consistir\'a en definir el valor del par\'ametro de concentraci\'on $\alpha$, as\'i como a la distribuci\'on de $H$ y sus respectivos par\'ametros, con la restricci\'on de que su soporte deber\'a ser un subconjunto de $\mathbb{R}^+$. Por lo tanto, la distribuci\'on \textit{Gamma} o la \textit{Gamma-Inversa} se postulan como opciones convenientes.
 
-\section{Modelo GPDP de \textit{regresi\'on sobre cuantiles}}
-
-Despu\'es de analizar la introducci\'on de componentes no param\'etricos, tanto para la funci\'on $f_p$, como para el error $\varepsilon_p$, a continuaci\'on se enunciar\'a el modelo central de esta tesis, con sus especificaciones correspondientes.
-
-A partir de este punto, a dicho modelo se le denominar\'a \textbf{Modelo GPDP} (por las siglas en ingl\'es de Procesos Gaussianos y Procesos de Dirichlet).
-
-Sea $\{(y_i,x_i)|i=1,...,m\}$ el conjunto de observaciones de la variable de respuesta y sus respectivas covariables, cuya relaci\'on se supone como
-\begin{equation*}
-    y = f_p(x) + {\varepsilon_p},
-\end{equation*}
-donde $f_p: \mathbb{R}^n \times \mathbb{R}$ es la funci\'on base y ${\varepsilon_p} \in \mathbb{R}$ es el error aleatorio, ambos desconocidos.
-
-Para reflejar la incertidumbre y el conocimiento previo del modelador, se supone a $f_p(X) \sim \mathcal{GP}(m_{f_p},k_{f_p})$, con funci\'on de medias $m_{f_p}$ dada por el modelador y funci\'on de covarianza $k_{f_p}$ 2-\textit{exponencial}, con par\'ametro de rango fijo $\tau = 1$. Es decir,
-\begin{equation*}
-    k_{f_p}(x_i, x_j | \lambda, \tau=1) = \lambda  \times exp\{-\norm{x_i - x_j}_2\},
-\end{equation*}
-con $\lambda \sim GI(c_\lambda,d_\lambda)$; siendo $c_\lambda$ y $d_\lambda$ los par\'ametros de forma y escala de una \textit{Gamma-Inversa}. 
-
-La raz\'on de fijar $\tau = 1$ es para simplificar el proceso de inferencia que se ver\'a en el siguiente cap\'itulo, pero bien podr\'ia tambi\'en ser una variable aleatoria.
-
-En cuanto a la distribuci\'on inicial de $\varepsilon_p$, se supondr\'a un modelo de mezclas infinitas de Dirichlet, cuya distribuci\'on media $H$ del proceso de Dirichlet ser\'a una \textit{Gamma-Inversa}, con par\'ametros de forma $c_{DP}$ y escala $d_{DP}$.
-
-En resumen, el \textbf{Modelo GPDP} queda descrito de la siguiente forma:
-
-\begin{equation*}
-\begin{aligned}
-    y_i| f_p(x_i), z_i, \sigma_k^* &\sim w_p^{AL}({\varepsilon_p}_i = y_i - f_p(x_i) | \sigma_{z_i}), \\
-    f_p(X)|m_{f_p}, \lambda &\sim \mathcal{GP}(m_{f_p},k_{f_p}|\lambda), \\
-    \lambda &\sim GI(c_\lambda,d_\lambda), \\
-    z_i | \pi &\sim Mult(\pi), \\
-    \pi | \alpha &\sim GEM(\alpha), \\
-    \sigma_k^* | c_{DP}, d_{DP} &\sim GI(\sigma_k|c_{DP}, d_{DP}),\\
-\end{aligned}
-\end{equation*}
-con $k_{f_p}(x_i, x_j | \lambda) = \lambda  \times exp\{-\norm{x_i - x_j}_2\}$.
 \newpage
