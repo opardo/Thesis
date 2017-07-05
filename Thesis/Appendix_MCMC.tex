@@ -1,0 +1,86 @@
+\chapter[Algoritmos MCMC]{Algoritmos MCMC}\label{chap:MCMC}
+
+\section {Introducci\'on}
+
+Los algoritmos MCMC son utilizados para aproximar distribuciones de probabilidad, normalmente complejas. La idea es lograr simular una muestra de la distribuci\'on, para poder aproximar sus caracter\'isticas. Entre m\'as grande sea la muestra, mejor ser\'a la estimaci\'on.
+
+Para hacer esto simula cadenas de markov de los distintos elementos de la distribuci\'on compleja, y, bajo el supuesto de que se alcanza la distribuci\'on estacionaria, toma al conjunto de dichas esas simulaciones como una muestra de la distribuci\'on original. De hecho, el nombre MCMC viene del ingl\'es \textit{Monte Carlo Markov Chains}, haciendo tambi\'en referencia a la simulaci\'on de Monte Carlo para cada iteraci\'on.
+
+\section{Simulador de Gibbs}
+
+Se trata de un caso particular de los algoritmos \textit{MCMC}, y a continuaci\'on se analizan dos tipos, siendo el segundo una generalizaci\'on del primero.
+
+\subsection{Simulador de Gibss de dos pasos}
+
+Funciona de la siguiente manera: si dos variables aleatorias $X$ y $Y$ tienen una densidad conjunta $f(x,y)$, con sus correspondientes densidades condicionales $f_{Y|X}$ y $f_{X|Y}$, se genera una cadena de markov $(X_t,Y_t)$ de acuerdo al siguiente algoritmo:
+\\ \\
+\begin{algorithm}[H]
+ {Tomar $X_0 = x_0$ arbitraria \;
+     \For{$t=1,2,...,n$}
+     {
+        $1. \text{ } Y_t \sim f_{Y|X}(y|x_{t-1})\;$\\
+        $2. \text{ } X_t \sim f_{X|Y}(x|y_{t})\;$
+     }
+ }
+ \caption{Simulador de Gibss de dos pasos}
+\end{algorithm}
+\BlankLine
+
+La convergencia de la cadena de markov está asegurada, a menos que los soportes de las condicionales no estén conectados.
+
+\subsection{Simulador de Gibss de múltiples pasos}
+
+Sea $\mathbb{X} \in \mathcal{X}$ una variable aleatoria que puede ser escrita como $\mathbb{X} = (X_1,...,X_p)$, con $p \in \mathbb{Z}^+$, y donde las $X_i$'s bien pueden ser unidimensionales o multidimensionales. Además, es posible encontrar las distribuciones condicionales, de forma que
+\begin{equation*}
+\begin{aligned}
+X_i|x_1,...,x_{i-1},x_{i+1},...,x_p &\sim f_i(x_i|x_1,...,x_{i-1},x_{i+1},...,x_p) \text{, }\\
+i &\in \{1,...,p\}.
+\end{aligned}
+\end{equation*}
+
+El correspondiente algoritmo de Gibbs está dado por:
+\\ \\
+\begin{algorithm}[H]
+ Tomar $\textbf{x}^{(0)} = (x_1^{(0)},...,x_p^{(0)})$ arbitraria\;
+ \For{$t=1,2,...,n$}
+ {
+    $1. \text{ } X_1^{(t)} \sim f_1(x_1|x_2^{(t-1)},...,x_p^{(t-1)})\;$\\
+    $2. \text{ } X_2^{(t)} \sim f_2(x_2|x_1^{(t)},x_3^{(t-1)},...,x_p^{(t-1)})\;$\\
+    $...\;$\\
+    $k.  \text{ } X_k^{(t)} \sim f_k(x_k|x_1^{(t)},...,x_{k-1}^{(t)},x_{k+1}^{(t-1)},...,x_p^{(t-1)})\;$\\
+    $...\;$\\
+    $p.  \text{ }X_p^{(t)} \sim f_p(x_p|x_1^{(t)},...,x_{p-1}^{(t)})\;$\\
+ }
+ \caption{Simulador de Gibss de múltiples pasos}
+\end{algorithm}
+\BlankLine
+
+Cabe resaltar que el desempeño puede estar fuertemente afectado por la parametrización del modelo. Por ello puede resultar una buena idea reparametrizar el modelo, buscando que las componentes sean lo más independientes posible.
+
+\section {Monitoreo de convergencia y adaptación de los algortimos MCMC}
+
+\subsection{Monitoreo de convergencia a la \textit{estacionariedad}}
+
+El primer requisito de convergencia de un algoritmo MCMC es que la distribución de la cadena $(x^{(t)})$ sea la distribución estacionaria $f$. Una meta menos ambiciosa también sería que sea independiente del punto inicial $x^{(0)}$, después de muchas realizaciones de la cadena  usando el mismo \textit{kernel} de transición. La principal herramienta para verificar \textit{estacionariedad} es usar muchas cadenas en paralelo, para poder comparar sus rendimientos. 
+
+Un primer acercamiento empírico al control de convergencia es el dibujar gráficas de las cadenas simuladas (componente a componente o juntas), para detectar valores muy desviados y comportamientos no estacionarios. 
+
+Otro diagnóstico gráfico que se puede utilizar es la \textit{traza}, es decir, la gr\'afica de cada uno de los valores de la cadena en el eje $y$, contra su respectivo n\'umero de iteraci\'on en el eje $x$. As\'i ser\'a posible observar cuando la cadena tiene un comportamiento repetitivo en ciertos valores y a partir de qu\'e momento se distribuye sobre todo el soporte, es decir, a partir de qu\'e iteraci\'on alcanza la distribuci\'on estacionaria. 
+
+\subsection{Monitoreo de convergencia a los promedios}
+
+Una vez cubierta la distribución estacionaria, se verifica la convergencia del promedio aritmético
+\begin{equation*}
+    \frac{1}{T}\sum_{t=1}^T h(x^{(t)})
+\end{equation*}
+a la esperanza $\mathbb{E}_f[h(x)]$, para una función $h$ arbitraria. Esto propiedad se denomina com\'unmente \textit{ergodicidad}.
+
+La herramienta inicial y más natural suele ser el graficar la evolución del estimador del promedio, conforme crece $T$. Si dicha curva no se ha estabilizado después de $T$ iteraciones, habría que incrementar la longitud de la cadena de markov.
+
+\subsection{Monitoreo de convergencia a una muestra \textit{iid}}
+
+Para finalizar, idealmente, la aproximación de $f$ obtenida de los algortimos MCMC se debería extender a la producción (aproximada) de muestras $iid$ de $f$. La técnica más usada para lograr esto es el \textit{submuestreo o refinamiento}, donde se consideran s\'olo los valores $y^{(t)} = x^{(kt)}$, para cierta $k$.
+
+Como medidas diagn\'ostico normalmente se usan las siguientes: la autocorrelaci\'on dentro de cada variable aleatoria que es parte del simulador de Gibbs; y la correlaci\'on cruzada entre las distintas variables aleatorias, dado que se busca independencia entre ellas.
+
+\newpage
