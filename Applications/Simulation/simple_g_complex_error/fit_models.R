@@ -20,9 +20,9 @@ source(paste0(local_path,"Thesis/Applications/Simulation/utils.R"), local = TRUE
 setwd(paste0(local_path,"Thesis/Applications/Simulation/simple_g_complex_error/"))
 
 # Save or load data options
-save <- FALSE
+save <- TRUE
 load <- FALSE
-plots <- FALSE
+plots <- TRUE
 
 set.seed(2017)
 
@@ -49,9 +49,9 @@ sample_plot
 # MCMC ALGORITHM
 
 # Fit models
-GPDP_25 <- GPDPQuantReg(y ~ x, sample_data, p = 0.25, M = zero_function)
-GPDP_50 <- GPDPQuantReg(y ~ x, sample_data, p = 0.50, M = zero_function)
-GPDP_95 <- GPDPQuantReg(y ~ x, sample_data, p = 0.95, M = zero_function)
+GPDP_25 <- GPDPQuantReg(y ~ x, sample_data, p = 0.25, d_DP = 2, d_lambda = 2)
+GPDP_50 <- GPDPQuantReg(y ~ x, sample_data, p = 0.50, d_DP = 2, d_lambda = 2)
+GPDP_95 <- GPDPQuantReg(y ~ x, sample_data, p = 0.95, d_DP = 2, d_lambda = 2)
 
 # Save/load fitted models
 if (save) {
