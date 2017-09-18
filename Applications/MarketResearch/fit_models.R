@@ -76,16 +76,16 @@ train_950 <- read_rds("predictions/train_950.rds")
 
 # Plot fit
 plot_fit <- data_frame(
-  weeks = brand_awareness_investment %>% filter(year(weeks) < 2016) %>% .$weeks,
-  `Awareness observado` = train_bai$awareness / 100,
+  weeks = ymd(brand_awareness_investment %>% filter(year(weeks) < 2016) %>% .$weeks),
+  `Conocimiento observado` = train_bai$awareness / 100,
   q05 = train_050$median / 100,
   `Mediana estimada` = train_500$median / 100,
   q95 = train_950$median / 100
 ) %>% 
-  gather(awareness, value, `Awareness observado`, `Mediana estimada`)
+  gather(awareness, value, `Conocimiento observado`, `Mediana estimada`)
 
 interval_label <- paste0(
-  "Estimación del intervalo de \n credibilidad para el \n Awareness, al ",  
+  "EstimaciÃ³n del intervalo de \ncredibilidad para el \nConocimiento, al ",  
   toString(100 * credibility),
   "%"
 )
@@ -100,7 +100,7 @@ fit_review <- ggplot(data = plot_fit, aes(x = weeks)) +
   scale_colour_manual("", values = c("blue", "red")) +
   scale_y_continuous(labels = scales::percent) +
   xlab("semanas") +
-  ylab("awareness")
+  ylab("conocimiento")
 
 ggsave(
   filename = "results/fit_review.png",
@@ -112,7 +112,7 @@ ggsave(
 #### GOALS 2016 ####
 
 # Predict
-credibility <- 0.70
+credibility <- 0.80
 prediction_500 <- predict(GPDP_500, test_bai, credibility)
 prediction_050 <- predict(GPDP_050, test_bai, credibility)
 prediction_250 <- predict(GPDP_250, test_bai, credibility)
@@ -135,12 +135,12 @@ prediction_950 <- read_rds("predictions/prediction_950.rds")
 plot_goals <- data_frame(
   weeks = test_bai$weeks,
   obs_awareness = test_bai$awareness / 100,
-  lower75 = prediction_750$lower / 100,
-  upper75 = prediction_750$upper / 100,
+  lower50 = prediction_500$lower / 100,
+  upper50 = prediction_500$upper / 100,
   lower05 = prediction_050$lower / 100,
   upper05 = prediction_050$upper / 100
 ) %>%
-  mutate(title = "Awareness observado")
+  mutate(title = "Conocimiento observado")
 
 goals_2016 <- ggplot(data = plot_goals, aes(x = weeks)) +
   geom_line(aes(y = obs_awareness, colour = title)) +
@@ -148,10 +148,10 @@ goals_2016 <- ggplot(data = plot_goals, aes(x = weeks)) +
   scale_colour_manual("",values = c("blue")) +
   geom_ribbon(
     aes(
-      ymin = lower75,
-      ymax = upper75,
+      ymin = lower50,
+      ymax = upper50,
       x = weeks,
-      fill = "Awareness objetivo \n (Intervalo al 70% del \n cuantil 0.75-ésimo)"
+      fill = "Conocimiento esperado \n(Intervalo al 80% de la mediana)"
     ),
     alpha = 0.3
   ) +
@@ -160,13 +160,13 @@ goals_2016 <- ggplot(data = plot_goals, aes(x = weeks)) +
       ymin = lower05,
       ymax = upper05,
       x = weeks,
-      fill = "Intervalo al 70% del \n cuantil 0.05-ésimo"
+      fill = "Intervalo al 80% del \ncuantil 0.05-Ã©simo"
     ),
     alpha = 0.3
   ) +
   scale_fill_manual("", values = c("grey12", "red"))  +
   xlab("semanas") +
-  ylab("awareness") +
+  ylab("conocimiento") +
   theme(
     # legend.direction = 'horizontal', 
     # legend.position = 'bottom',

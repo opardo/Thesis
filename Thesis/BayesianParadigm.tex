@@ -14,7 +14,7 @@ Un problema clásico de la estad\'istica es el de hacer predicci\'on, utilizando
 \end{equation*}
 pero esto requerir\'ia conocer la funci\'on conjunta, misma que puede ser compleja por la estructura de dependencia de los datos.
 
-No tiene mucho sentido suponer una estructura de independencia entre ellos, porque entonces el conjunto de observaciones $\{y_1, ..., y_n\}$ no dar\'ia informaci\'on alguna para $y_{n+1}$. Pero se puede suponer una distribuci\'on condicionalmente independiente. Es decir, se supone que cada una de las $y_i$'s tiene una misma distribuci\'on param\'etrica, con vector de par\'ametros $\theta$, y se cumple que
+No tiene mucho sentido suponer una estructura de independencia entre ellos, porque entonces el conjunto de observaciones $\{y_1, ..., y_n\}$ no dar\'ia informaci\'on alguna para $y_{n+1}$. Pero se puede suponer una distribuci\'on condicionalmente independiente. Es decir, se supone que cada una de las $y_i$'s tiene una distribuci\'on param\'etrica, con vector de par\'ametros $\theta$, y se cumple que
 \begin{equation*}
     \mathbb{P}(y_{k+1},y_k | \theta) =  \mathbb{P}(y_k | \theta) \times \mathbb{P}(y_{k+1} | \theta).
 \end{equation*}
@@ -35,9 +35,9 @@ Regresando al problema inicial, y bajo los supuestos reci\'en mencionados, es im
 donde a su vez, usando el \textbf{Teorema de Bayes}, se obtiene que
 \begin{equation*}
 \begin{aligned}
-    \mathbb{P}(\theta|y_1,...y_n) &=
-    \frac{\mathbb{P}(y_1,...y_n|\theta)\times\mathbb{P}(\theta)}
-    {\mathbb{P}(y_1,...y_n)},
+    \mathbb{P}(\theta|y_1,...,y_n) &=
+    \frac{\mathbb{P}(y_1,...,y_n|\theta)\times\mathbb{P}(\theta)}
+    {\mathbb{P}(y_1,...,y_n)},
 \end{aligned}
 \end{equation*}
 que en el paradigma bayesiano se conoce como la \textit{probabilidad posterior} del par\'ametro. 
@@ -60,7 +60,7 @@ Por lo tanto, es posible afirmar que el aprendizaje en el paradigma bayesiano se
 \end{equation*}
 es decir, surge de conjuntar el conocimiento inicial con la informaci\'on contenida en los datos.
 
-Es importante notar que bajo este enfoque se obtiene una distribuci\'on de probabilidad completa para  el pron\'ostico de $y_{n+1}$. Esta se puede utilizar para el c\'alculo de estimaciones puntuales o intervalos (que en el caso del paradigma bayesiano son llamados de \textit{probabilidad}) mediante funciones de utilidad o p\'erdida, y haciendo uso de la Teor\'ia de la Decisi\'on.
+Es importante notar que bajo este enfoque se obtiene una distribuci\'on de probabilidad completa para  el pron\'ostico de $y_{n+1}$. \'Esta se puede utilizar para el c\'alculo de estimaciones puntuales o intervalos (que en el caso del paradigma bayesiano son llamados de \textit{probabilidad}) mediante funciones de utilidad o p\'erdida, y haciendo uso de la Teor\'ia de la Decisi\'on.
 
 \section{Propiedad conjugada}
 
@@ -68,6 +68,6 @@ En los casos en los que la probabilidad posterior tiene la misma familia de dist
 
 Esta propiedad es conveniente, porque permite a la distribuci\'on posterior tener forma anal\'itica cerrada, evitando tener que usar m\'etodos num\'ericos para aproximarla. Adem\'as permite ver de forma m\'as clara c\'omo afectan los datos a la actualizaci\'on, respecto a la distribuci\'on inicial.
 
-Algunas de las familias conjugadas m\'as conocidas en el caso continuo son la \textit{Normal-Normal}, \textit{Normal-Gamma} o la \textit{Normal-Gamma Inversa}, donde la primer distribuci\'on es la de los datos y la segunda la de los par\'ametros. Tambi\'en en el caso discreto es popular el uso de la \textit{Bernoulli-Beta} o la \textit{Poisson-Gamma}.
+Algunas de las familias conjugadas m\'as conocidas en el caso continuo son la \textit{Normal-Normal}, \textit{Normal-Gamma} o la \textit{Normal-Gamma Inversa}, donde la primer distribuci\'on es la de los datos y la segunda, la de los par\'ametros. Tambi\'en en el caso discreto es popular el uso de la \textit{Bernoulli-Beta} o la \textit{Poisson-Gamma}.
 
 \newpage

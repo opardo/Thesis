@@ -147,9 +147,50 @@ on de la zona de la que no se tuvieron datos, como en el caso de funci\'on compl
 	\label{fitted_cgce}
 \end{figure}
 
-\section{Sector salud}
+\section{Investigaci\'on de mercados}
 
+\subsection{Conceptos iniciales}
 
-\section{Tipo de cambio}
+Dentro de la Investigaci\'on de Mercados, una de las m\'etricas que se consideran m\'as importantes es la del \textit{Conocimiento de marca}, misma que se define como el porcentaje de una cierta poblaci\'on que declara conocer el nombre de la marca en cuesti\'on.
+
+Dentro de dicho ambiente, la teor\'ia dice que esa m\'etrica normalmente depende de la publicidad pautada semana a semana. Cuando una marca \'unicamente se publicita en televisi\'on, el valor com\'unmente usado para medir esa inversi\'on se denomina \textit{Adstocked GRP}s, y, en esencia, se compone de cu\'antas veces se transmiti\'o el comercial y cu\'anta gente estaba viendo la televisi\'on cuando se transmiti\'o. Asimismo, tambi\'en se suelen usar las inversiones de los competidores para explicar el \textit{Conocimiento de marca}, debido a que es com\'un que las personas se confundan y asocien a la marca un comercial del competidor.
+
+En el pasado, inversiones iguales han representado resultados distintos en los niveles de \textit{Conocimiento de marca}, situaci\'on que normalmente es asociada a la calidad de los comerciales, tanto los propios, como los del competidor. En otras palabras, comerciales m\'as memorables han generado un mayor \textit{Conocimiento de marca} a la marca que los pauta, y una aportaci\'on muy pequeña al competidor, cuando se han transmitido en aproximadamente la misma cantidad ocasiones y a una similar audiencia.
+
+Adem\'as, tambi\'en es importante revisar el concepto de \textit{marca madre} y \textit{subvariantes}, para nuestra siguiente aplicaci\'on del modelo GPDP. Una \textit{marca madre} es aquella que tiene fama por su propio nombre, pero que se ofrece al consumidor mediante productos (tambi\'en llamados \textit{subvariantes}) que son publicitados por s\'i solos. Por ejemplo, se puede pensar en la empresa de tecnolog\'ia \textit{Pera} que tiene comerciales que posicionan su nombre, pero tiene tambi\'en comerciales donde promociona \'unicamente el celular que producen, y en otros, \'unicamente la tableta.
+
+Dicho esto, normalmente se piensa que los comerciales de la \textit{marca madre} contribuyen m\'as al \textit{Conocimiento de marca} que aquellos de las \textit{subvariantes}, que tienen como prop\'osito vender los productos espec\'ificos, m\'as que posicionar la marca.
+
+\subsection{Caso real}
+
+Cierta \textit{marca madre} es cliente de la empresa de investigaci\'on de mercados en la que sol\'ia trabajar. Dicha marca registr\'o semana a semana los valores de inversi\'on en sus comerciales, la realizada para los de sus \textit{subvariantes}, la de su competencia y el \textit{Conocimiento de marca} reportado durante 2014 y 2015. Estos sirvieron para entrenar un modelo GPDP, bajo el supuesto que las mediciones semanales fueron independientes. Los valores predichos comparados contra los que en efecto se observaron se presentan a continuaci\'on.
+
+\begin{figure}[H]
+	\centering
+	\caption{Modelo de \textit{Conocimiento de marca} para datos de entrenamiento (2014-2015)}
+	\includegraphics[width=1\textwidth]{Figures/MarketResearch/fit_review.png}
+	\captionsetup{singlelinecheck=off,font=footnotesize}
+	\caption*{El intervalo de credibilidad se construy\'o usando las estimaciones de la mediana de los cuantiles $0.05$-\'esimo y $0.95$-\'esimo.}
+	\label{awareness_fit}
+\end{figure}
+
+Como se puede observar, el \textit{Conocimiento de marca} sigue un movimiento muy similar a la mediana que predijo el modelo, y, de hecho, en los \'ultimos meses se ha despegado positivamente.
+
+Todo esto se hizo ignorando el hecho de que tambi\'en se ten\'ian los datos de 2016, para ver c\'omo funcionar\'ia el modelo. Al cliente particularmente le interesaba ver esto porque la m\'etrica tuvo una estrepitosa ca\'ida durante el 2016 y ten\'ia la duda si era por una estrategia desafortunada de su inversi\'on o por el hecho de que su competidor hab\'ia cambiado completamente el concepto de sus comerciales, situaci\'on que podr\'ia estar provocando que la gente ya no se confundiera y los relacionara err\'oneamente a los de nuestro cliente.
+
+Traslado al lenguaje del modelo, se deseaba ver si el valor realmente observado pudo haber sido predicho por el modelo o si lo consideraba poco probable, situaci\'on en la que efectivamente se podr\'ia hablar de un cambio estructural ocurrido dentro de este contexto. Los resultados obtenidos fueron los siguientes.
+
+\begin{figure}[H]
+	\centering
+	\caption{\textit{Conocimiento de marca} en 2016, comparado con el modelo GPDP}
+	\includegraphics[width=1\textwidth]{Figures/MarketResearch/goals_2016.png}
+	\captionsetup{singlelinecheck=off,font=footnotesize}
+	\label{awareness_fit}
+\end{figure}
+
+Como se puede observar, hasta el mes de abril el \textit{Conocimiento de marca} se comport\'o de acuerdo a lo esperado, pero despu\'es tuvo una ca\'ida estrepitosa que, si bien el modelo hab\'ia anticipado para despu\'es de julio, coincidi\'o en mayor medida con lo que se hubiera esperado para el cuantil $0.05$-\'esimo. Es decir, suponiendo que no hubiera cambio estructural, se habr\'ia presenciado el peor de cada 20 casos.
+
+En otras palabras, confiando en la construcci\'on del modelo, el supuesto de independencia entre las observaciones y un error modesto en la medici\'on del \textit{Conocimiento de marca}, hay informaci\'on suficiente para pensar que, en efecto, el cambio de concepto en los comerciales del competidor impact\'o la m\'etrica del cliente.
+
 
 \newpage

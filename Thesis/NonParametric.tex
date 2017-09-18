@@ -2,7 +2,7 @@
 
 \section{Motivaci\'on}
 
-En el cap\'itulo anterior se analizaron para realizar regresi\'on hacia una variable de respuesta $y$, dado un cierto conjunto de covariables $x$. Si bien son modelos con muchas ventajas, es relevante no olvidar que cuentan con un supuesto fuerte: la relación entre la variable dependiente $y$ y las variables independientes $x$ \'unicamente se da de forma lineal. Pero las funciones lineales s\'olo son un pequeño subconjunto del conjunto infinito no-numerable de funciones existentes. Por ello, valdr\'ia la pena analizar si es posible relajar este supuesto y tener un modelo m\'as general.
+En el cap\'itulo anterior se analizaron m\'etodos para realizar regresi\'on hacia una variable de respuesta $y$, dado un cierto conjunto de covariables $x$. Si bien son modelos con muchas ventajas, es relevante no olvidar que cuentan con un supuesto fuerte: la relación entre la variable dependiente $y$ y las variables independientes $x$ \'unicamente se da de forma lineal. Pero las funciones lineales s\'olo son un pequeño subconjunto del conjunto infinito no-numerable de funciones existentes. Por ello, valdr\'ia la pena analizar si es posible relajar este supuesto y tener un modelo m\'as general.
 
 Una idea inicial para darle la vuelta es redefinir variables, de tal manera que se pueda obtener un polinomio. Por ejemplo, se supone que $\hat{x}$ es un buen predictor de $y$, pero como polinomio de orden 3, es decir:
 \begin{equation*}
@@ -37,15 +37,15 @@ con
 \end{equation*}
 y el procedimiento se convierte en el ya conocido.
 
-Si bien estos ejemplos permiten ampliar el conjunto de funciones que es posible cubrir usando el modelo tradicional de regresi\'on lineal, permiten darse cuenta de c\'omo se puede complicar la relaci\'on de dependencia entre $y$ y las covariables $x$, de tal manera que muchas funciones pueden no ser descritas con el m\'etodo antes planteado.
+Si bien estos ejemplos ampl\'ian el conjunto de funciones que es posible cubrir usando el modelo tradicional de regresi\'on lineal, tambi\'en permiten darse cuenta de c\'omo se puede complicar la relaci\'on de dependencia entre $y$ y las covariables $x$, de tal manera que muchas funciones pueden no ser descritas con el m\'etodo antes planteado.
 
 As\'i surge la necesidad de buscar un m\'etodo que permita encontrar cualquier tipo relaci\'on entre $y$ y $x$, sin restringirla a un pequeño subconjunto de funciones. El reto es que \'unicamente se tiene tiempo finito para encontrar la mejor estimaci\'on, entre una infinidad no-numerable de opciones.
 
 Por otro lado, en cuanto al error aleatorio $\varepsilon_p$, la distribuci\'on asim\'etrica de Laplace cumple el cometido de que el cuantil $p$-\'esimo sea igual a 0, es decir, impl\'icitamente provoca la asimetr\'ia necesaria para que el valor esperado de los valores por debajo de $f_p(x)$ sean el $p \times 100\%$, y por encima, el $(1-p) \times 100\%$.
 
-Si bien esta es una caracter\'istica necesaria, puede no ser suficiente debido a que la forma de la distribuci\'on queda totalmente determinada por un \'unico par\'ametro $\sigma$. Por lo que si bien puede coincidir con la distribuci\'on \textit{real} en que el cuantil $p$-\'esimo $q_p$ sea el mismo para ambas e igual a $0$, la forma de la distribuci\'on podr\'ia ser totalmente distinta. Por ejemplo, en el peso que le asigna a las colas.
+Si bien esta es una caracter\'istica necesaria, puede no ser suficiente debido a que la forma de la distribuci\'on del error podr\'ia ser distinta a la Asim\'etrica de Laplace, por ejemplo, en el peso que le asigna a las colas. Dicha problem\'atica podr\'ia ser mitigada mediante el uso de una mezcla de distribuciones como aproximaci\'on de la distribuci\'on del error.  Particularmente es posible usar asim\'etricas de Laplace con diferentes valores para $\sigma$ y probabilidad asociada a cada uno de esos valores de acuerdo a su factibilidad. 
 
-Dicha problem\'atica podr\'ia ser mitigada mediante el uso de una mezcla de distribuciones, particularmente asim\'etricas de Laplace, en la que se usen varios valores para $\sigma$ y la probabilidad asociada a cada valor vaya de acuerdo a su factibilidad. Entonces surgen algunas preguntas como ¿cu\'antos valores de $\sigma$ deber\'ia de contener el modelo y cu\'ales deber\'ian ser esos valores? Normalmente no existe una respuesta definitiva a ambas preguntas y se deja la decisi\'on arbitraria al modelador. Pero, ¿qu\'e pasar\'ia si se planteara un modelo de mezclas infinitas de distribuciones? As\'i, se podr\'ia encontrar la mezcla \'optima, ya que cualquier mezcla con n\'umero fijo de par\'ametros ser\'ia un caso particular.
+Entonces surgen algunas preguntas como ¿cu\'antos valores de $\sigma$ deber\'ia de contener el modelo y cu\'ales deber\'ian ser esos valores? Normalmente no existe una respuesta definitiva a ambas preguntas y se deja la decisi\'on arbitraria al modelador. Pero, ¿qu\'e pasar\'ia si se planteara un modelo de mezclas infinitas de distribuciones? As\'i, se podr\'ia encontrar la mezcla \'optima, ya que cualquier mezcla con n\'umero fijo de par\'ametros ser\'ia un caso particular.
 
 En resumen, tanto la estimaci\'on de $f_p$, como la de $\varepsilon_p$ podr\'ian mejorarse usando modelos de infinitos par\'ametros, que generalizan a los modelos con un n\'umero de par\'ametros predefinido. Con el paradigma estad\'istico tradicional es imposible hacerlo, y m\'as si el tiempo es finito. Pero esto abre la puerta a una visi\'on menos explorada para hacer estad\'istica: el \textbf{paradigma no param\'etrico}.
 
@@ -445,7 +445,7 @@ Antes de revisar la definici\'on formal de los Procesos de Dirichlet, es conveni
         \mathbb{E}[x_i] &= \frac{\alpha_i}{\sum_{k=1}^n \alpha_k} \\
         Var(x_i) &= \frac
         {\alpha_i \left( \sum_{k=1}^n \alpha_k - \alpha_i \right)}
-        {\left( \sum_{k=1}^n \alpha_k \right)^2 (\left( \sum_{k=1}^n \alpha_k + 1 \right)}
+        {\left( \sum_{k=1}^n \alpha_k \right)^2 \left( \sum_{k=1}^n \alpha_k + 1 \right)}
     \end{aligned}
     \end{equation*}
     
@@ -637,7 +637,7 @@ Es posible reescribir este modelo usando la equivalencia entre los Procesos de D
 \end{aligned}
 \end{equation*}
 
-De esta manera, el Modelo de mezclas de Dirichlet es un modelo de mezclas infinitas, debido a que tiene un n\'umero infinito numerable de posibles \textit{clusters}, pero donde intuitivamente la importancia realmente recae s\'olo en aquellos que tienen un peso $\pi$ posterior mayor a cierto umbral, pero qson detectados hasta despu\'es de observar los datos; a diferencia de los modelos de mezclas finitas, que ya tienen un n\'umero de \textit{clusters} definidos previamente.
+De esta manera, el Modelo de mezclas de Dirichlet es un modelo de mezclas infinitas, debido a que tiene un n\'umero infinito numerable de posibles \textit{clusters}, pero donde intuitivamente la importancia realmente recae s\'olo en aquellos que tienen un peso $\pi$ posterior mayor a cierto umbral, pero son detectados hasta despu\'es de observar los datos; a diferencia de los modelos de mezclas finitas, que ya tienen un n\'umero de \textit{clusters} definidos previamente.
 
 \subsection{Modelo de mezclas infinitas de Dirichlet para la \textit{regresi\'on sobre cuantiles}}
 

@@ -25,7 +25,7 @@ con $\varepsilon \in \mathbb{R} \sim \mathcal{N}(0,\sigma^2)$ (denominado com\'u
     y | x, f, \sigma^2 \sim \mathcal{N}(f(x),\sigma^2).
 \end{equation*}
 
-Adem\'as, se supone independencia entre $\varepsilon_s$, es decir, para toda $\bar{\varepsilon} \neq \hat{\varepsilon}$, $\bar{\varepsilon}$ y $\hat{\varepsilon}$ son independientes. Por lo tanto, sean $\bar{x}$ las covariables asociadas a la variable de respuesta $\bar{y}$, y $\hat{x}$ las asociadas a $\hat{y}$, se tiene que $\bar{y} | \bar{x}, f, \sigma^2$ es condicionalmente independiente a $\hat{y} | \hat{x}, f, \sigma^2$.
+Adem\'as, se supone independencia entre $\varepsilon_s$, es decir, para todo $\bar{\varepsilon} \neq \hat{\varepsilon}$, $\bar{\varepsilon}$ y $\hat{\varepsilon}$ son independientes. Por lo tanto, sean $\bar{x}$ las covariables asociadas a la variable de respuesta $\bar{y}$, y $\hat{x}$ las asociadas a $\hat{y}$, se tiene que $\bar{y} | \bar{x}, f, \sigma^2$ es condicionalmente independiente a $\hat{y} | \hat{x}, f, \sigma^2$.
 
 
 \subsection[Modelo tradicional]{
@@ -60,7 +60,7 @@ Por el Teorema de Bayes,
     &\propto \mathbb{P}(Y| X, \beta, \sigma^2) \times \mathbb{P}(\beta, \sigma^2), \\
 \end{aligned}
 \end{equation*}
-donde $\mathbb{P}(Y| X, \beta, \sigma^2)$ es la verosimilitud de los datos observados y se puede calcular como $\mathbb{P}(Y| X, \beta, \sigma^2) = \mathcal{N}(X\beta,\sigma^2 I) = \prod_{i=1}^m \mathcal{N}(x_i^T\beta,\sigma^2)$. Por otro lado, $\mathbb{P}(\beta,\sigma^2)$ es la distribuci\'on inicial de los par\'ametros.
+donde $\mathbb{P}(Y| X, \beta, \sigma^2)$ es la verosimilitud de los datos observados y, debido a la independencia condicional, se puede calcular como $\mathbb{P}(Y| X, \beta, \sigma^2) = \mathcal{N}(X\beta,\sigma^2 I) = \prod_{i=1}^m \mathcal{N}(x_i^T\beta,\sigma^2)$. Por otro lado, $\mathbb{P}(\beta,\sigma^2)$ es la distribuci\'on inicial de los par\'ametros.
 
 Por conveniencia anal\'itica, hay una distribuci\'on inicial com\'unmente usada para los par\'ametros $\beta$ y $\sigma$ debido a que es conjugada respecto a la distribuci\'on Normal de los datos. Su nombre es \textit{Normal-Gamma Inversa (NGI)} y se dice que $\beta,\sigma^2 \sim \mathcal{NGI}(M,V,a,b)$, si
 \begin{equation*}
@@ -129,7 +129,7 @@ donde $MVSt$ es la distribuci\'on \textit{t-Student} multivariada, y cuya defini
 La \textit{regresi\'on sobre cuantiles} es una alternativa que se ha desarrollado reci\'entemente y que permite enfocarse en aspectos alternativos de la distribuci\'on, como lo que pasa en las colas. Adem\'as relaja supuestos de la \textit{regresi\'on a la media}, como la simetr\'ia inducida por el error normal.
 
 \begin{defin}
-El cuantil $p$-\'esimo de la variable aleatoria $Y$ es aquel valor $q_p$ tal que
+Sea $F_Y$ la funci\'on de distribuci\'on de la variable aleatoria $Y$, entonces el cuantil $p$-\'esimo de dicha variable aleatoria es aquel valor $q_p$ tal que
 \begin{equation*}
     F_Y(q_p) = p.
 \end{equation*}
@@ -141,7 +141,7 @@ cuando $F_Y^{-1}$ est\'a bien definida.
 \end{defin}
 Dicho en otras palabras, si se tiene un conjunto grande de realizaciones de una variable aleatoria $Y$, se esperar\'a que el $p \times 100\%$ est\'e por debajo de $q_p(Y)$ y el $(1-p) \times 100\%$ est\'e por arriba. Por ejemplo, la mediana es un caso particular de un cuantil, espec\'ificamente el $0.5$-\'esimo. 
 
-En notaci\'on probabil\'istica, busca aproximar a la funci\'on $f$, tal que 
+En notaci\'on probabil\'istica, se buscar\'a aproximar a la funci\'on $f$, tal que 
 \begin{equation*}
     q_p(y|x) = f(x),
 \end{equation*}
@@ -184,12 +184,12 @@ donde $\beta_p$ es el vector de coeficientes, dependiente de $p$.
 con $\sigma$ par\'ametro de escala.
 \end{defin}
 
-Es posible darse cuenta que si $\varepsilon_p \sim AL_p(\sigma)$, entonces $q_p(\varepsilon_p) = 0$. Recordando que esta es la \'unica caracter\'istica necesaria para la distribuci\'on del error aleatoria, entonces se definir\'a
+Data esta definici\'on, es posible darse cuenta que si $\varepsilon_p \sim AL_p(\sigma)$, entonces $q_p(\varepsilon_p) = 0$. Recordando que esta es la \'unica caracter\'istica necesaria para la distribuci\'on del error aleatoria, entonces es posible definir
 \begin{equation*}
     \varepsilon \sim AL_p(\sigma).
 \end{equation*}
 
-El modelo se puede reescribir como:
+El modelo, entonces, se puede reescribir como:
 \begin{equation*}
     y | x, \beta_p, \sigma 
     \sim 
@@ -203,7 +203,7 @@ Sea $\{(X,Y) | X \in \mathbb{R}^{m \times n}, Y \in \mathbb{R}^m\}$ el conjunto 
     &\propto \mathbb{P}(Y| X, \beta_p, \sigma) \times \mathbb{P}(\beta_p, \sigma), \\
 \end{aligned}
 \end{equation*}
-donde $\mathbb{P}(Y| X, \beta_p, \sigma)$ es la verosimilitud de los datos observados y se puede calcular como 
+donde $\mathbb{P}(Y| X, \beta_p, \sigma)$ es la verosimilitud de los datos observados y, debido a la independencia condicional, se puede calcular como 
 \begin{equation*}
     \mathbb{P}(Y| X, \beta_p, \sigma)
     =

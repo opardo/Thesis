@@ -9,7 +9,7 @@
 %	Paper Size: a4paper / a5paper / b5paper / letterpaper / legalpaper / executivepaper
 % Duplex: oneside / twoside
 % Base Font Size: 10pt / 11pt / 12pt
-
+\setlength{\parskip}{\baselineskip}%
 
 %% Packages
 \usepackage[paperwidth=17cm, paperheight=22.5cm, bottom=2.5cm, right=2.5cm]{geometry}
@@ -183,13 +183,13 @@ Con fundamento en los art\'iculos 21 y 27 de la Ley Federal del Derecho de Autor
 
 \textsc{Carlos Omar Pardo G\'omez}
 
-\vspace{5em}
+\vspace{4em}
 
 \rule[1em]{20em}{0.5pt} % L\'inea para la fecha
 
 \textsc{Fecha}
  
-\vspace{8em}
+\vspace{6em}
 
 \rule[1em]{20em}{0.5pt} % L\'inea para la firma
 
@@ -236,7 +236,11 @@ El cap\'itulo 1 describe la importancia de las aproximaciones distintas a la reg
 %   ÍNDICE
 %----------------------------------------------------------------------------------------
 
+
+
+\renewcommand{\baselinestretch}{0.75}\normalsize
 \tableofcontents
+\renewcommand{\baselinestretch}{1.0}\normalsize
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%    Capitulos
