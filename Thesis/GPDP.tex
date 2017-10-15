@@ -2,15 +2,15 @@
 
 \section{Definici\'on}
 
-Despu\'es de analizar la introducci\'on de componentes no param\'etricos, tanto para la funci\'on $f_p$, como para el error $\varepsilon_p$, a continuaci\'on se enunciar\'a el modelo central de esta tesis, con sus especificaciones correspondientes.
+Despu\'es de analizar la introducci\'on de componentes no param\'etricos en las distribuciones, tanto de $f_p$, como de $\varepsilon_p$, a continuaci\'on se enunciar\'a el modelo central de esta tesis, con sus especificaciones correspondientes.
 
-A partir de este punto, a dicho modelo se le denominar\'a \textbf{Modelo GPDP} (por las siglas en ingl\'es de Procesos Gaussianos y Procesos de Dirichlet).
+A partir de este punto, a dicho modelo se le denominar\'a \textbf{Modelo GPDP} (por las siglas en ingl\'es de procesos gaussianos y procesos de Dirichlet).
 
 Sea $\{(y_i,x_i)|i=1,...,m\}$ el conjunto de observaciones de la variable de respuesta y sus respectivas covariables, cuya relaci\'on se supone como
 \begin{equation*}
     y = f_p(x) + {\varepsilon_p},
 \end{equation*}
-donde $f_p: \mathbb{R}^n \times \mathbb{R}$ es la funci\'on base y ${\varepsilon_p} \in \mathbb{R}$ es el error aleatorio, ambos desconocidos.
+donde $f_p: \mathbb{R}^n \times \mathbb{R}$ es la funci\'on base y ${\varepsilon_p} \in \mathbb{R}$ es la dispersi\'on, ambos desconocidos.
 
 Para reflejar la incertidumbre y el conocimiento previo del modelador, se supone a $f_p(X) \sim \mathcal{GP}(m_{f_p},k_{f_p})$, con funci\'on de medias $m_{f_p}$ dada por el modelador y funci\'on de covarianza $k_{f_p}$ 2-\textit{exponencial}, con par\'ametro de rango fijo $\tau = 1$. Es decir,
 \begin{equation*}
@@ -22,11 +22,11 @@ La raz\'on de fijar $\tau = 1$ es para simplificar el proceso de inferencia que 
 
 En cuanto a la distribuci\'on inicial de $\varepsilon_p$, se supondr\'a un modelo de mezclas infinitas de Dirichlet, cuya distribuci\'on media $H$ del proceso de Dirichlet ser\'a una \textit{Gamma-Inversa}, con par\'ametros de forma $c_{DP}$ y escala $d_{DP}$.
 
-En resumen, el \textbf{Modelo GPDP} queda descrito de la siguiente forma:
+En resumen, el Modelo GPDP queda descrito de la siguiente forma:
 
 \begin{equation*}
 \begin{aligned}
-    y_i| f_p(x_i), z_i, \sigma_k^* &\sim w_p^{AL}({\varepsilon_p}_i = y_i - f_p(x_i) | \sigma_{z_i}), \\
+    y_i| f_p(x_i), z_i, \sigma_k^* &\sim AL_p({\varepsilon_p}_i = y_i - f_p(x_i) | \sigma_{z_i}), \\
     f_p(X)|m_{f_p}, \lambda &\sim \mathcal{GP}(m_{f_p},k_{f_p}|\lambda), \\
     \lambda &\sim GI(c_\lambda,d_\lambda), \\
     z_i | \pi &\sim Mult(\pi), \\
@@ -36,17 +36,17 @@ En resumen, el \textbf{Modelo GPDP} queda descrito de la siguiente forma:
 \end{aligned}
 \end{equation*}
 
-\section{Inferencia con el Simulador de Gibbs}
+\section{Inferencia con el simulador de Gibbs}
 
-Dado que el modelo descrito no es conjugado, las distribuciones posteriores tienen que ser aproximadas mediante m\'etodos computacionales. Para hacer esto, se puede hacer uso de algoritmos MCMC (Monte Carlo Markov Chains), y particularmente del Simulador de Gibbs. En caso de que el lector no est\'e familiarizado con este tipo de algoritmos, puede consultar el \autoref{chap:MCMC}.
+Dado que el modelo descrito no es conjugado, las distribuciones posteriores tienen que ser aproximadas mediante m\'etodos computacionales. Para hacer esto, se puede hacer uso de algoritmos MCMC (Monte Carlo Markov Chains), y particularmente del simulador de Gibbs. En caso de que el lector no est\'e familiarizado con este tipo de algoritmos, puede consultar una breve descripci\'on de ellos en el \autoref{chap:MCMC}.
 
 En este orden de ideas, a continuaci\'on se detallan las distribuciones condicionales posteriores de los par\'ametros del modelo, as\'i como la inclusi\'on de algunas variables latentes para permitir el funcionamiento del algoritmo.
 
 Cabe aclarar que antes de correr los algoritmos, resulta conveniente primero estandarizar los datos. En primer lugar, para que la estructura de covarianza tenga más sentido, ya que la escala de las covariables afectaría la correlación que existe entre los datos, al depender esta de la distancia absoluta entre ellas. Además, estandarizar los datos suele mejorar el rendimiento computacional de este tipo de algoritmos. Asimismo, vuelve m\'as sencillo definir el valor inicial de los par\'ametros, como se detallar\'a m\'as adelante.
 
-\subsection{Actualizaci\'on del error}
+\subsection{Actualizaci\'on de la dispersi\'on}
 
-Recordando que los centros de masa y los pesos del Proceso de Dirichlet son independientes, pueden ser actualizados por separado, con el inconveniente de que hay un n\'umero infinito de par\'ametros que actualizar. Para resolverlo, se utilizará el algoritmo de truncamiento mediante el \textit{slice sampling}, propuesto por \cite{Kalli_Slice}, y adaptado para el modelo propuesto en esta tesis.
+Recordando que los centros de masa y los pesos del Proceso de Dirichlet son independientes, pueden ser actualizados por separado, con el inconveniente de que hay un n\'umero infinito de par\'ametros que actualizar. Para resolverlo, se utilizará el algoritmo de truncamiento del \textit{slice sampling}, propuesto por \cite{Kalli_Slice}, y adaptado para el modelo propuesto en esta tesis.
 
 Sea $\xi_1,\xi_2,\xi_3,...$ una secuencia positiva, generalmente elegida determinista y decreciente. Sea N una variable aleatoria con soporte en los enteros positivos, una variable auxiliar incorporada al modelo.
 
@@ -132,9 +132,9 @@ de forma que $b = [b_1,...,b_m]^T$.
 Es posible calcular que
 \begin{equation*}
 \begin{aligned}
-   f_p(x)|Y,X,M_{f_p}(X),b,\lambda &\sim TruncNormal(\bar{M}_{f_p}(X,b), K_{f_p}(X,X|\lambda), \rho, \eta), \\
+   f_p(x)|Y,X,M_{f_p}(X),b,\lambda &\sim TruncNormal(\bar{M}_{f_p}(X,b), K_{f_p}(X,X|\lambda), \gamma, \eta), \\
    \bar{M}_{f_p}(X,b) &= M_{f_p}(X) + K_{f_p}(X,X|\lambda)b, \\
-   \rho_i &= 
+   \gamma_i &= 
    \begin{cases}
     -\infty & \text{si }b_i > 0 \\
     y_i & \text{si }b_i < 0
@@ -146,7 +146,7 @@ Es posible calcular que
    \end{cases},
 \end{aligned}
 \end{equation*}
-donde $\rho$ es el vector de l\'imites inferiores y $\eta$ es el vector de l\'imites superiores de la distribuci\'on \textit{Normal truncada}.
+donde $\gamma$ es el vector de l\'imites inferiores y $\eta$ es el vector de l\'imites superiores de la distribuci\'on \textit{Normal truncada}.
 
 \subsubsection{Actualizaci\'on del par\'ametro de escala}
 
@@ -173,7 +173,7 @@ Una de las desventajas de los modelos no param\'etricos es que, a diferencia de 
 
 Por ello, resulta particularmente importante la faceta de la predicci\'on, que es la que m\'as explota sus ventajas, y en la que los modelos param\'etricos normalmente se quedan cortos. Espec\'ificamente esta secci\'on se enfocar\'a en la predicci\'on de $f_p$, que es el par\'ametro de mayor inter\'es del modelo.
 
-Debido al uso del Simulador de Gibbs, despu\'es de realizar el ajuste se cuenta con un conjunto grande de realizaciones aproximadas de $f_p(X)$, provenientes de las cadenas de markov.
+Debido al uso del simulador de Gibbs, despu\'es de realizar el ajuste se cuenta con un conjunto grande de realizaciones aproximadas de $f_p(X)$, provenientes de las cadenas de markov.
 
 Recordando lo visto en la secci\'on 4.2.4, cuando se tienen valores de $f_p(X)$, es posible usar la propiedad de la \textit{Normal condicional} para realizar predicci\'on. Sea $X \in \mathbb{R}^m \times \mathbb{R}^n$ la matriz de datos originales, $X_* \in \mathbb{R}^r \times \mathbb{R}^n$ la matriz de datos a predecir, $f_p(X)$ una realizaci\'on de la distribuci\'on posterior correspondiente a X, y $f_p(X_*)$ el vector aleatorio de los datos a predecir. Se tiene entonces que 
 \begin{equation*}
@@ -199,9 +199,9 @@ con $K(X_1,X_2) = K(X_1,X_2|\lambda=1)$, donde $X_1$ y $X_2$ pueden ser $X$ o $X
 
 Por lo antes descrito, es posible obtener una realizaci\'on de $f_p(X_*)$ simulando de dicha distribuci\'on \textit{Normal}. De esta manera, por cada valor de $f_p(X)$ y $\lambda$ en la cadena de markov, se simula una realizaci\'on de $f_p(X_*)$, y entonces es posible aproximar la distribuci\'on posterior de $q_p(y|x)$, para los datos $X_*$.
 
-\section{Par\'ametros iniciales}
+\section{Hiper-par\'ametros iniciales}
 
-Una complicaci\'on que puede tener un modelo con la complejidad del GPDP, es que los par\'ametros que tiene que asignar el modelador no son inmediatos, sino est\'an en la profunidad de un conjunto jer\'arquico de distribuciones. Por ello, no resulta sencillo asignarles valores iniciales.
+Una complicaci\'on que puede tener un modelo con la complejidad del GPDP, es que los hiper-par\'ametros que tiene que definir el modelador no son inmediatos, sino est\'an en la profunidad de un conjunto jer\'arquico de distribuciones. Por ello, no resulta sencillo asignarles valores iniciales.
 
 Para mitigar este problema, a continuaci\'on se proponen una serie de heur\'isticas para su c\'alculo, mismas que se derivan de algunas ideas que me parecen senstas, pero no se originan de ning\'un cuerpo axiom\'atico y bien podr\'ian ser mejoradas. Tambi\'en es importante aclarar que por lo comentado al inicio de la secci\'on 5.2, para todas ellas se pensar\'a que los datos est\'an estandarizados.
 
@@ -280,7 +280,7 @@ Es decir, si se tienen alrededor de 100 observaciones, el n\'umero esperado de \
 
 Todas las ideas expuestas en este cap\'itulo han sido implementadas en el paquete \textit{GPDPQuantReg} del lenguaje de programaci\'on R, mismo que puede ser encontrado en el repositorio de Github\faGithub \space titulado: \textbf{opardo/GPDPQuantReg}.
 
-Al momento de escribir este trabajo, cuenta con tres funciones p\'ublicas: \textit{GPDPQuantReg}, para ajustar el modelo con el Simulador de Gibbs; \textit{predict}, para realizar predicci\'on en un nuevo conjunto de datos del modelo ajustado; y \textit{diagnose}, para realizar el diagn\'ostico de la ergodicidad, la autocorrelaci\'on, la correlaci\'on cruzada y la traza de las cadenas de markov, para los distintos par\'ametros.
+Al momento de escribir este trabajo, cuenta con tres funciones p\'ublicas: \textit{GPDPQuantReg}, para ajustar el modelo con el simulador de Gibbs; \textit{predict}, para realizar predicci\'on en un nuevo conjunto de datos del modelo ajustado; y \textit{diagnose}, para realizar el diagn\'ostico de la ergodicidad, la autocorrelaci\'on, la correlaci\'on cruzada y la traza de las cadenas de markov, para los distintos par\'ametros.
 
 A continuaci\'on se expone un ejemplo de uso, el cual es similar a lo que se realiz\'o para obtener los resultados del cap\'itulo siguiente.
 

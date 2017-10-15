@@ -1,0 +1,137 @@
+\chapter[Distribuciones de referencia]{Distribuciones de referencia}\label{chap:Distributions}
+
+\section{Distribuci\'on t-Student multivariada}
+
+\begin{defin*}
+    Sea $X \in \mathbb{R}^p$ un vector aleatorio, con media, mediana y moda $\mu$, matriz de covarianzas $\Sigma $, y $\nu$ grados de libertad, entonces $X \sim MVSt_{\nu}(\mu,\Sigma)$ si y s\'olo si su funci\'on de densidad es:
+\begin{equation*}
+    f(x|\mu,\sigma,\nu) = 
+    \frac{\Gamma((\nu+p)/2)}{\Gamma(\nu/2)\nu^{p/2}\pi^{p/2}|\Sigma|^{1/2}}
+    \left[1 + \frac{1}{\nu} (x-\mu)^T\Sigma^{-1}(x-\mu)\right]^{-\frac{\nu+p}{2}}.
+\end{equation*}
+\end{defin*}
+
+\section{Distribuci\'on Normal condicional}
+
+\begin{prop*}
+    Sea $X \in \mathbb{R}^m$ un vector aleatorio que tiene distribuci\'on Normal conjunta y est\'a particionado de la siguiente manera:
+
+    \begin{equation*}
+    \begin{aligned}
+        X = 
+        &\left[
+        \begin{array}{c}
+            X_1  \\
+            X_2
+        \end{array}
+        \right], \\
+        \text{ con dimensiones }
+        &\left[
+        \begin{array}{c}
+            (m-q)  \\
+            q
+        \end{array}
+        \right].
+    \end{aligned}
+    \end{equation*}
+    
+    Entonces, la media $\mu \in \mathbb{R}^m$ y varianza $\Sigma \in \mathbb{R}^{m \times m}$ de $X$ se pueden escribir
+    \begin{equation*}
+    \begin{aligned}
+        \mu = 
+        &\left[
+        \begin{array}{c}
+            \mu_1  \\
+            \mu_2
+        \end{array}
+        \right], \\
+        \text{ con dimensiones }
+        &\left[
+        \begin{array}{c}
+            (m-q)  \\
+            q
+        \end{array}
+        \right], y\\
+        \Sigma = 
+        &\left[
+        \begin{array}{cc}
+            \Sigma_{11} & \Sigma_{12}  \\
+            \Sigma_{21} & \Sigma_{22}
+        \end{array}
+        \right], \\
+        \text{ con dimensiones }
+        &\left[
+        \begin{array}{cc}
+            (m-q) \times (m-q)  & (m-q) \times q  \\
+            q \times (m-q) & q \times q
+        \end{array}
+        \right].
+    \end{aligned}
+    \end{equation*}
+    
+    La distribuci\'on condicional de $X_2$, sujeta a que $X_1 = a$ es Normal con $X_2|X_1=a \sim \mathcal{N}(X_2|\bar{\mu},\bar{\Sigma})$, donde
+    
+    \begin{equation*}
+    \begin{aligned}
+        \bar{\mu} &= \mu_2 + \Sigma_{2,1}\Sigma_{11}^{-1}(a-\mu_1) \\
+        \bar{\Sigma} &= \Sigma_{22} - \Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}
+    \end{aligned}
+    \end{equation*}
+\end{prop*}
+
+\section{Distribuci\'on de Dirichlet}
+
+\begin{defin}
+    Se dice que un vector aleatorio $x \in \mathbb{R}^n$ se distribuye de acuerdo a la \textbf{distribuci\'on de Dirichlet}  $\mathbf{(x \sim Dir(\alpha))}$ con vector de par\'ametros $\alpha$, espec\'ificamente,
+    \begin{equation*}
+        x = 
+        \left(\begin{array}{c}
+            x_1  \\
+            \cdots \\
+            x_n
+        \end{array}\right),
+        \qquad
+        \alpha = 
+        \left(\begin{array}{c}
+            \alpha_1  \\
+            \cdots \\
+            \alpha_n
+        \end{array}\right),
+    \end{equation*}
+    para los cuales se cumplen las restricciones
+    \begin{equation*}
+    \begin{aligned}
+        x_i > 0, \forall i &\in \{1,...,n\} \\
+        \sum_{i=1}^n x_i &= 1 \\
+        \alpha_i > 0, \forall i &\in \{1,...,n\},
+    \end{aligned}
+    \end{equation*}
+    si su funci\'on de densidad  es
+    \begin{equation*}
+        f(x|\alpha) = 
+        \frac {1}{\mathrm {B} (\alpha)}
+        \prod _{i=1}^{n}x_{i}^{\alpha _{i}-1},
+    \end{equation*}
+    donde $\mathrm{B}$ es la funci\'on Beta multivariada, y puede ser expresada en t\'erminos de la funci\'on $\Gamma$ como 
+    \begin{equation*}
+       \mathrm{B}(\alpha)=
+       \frac {\prod _{i=1}^{n}\Gamma (\alpha _{i})}
+       {\Gamma \left(\sum _{i=1}^{n}\alpha _{i}\right)},
+       \qquad 
+       \alpha =(\alpha _1,\cdots ,\alpha _n). 
+    \end{equation*}
+    
+    La esperanza y varianza de cada $x_i$ son los siguientes:
+    
+    \begin{equation*}
+    \begin{aligned}
+        \mathbb{E}[x_i] &= \frac{\alpha_i}{\sum_{k=1}^n \alpha_k} \\
+        Var(x_i) &= \frac
+        {\alpha_i \left( \sum_{k=1}^n \alpha_k - \alpha_i \right)}
+        {\left( \sum_{k=1}^n \alpha_k \right)^2 \left( \sum_{k=1}^n \alpha_k + 1 \right)}
+    \end{aligned}
+    \end{equation*}
+    
+\end{defin}
+
+Es com\'un que esta distribuci\'on sea usada como la inicial conjugada de la distribuci\'on multinomial, debido a que el vector $x$ tiene las mismas propiedades de una distribuci\'on de probabilidad discreta (elementos positivos y que en conjunto suman 1).

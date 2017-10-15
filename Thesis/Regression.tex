@@ -6,7 +6,13 @@ Los modelos de regresi\'on tienen como objetivo describir la distribuci\'on de u
 \begin{equation*}
     y|x \sim \mathbb{P}(y|x).
 \end{equation*}
+
 Si bien esta relaci\'on se da por hecha y es fija, normalmente es desconocida. Por lo tanto, la intenci\'on de estos modelos es realizar alguna aproximaci\'on de ella. Dado que es complicado aproximar con exactitud toda la distribuci\'on, com\'unmente se enfocan en una medici\'on particular, como la media o la mediana.
+
+Tambi\'en es importante resaltar que com\'unmente se toma a los valores de $x$ como fijos y no aleatorios, como ser\'a el caso de este trabajo, pero tambi\'en se podr\'ia pensar en modelos donde haga sentido la distribuci\'on conjunta de $y$ y $x$, misma que se podr\'ia obtener como
+\begin{equation*}
+    \mathbb{P}(y,x) = \mathbb{P}(y|x) \times \mathbb{P}(x).
+\end{equation*}
 
 \section{Regresión a la media}
 
@@ -25,7 +31,7 @@ con $\varepsilon \in \mathbb{R} \sim \mathcal{N}(0,\sigma^2)$ (denominado com\'u
     y | x, f, \sigma^2 \sim \mathcal{N}(f(x),\sigma^2).
 \end{equation*}
 
-Adem\'as, se supone independencia entre $\varepsilon_s$, es decir, para todo $\bar{\varepsilon} \neq \hat{\varepsilon}$, $\bar{\varepsilon}$ y $\hat{\varepsilon}$ son independientes. Por lo tanto, sean $\bar{x}$ las covariables asociadas a la variable de respuesta $\bar{y}$, y $\hat{x}$ las asociadas a $\hat{y}$, se tiene que $\bar{y} | \bar{x}, f, \sigma^2$ es condicionalmente independiente a $\hat{y} | \hat{x}, f, \sigma^2$.
+Adem\'as, se supone independencia entre $\varepsilon$'s, es decir, para todo $\tilde{\varepsilon} \neq \dot{\varepsilon}$, $\tilde{\varepsilon}$ y $\dot{\varepsilon}$ son independientes. Por lo tanto, sean $\tilde{x}$ las covariables asociadas a la variable de respuesta $\tilde{y}$, y $\dot{x}$ las asociadas a $\dot{y}$, se tiene que $\tilde{y} | \tilde{x}, f, \sigma^2$ es condicionalmente independiente a $\dot{y} | \dot{x}, f, \sigma^2$.
 
 
 \subsection[Modelo tradicional]{
@@ -46,7 +52,7 @@ Para hacer esto, el enfoque bayesiano le asigna una distribución inicial de pro
 
 A partir de este momento se omitir\'a escribir la distribuci\'on condicional respecto a $H$ por simplificaci\'on de la notaci\'on, pero es importante no olvidar su existencia.
 
-Sea $\{(x_i,y_i)| x_i \in \mathbb{R}^n, y_i \in \mathbb{R}, i \in \{1,...,m\} \}$ el conjunto de datos observados de las variables de respuesta y de las covariables. Es posible representar este mismo conjunto con la notaci\'on matricial $\{X,Y | X \in \mathbb{R}^{m \times n}, Y \in \mathbb{R}^m\}$. Sea $\mathcal{E} \in \mathbb{R}^m$ el vector de errores aleatorios, tal que $\mathcal{E} \sim \mathcal{N}(0,\sigma^2 I)$. El modelo se puede reescribir como:
+Sea $\{(x_i,y_i)| x_i \in \mathbb{R}^n, y_i \in \mathbb{R}, i \in \{1,...,m\} \}$ el conjunto de datos observados de las variables de respuesta y de las covariables. Es posible representar este mismo conjunto con la notaci\'on matricial $\{X,Y | X \in \mathbb{R}^{m \times n}, Y \in \mathbb{R}^m\}$. \footnote{Por simplificaci\'on y limpieza de notaci\'on en este trabajo se escribir\'an de igual manera variables aleatorias y los datos en efecto observados, considerando que en cada caso el contexto ser\'a suficiente para saber de cu\'al se est\'a hablando, siendo asociadas las letras min\'usculas a una \'unica observaci\'on y las may\'usuclas a una matriz de observaciones.} Sea $\mathcal{E} \in \mathbb{R}^m$ el vector de errores aleatorios, tal que $\mathcal{E} \sim \mathcal{N}(0,\sigma^2 I)$. El modelo se puede reescribir como:
 \begin{equation*}
     Y = X\beta + \mathcal{E} \sim \mathcal{N}(X\beta,\sigma^2 I).
 \end{equation*}
@@ -113,33 +119,24 @@ Particularmente, si se contin\'ua con el modelo conjugado \textit{Normal - Gamma
        \right),
 \end{aligned}
 \end{equation*}
-donde $MVSt$ es la distribuci\'on \textit{t-Student} multivariada, y cuya definici\'on se describe a continuaci\'on. 
-
-\begin{defin*}
-    Sea $X \in \mathbb{R}^p$ un vector aleatorio, con media, mediana y moda $\mu$, matriz de covarianzas $\Sigma $, y $\nu$ grados de libertad, entonces $X \sim MVSt_{\nu}(\mu,\Sigma)$ si y s\'olo si su funci\'on de densidad es:
-\begin{equation*}
-    w(x|\mu,\sigma,\nu) = 
-    \frac{\Gamma((\nu+p)/2)}{\Gamma(\nu/2)\nu^{p/2}\pi^{p/2}|\Sigma|^{1/2}}
-    \left[1 + \frac{1}{\nu} (x-\mu)^T\Sigma^{-1}(x-\mu)\right]^{-\frac{\nu+p}{2}}.
-\end{equation*}
-\end{defin*}
+donde $MVSt$ es la distribuci\'on \textit{t-Student} multivariada, y cuya definici\'on se describe en el \autoref{chap:Distributions}.
 
 \section{Regresión sobre cuantiles}
 
 La \textit{regresi\'on sobre cuantiles} es una alternativa que se ha desarrollado reci\'entemente y que permite enfocarse en aspectos alternativos de la distribuci\'on, como lo que pasa en las colas. Adem\'as relaja supuestos de la \textit{regresi\'on a la media}, como la simetr\'ia inducida por el error normal.
 
 \begin{defin}
-Sea $F_Y$ la funci\'on de distribuci\'on de la variable aleatoria $Y$, entonces el cuantil $p$-\'esimo de dicha variable aleatoria es aquel valor $q_p$ tal que
+Sea $F_y$ la funci\'on de distribuci\'on de la variable aleatoria $y$, entonces el cuantil $p$-\'esimo de dicha variable aleatoria es aquel valor $q_p$ tal que
 \begin{equation*}
-    F_Y(q_p) = p.
+    F_y(q_p) = p.
 \end{equation*}
-Equivalentemente, la funci\'on que regresa el cuantil p-\'esimo de la variable aleatoria $Y$ se escribe
+Equivalentemente, la funci\'on que regresa el cuantil p-\'esimo de la variable aleatoria $y$ se escribe
 \begin{equation*}
-    q_p(Y) = F_Y^{-1}(p),
+    q_p(y) = F_y^{-1}(p),
 \end{equation*}
-cuando $F_Y^{-1}$ est\'a bien definida.
+cuando $F_y^{-1}$ est\'a bien definida.
 \end{defin}
-Dicho en otras palabras, si se tiene un conjunto grande de realizaciones de una variable aleatoria $Y$, se esperar\'a que el $p \times 100\%$ est\'e por debajo de $q_p(Y)$ y el $(1-p) \times 100\%$ est\'e por arriba. Por ejemplo, la mediana es un caso particular de un cuantil, espec\'ificamente el $0.5$-\'esimo. 
+Dicho en otras palabras, si se tiene un conjunto grande de realizaciones de una variable aleatoria $y$, se esperar\'a que el $p \times 100\%$ est\'e por debajo de $q_p(y)$ y el $(1-p) \times 100\%$ est\'e por arriba. Por ejemplo, la mediana es un caso particular de un cuantil, espec\'ificamente el $0.5$-\'esimo. 
 
 En notaci\'on probabil\'istica, se buscar\'a aproximar a la funci\'on $f$, tal que 
 \begin{equation*}
@@ -154,6 +151,8 @@ Para hacer esto, normalmente se vale del supuesto que
 con $\varepsilon_p \in \mathbb{R} \sim E_p(\theta)$, de manera que $E_p$ es una variable aleatoria con vector de par\'ametros $\theta$, tal que $q_p(\varepsilon_p) = 0$. 
 
 Es importante aclarar que $f_p(x) \in \mathbb{R}$ y $\theta$ son desconocidos. Asimismo, al igual que con la \textit{regresi\'on a la media}, se supone independencia entre los errores aleatorios, y por lo tanto, hay independencia condicional entre las observaciones.
+
+Otro aspecto importante a resaltar es que en este caso la interpretaci\'on de $\varepsilon_p$ como el \textit{error aleatorio} ya no hace tanto sentido, y tendr\'ia que ser entendido m\'as como la dispersi\'on que siguen los datos alrededor de $f_p$.
 
 \subsection{Modelo tradicional}
 
@@ -170,7 +169,7 @@ donde $\beta_p$ es el vector de coeficientes, dependiente de $p$.
     \begin{equation*}
         \rho_p(u) = u \times [pI_{(u>0)} - (1-p) I_{(u<0)})].
     \end{equation*}
-    Se dice que una variable aleatoria U sigue una distribuci\'on asim\'etrica de Laplace ($U \sim AL_p(\sigma)$) si su funci\'on de densidad se escribe como
+    Se dice que una variable aleatoria u sigue una distribuci\'on asim\'etrica de Laplace ($u \sim AL_p(\sigma)$) si su funci\'on de densidad se escribe como
     \begin{equation*}
         w_p^{AL}(u|\sigma) = 
         \frac{p(1-p)}{\sigma}
@@ -184,9 +183,9 @@ donde $\beta_p$ es el vector de coeficientes, dependiente de $p$.
 con $\sigma$ par\'ametro de escala.
 \end{defin}
 
-Data esta definici\'on, es posible darse cuenta que si $\varepsilon_p \sim AL_p(\sigma)$, entonces $q_p(\varepsilon_p) = 0$. Recordando que esta es la \'unica caracter\'istica necesaria para la distribuci\'on del error aleatoria, entonces es posible definir
+Data esta definici\'on, es posible darse cuenta que si $\varepsilon_p \sim AL_p(\sigma)$, entonces $q_p(\varepsilon_p) = 0$. Recordando que esta es la \'unica caracter\'istica necesaria para la variable de dispersi\'on, entonces es posible definir
 \begin{equation*}
-    \varepsilon \sim AL_p(\sigma).
+    \varepsilon_p \sim AL_p(\sigma).
 \end{equation*}
 
 El modelo, entonces, se puede reescribir como:
@@ -227,4 +226,4 @@ En el caso de la predicci\'on, si se tiene una nueva matriz de covariables $X_* 
 \end{equation*}
 que tampoco tiene soluci\'on anal\'itica.
 
-Si bien este modelo representa un gran avance, a\'un queda la posibilidad de retomar estas ideas y crear modelos m\'as precisos. La intenci\'on de esta tesis es encontrar un modelo para la \textit{regresi\'on sobre cuantiles} que sea completamente bayesiano y no param\'etrico, con la intenci\'on de poder representar distribuciones m\'as complejas.
+Si bien este modelo representa un gran avance, a\'un queda la posibilidad de retomar estas ideas y crear modelos m\'as flexibles, que capturen con mayor precisi\'on las particularidades de cada fen\'omeno y la interacci\'on entre las variables de salida y las covariables. En el siguiente cap\'itulo se discutir\'a la importancia de capturar mayor complejidad en la distribuciones, tanto de $f_p$, como de $\varepsilon_p$, misma que se realizar\'a haciendo uso de m\'etodos no param\'etricos.

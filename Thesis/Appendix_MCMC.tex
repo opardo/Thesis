@@ -10,7 +10,7 @@ Para hacer esto simula cadenas de markov de los distintos elementos de la distri
 
 Se trata de un caso particular de los algoritmos \textit{MCMC}, y a continuaci\'on se analizan dos tipos, siendo el segundo una generalizaci\'on del primero.
 
-\subsection{Simulador de Gibss de dos pasos}
+\subsection{Simulador de Gibbs de dos pasos}
 
 Funciona de la siguiente manera: si dos variables aleatorias $X$ y $Y$ tienen una densidad conjunta $f(x,y)$, con sus correspondientes densidades condicionales $f_{Y|X}$ y $f_{X|Y}$, se genera una cadena de markov $(X_t,Y_t)$ de acuerdo al siguiente algoritmo:
 \\ \\
@@ -22,13 +22,13 @@ Funciona de la siguiente manera: si dos variables aleatorias $X$ y $Y$ tienen un
         $2. \text{ } X_t \sim f_{X|Y}(x|y_{t})\;$
      }
  }
- \caption{Simulador de Gibss de dos pasos}
+ \caption{Simulador de Gibbs de dos pasos}
 \end{algorithm}
 \BlankLine
 
 La convergencia de la cadena de markov está asegurada, a menos que los soportes de las condicionales no estén conectados.
 
-\subsection{Simulador de Gibss de múltiples pasos}
+\subsection{Simulador de Gibbs de múltiples pasos}
 
 Sea $\mathbb{X} \in \mathcal{X}$ una variable aleatoria que puede ser escrita como $\mathbb{X} = (X_1,...,X_p)$, con $p \in \mathbb{Z}^+$, y donde las $X_i$'s bien pueden ser unidimensionales o multidimensionales. Además, es posible encontrar las distribuciones condicionales, de forma que
 \begin{equation*}
@@ -51,7 +51,7 @@ El correspondiente algoritmo de Gibbs está dado por:
     $...\;$\\
     $p.  \text{ }X_p^{(t)} \sim f_p(x_p|x_1^{(t)},...,x_{p-1}^{(t)})\;$\\
  }
- \caption{Simulador de Gibss de múltiples pasos}
+ \caption{Simulador de Gibbs de múltiples pasos}
 \end{algorithm}
 \BlankLine
 
@@ -61,7 +61,7 @@ Cabe resaltar que el desempeño puede estar fuertemente afectado por la parametr
 
 \subsection{Monitoreo de convergencia a la \textit{estacionariedad}}
 
-El primer requisito de convergencia de un algoritmo MCMC es que la distribución de la cadena $(x^{(t)})$ sea la distribución estacionaria $f$. Una meta menos ambiciosa también sería que sea independiente del punto inicial $x^{(0)}$, después de muchas realizaciones de la cadena  usando el mismo \textit{kernel} de transición. La principal herramienta para verificar \textit{estacionariedad} es usar muchas cadenas en paralelo, para poder comparar sus rendimientos. 
+El primer requisito de convergencia de un algoritmo MCMC es que la distribución de la cadena $(x^{(t)})$ sea la distribución estacionaria $f$. Una meta menos ambiciosa sería que sea independiente del punto inicial $x^{(0)}$, después de muchas realizaciones de la cadena. La principal herramienta para verificar \textit{estacionariedad} es correr varias cadenas en paralelo, para poder comparar sus rendimientos. 
 
 Un primer acercamiento empírico al control de convergencia es el dibujar gráficas de las cadenas simuladas (componente a componente o juntas), para detectar valores muy desviados y comportamientos no estacionarios. 
 
