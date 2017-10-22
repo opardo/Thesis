@@ -33,7 +33,6 @@ con $\varepsilon \in \mathbb{R} \sim \mathcal{N}(0,\sigma^2)$ (denominado com\'u
 
 Adem\'as, se supone independencia entre $\varepsilon$'s, es decir, para todo $\tilde{\varepsilon} \neq \dot{\varepsilon}$, $\tilde{\varepsilon}$ y $\dot{\varepsilon}$ son independientes. Por lo tanto, sean $\tilde{x}$ las covariables asociadas a la variable de respuesta $\tilde{y}$, y $\dot{x}$ las asociadas a $\dot{y}$, se tiene que $\tilde{y} | \tilde{x}, f, \sigma^2$ es condicionalmente independiente a $\dot{y} | \dot{x}, f, \sigma^2$.
 
-
 \subsection[Modelo tradicional]{
     Modelo tradicional
     \footnote{Algunas ideas de esta subsecci\'on son retomadas de \cite{Denison_BayesMethods} y \cite{Bannerjee_BayLinMod}.}
@@ -50,7 +49,7 @@ Para hacer esto, el enfoque bayesiano le asigna una distribución inicial de pro
     \beta,\sigma^2 \sim \mathbb{P}(\beta,\sigma^2|H).
 \end{equation*}
 
-A partir de este momento se omitir\'a escribir la distribuci\'on condicional respecto a $H$ por simplificaci\'on de la notaci\'on, pero es importante no olvidar su existencia.
+Como ya se mencion\'o en el cap\'itulo anterior, se omitir\'a escribir la distribuci\'on condicional respecto a $H$ por simplificaci\'on de la notaci\'on, pero es importante no olvidar su existencia.
 
 Sea $\{(x_i,y_i)| x_i \in \mathbb{R}^n, y_i \in \mathbb{R}, i \in \{1,...,m\} \}$ el conjunto de datos observados de las variables de respuesta y de las covariables. Es posible representar este mismo conjunto con la notaci\'on matricial $\{X,Y | X \in \mathbb{R}^{m \times n}, Y \in \mathbb{R}^m\}$. \footnote{Por simplificaci\'on y limpieza de notaci\'on en este trabajo se escribir\'an de igual manera variables aleatorias y los datos en efecto observados, considerando que en cada caso el contexto ser\'a suficiente para saber de cu\'al se est\'a hablando, siendo asociadas las letras min\'usculas a una \'unica observaci\'on y las may\'usuclas a una matriz de observaciones.} Sea $\mathcal{E} \in \mathbb{R}^m$ el vector de errores aleatorios, tal que $\mathcal{E} \sim \mathcal{N}(0,\sigma^2 I)$. El modelo se puede reescribir como:
 \begin{equation*}
@@ -77,9 +76,9 @@ Por conveniencia anal\'itica, hay una distribuci\'on inicial com\'unmente usada 
     &\propto (\sigma^2)^{-(a+(n/2)+1)} \exp\left(-\frac{(\beta-M)^TV^{-1}(\beta-M) + 2b}{2\sigma^2}\right),
 \end{aligned}
 \end{equation*}
-donde $M$ es la media inicial de los coeficientes, $\sigma^2 V$ su varianza, y $a$ y $b$ son los par\'ametros iniciales de forma y escala de $\sigma ^2$. 
+donde $M$ es la media inicial de los coeficientes, $\sigma^2 V$ su varianza, y $a$, $b$ son los par\'ametros iniciales de forma y escala, respectivamente, de $\sigma ^2$. 
 
-Aprovechando la propiedad conjugada, es posible escribir la probabilidad posterior de los par\'ametros como:
+Aprovechando la propiedad conjugada, es posible escribir la probabilidad posterior de los par\'ametros como
 \begin{equation*}
 \begin{aligned}
     \mathbb{P}(\beta,\sigma^2 | Y, X) 
@@ -99,7 +98,7 @@ donde
 
 Es decir, la distribuci\'on posterior de $(\beta,\sigma^2)$ es \textit{Normal - Gamma Inversa}, con par\'ametros $\mathcal{NGI}(\bar{M},\bar{V},\bar{a},\bar{b})$.
 
-Si se tiene una nueva matriz de covariables $X_*$ y se desea hacer predicci\'on de las respectivas variables de salida $Y_*$, es posible hacer inferencia con los datos observados de la siguiente manera:
+Si se tiene una nueva matriz de covariables $X_*$ y se desea hacer predicci\'on de las respectivas variables de salida $Y_*$, es posible hacer inferencia con los datos observados como se detalla a continuaci\'on.
 \begin{equation*}
 \begin{aligned}
     \mathbb{P}(Y_*|X_*,Y,X)

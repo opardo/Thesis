@@ -2,7 +2,7 @@
 
 \section{Motivaci\'on}
 
-En el cap\'itulo anterior se analizaron m\'etodos para realizar regresi\'on hacia una variable de respuesta $y$, dado un cierto conjunto de covariables $x$. Si bien son modelos con muchas ventajas, es relevante no olvidar que cuentan con un supuesto fuerte: la relación entre la variable dependiente $y$ y las variables independientes $x$ \'unicamente se da de forma lineal. Pero las funciones lineales s\'olo son un pequeño subconjunto del conjunto infinito no-numerable de funciones existentes. Por ello, valdr\'ia la pena analizar si es posible relajar este supuesto y tener un modelo m\'as general.
+En el cap\'itulo anterior se analizaron m\'etodos para realizar regresi\'on hacia una variable de respuesta $y$, dado un cierto conjunto de covariables $x$. Si bien son modelos con muchas ventajas, es relevante no olvidar que cuentan con un supuesto fuerte: la relación entre la variable dependiente $y$ y las variables independientes $x$ \'unicamente se da de forma lineal. Pero las funciones lineales s\'olo son un subconjunto del conjunto infinito no-numerable de funciones existentes. Por ello, valdr\'ia la pena analizar si es posible relajar este supuesto y tener un modelo m\'as general.
 
 Una idea inicial para darle la vuelta es redefinir variables, de tal manera que se pueda obtener un polinomio. Por ejemplo, se supone que $\dot{x}$ es un buen predictor de $y$, pero como polinomio de orden 3, es decir:
 \begin{equation*}
@@ -204,9 +204,9 @@ En este orden de ideas, las propiedades que $k(x,x')$ tiene que cumplir son
 \end{aligned}
 \end{equation*}
 
-Si bien es cierto que dadas esas restricciones hay una variedad muy grande de funciones con las que se puede describir $k(x,x')$, por practicidad, y tomando en cuenta que es un supuesto sensato para la mayor\'ia de los casos, es com\'un describir a la funci\'on $k$ en relaci\'on a la distancia entre $x$ y $x'$, $\norm{x,x'}_\gamma$. Es decir, $k(x,x') = k(\norm{x,x'}_\gamma)$. A este tipo de funciones de covarianza se les denomina \textbf{estacionarias}.
+Si bien es cierto que dadas esas restricciones hay una variedad muy grande de funciones con las que se puede describir $k(x,x')$, por practicidad, y tomando en cuenta que es un supuesto sensato para la mayor\'ia de los casos, es com\'un describir a la funci\'on $k$ en relaci\'on a la distancia entre $x$ y $x'$, escrita usualmente como $\norm{x,x'}$. Es decir, $k(x,x') = k(\norm{x,x'})$. A este tipo de funciones de covarianza se les denomina \textbf{estacionarias}.
 
-Adem\'as, esta relaci\'on entre covarianza y distancia suele ser inversa, es decir, entre menor sea la distancia, mayor ser\'a la covarianza, y viceversa. De esta manera, para valores $x \approx x'$, se obtendr\'a que $f_p(x) \approx f_p(x')$ en la mayor\'ia de los casos, lo que tiene el supuesto impl\'icito de que $f_p$ es una funci\'on continua.
+Adem\'as, esta relaci\'on entre covarianza y distancia suele ser inversa, es decir, entre menor sea la distancia, mayor ser\'a la covarianza, y viceversa. De esta manera, para valores $x \approx x'$, se obtendr\'a que $f_p(x) \approx f_p(x')$, por lo que se tiene el supuesto impl\'icito de que $f_p$ es una funci\'on continua.
 
 Un ejemplo de este tipo de funciones son las $\bm{\gamma}$\textbf{\textit{-exponencial}}, mismas que se definen de la siguiente manera:
 \begin{equation*}
@@ -220,53 +220,12 @@ donde $\lambda$ es un par\'ametro de escala y $\tau$ de rango.
 
 Las de uso m\'as com\'un suelen ser la $1$ y $2$\textit{-exponencial}. Ambas tienen la ventaja de ser continuas, pero la $2$\textit{-exponencial} tiene adem\'as la peculiaridad de ser infinitamente diferenciable y, por lo tanto, es suave.
 
-El siguiente ejemplo de funciones estacionarias es la \textbf{\textit{clase de Matérn}}, descrita como
-\begin{equation*}
-\begin{aligned}
-    k(x,x') 
-    &= k(\norm{x,x'}_1;\nu,\lambda,\tau) \\
-    &= 
-    \lambda \times \frac{2^{1-\nu}}{\Gamma(\nu)}
-    \left(\tau\sqrt{2\nu}\norm{x,x'}_1\right)^\nu
-    \times 
-    {\left[K_{\nu}\left(\tau\sqrt{2\nu}\norm{x,x'}_1\right)\right]}^\nu,
-\end{aligned}
-\end{equation*}
-donde $K_{\nu}$ es la funci\'on modificada de Bessel y $\Gamma(.)$ es la funci\'on \textit{gamma}. Los casos m\'as utilizados son
-\begin{equation*}
-\begin{aligned}
-    k\left(\norm{x,x'}_1;\nu = \frac{3}{2},\lambda,\tau \right) 
-    &= 
-    \lambda \times \left(1 + \tau\sqrt{3}\norm{x,x'}_1\right) \times
-    exp\left(-\tau\sqrt{3}\norm{x,x'}_1\right), \\
-    k\left(\norm{x,x'}_1;\nu = \frac{5}{2},\lambda,\tau \right) 
-    &= 
-    \lambda \times 
-    \left(1 + \tau\sqrt{3}\norm{x,x'}_1 + \tau^2\frac{5}{3}\norm{x,x'}_1^2\right) \\
-    &\text{ }\text{ }\text{ }\text{ } \times exp\left(-\tau\sqrt{5}\norm{x,x'}_1\right). \\
-\end{aligned}
-\end{equation*}
-
 Otra posible funci\'on de covarianza es la \textbf{\textit{racional cudr\'atica}}, caracterizada como 
 \begin{equation*}
     k(x,x') = k(\norm{x,x'}_2;\alpha,\lambda,\tau) = 
     \lambda \times \left(1 + \tau \frac{\norm{x,x'}_2^2}{2\alpha}\right)^{-\alpha},
 \end{equation*}
 con $\alpha,\lambda,\tau > 0$.
-
-Existen otro tipo de funciones estacionarias que no guardan una relaci\'on inversa entre distancia y covarianza, sino que capturan un componente \textbf{estacional}, normalmente usado en series de tiempo. De esta manera, y siendo $t$ la covariable del tiempo, es posible pensar en una funci\'on de la forma
-\begin{equation*}
-    k(x,x',t,t';E,\lambda) = \bar{k}(x,x') + \lambda \times \delta_{\{(|t'-t| \text{ mod } E) = 0\}},
-\end{equation*}
-donde $\bar{k}$ es alguna de las funciones estacionarias antes mencionadas, $\delta$ es la \textit{delta de Kroenecker} y $E$ es el periodo de estacionalidad. Por ejemplo, $E = 12$ para una serie mensual.
-
-Si se desea suavizar esta componente de estacionalidad para que no sea \'unicamente puntual, es posible describir la covarianza con una funci\'on como la siguiente:
-\begin{equation*}
-    k(x,x',t,t';E,\lambda,\tau) = 
-    \bar{k}(x,x') + 
-    \lambda \times
-    exp\left(-\tau\frac{E}{\pi}sen^2\left(\frac{\pi}{E}|t'-t|\right)\right).
-\end{equation*}
 
 \subsection{Predicción}
 
@@ -335,7 +294,7 @@ Antes de revisar la definici\'on formal de los Procesos de Dirichlet, es conveni
 En t\'erminos generales, para que una distribuci\'on de probabilidad $G$ se distribuya de acuerdo a un Proceso de Dirichlet, sus distribuciones marginales tienen que tener una distribuci\'on Dirichlet. A continuaci\'on se enuncia una definici\'on m\'as detallada.
 
 \begin{defin}
-    Sean $G$ y $H$ dos distribuciones cuyo soporte es el conjunto $\Theta$ y sea $\alpha \in \mathbb{R}^+$. Entonces, si se toma una partici\'on finita cualquiera $A_1,...,A_r$ del conjunto $\Theta$, el vector $(G(A_1),...,G(A_r))$ es aleatorio, porque $G$ tambi\'en lo es.
+    Sean $G$ y $H$ dos distribuciones cuyo soporte es el conjunto $\Theta$ y sea $\alpha \in \mathbb{R}^+$. Entonces, si se toma una partici\'on finita cualquiera $(A_1,...,A_r)$ del conjunto $\Theta$, el vector $(G(A_1),...,G(A_r))$ es aleatorio, porque $G$ tambi\'en lo es.
     
     Se dice que $G$ se distribuye de acuerdo a un \textbf{Proceso de Dirichlet} $\bm{(G \sim DP(\alpha,H))}$, con distribuci\'on media $H$ y par\'ametro de concentraci\'on $\alpha$, si
     \begin{equation*}
@@ -367,11 +326,9 @@ Es momento de analizar el papel que juegan los par\'ametros. Sea $Ai \subset \Th
 
 En este orden de ideas, es posible darse cuenta que la distribuci\'on $H$ representa la \textit{distribuci\'on media} del Proceso de Dirichlet. Por otro lado, el par\'ametro $\alpha$ tiene una relaci\'on inversa con la varianza. As\'i, a una mayor $\alpha$, corresponde una menor varianza del Proceso de Dirichlet, y, por lo tanto, una mayor concentraci\'on respecto a la distribuci\'on media $H$. 
 
-Siguiendo la secuencia l\'ogica, si $\alpha \rightarrow \infty$, entonces $G(A_i) \rightarrow H(A_i)$ para cualquier elemento $A_i$ de la partici\'on. Es decir, $G \rightarrow H$ en distribuci\'on. Sin embargo, cabe aclarar que esto no es lo mismo que $G \rightarrow H$. Por un lado, $H$ puede ser una distribuci\'on de probabilidad continua, mientras que, como se ver\'a m\'as adelante, $G$ puede arrojar dos muestras iguales con probabilidad mayor a 0, por lo que es una distribuci\'on discreta.
-
 \subsection{Distribuci\'on posterior}
 
-Sea $G \sim DP(\alpha,H)$. Dado que $G$ es (aunque aleatoria) una distribuci\'on, es posible obtener realizaciones de ella. Sean $\phi_1,..., \phi_n$ una secuencia de realizaciones independientes de $G$, que toman valores dentro de su soporte $\Theta$. Sea de nuevo $A_1,...,A_r$ una partici\'on finita cualquiera del conjunto $\Theta$, y sea $n_k = |\{i: \phi_i \in A_k\}|$ el n\'umero de valores observados dentro del conjunto $A_k$. Por la propiedad conjugada entre la distribuci\'on de \textit{Dirichlet} y la distribuci\'on \textit{Multinomial}, se obtiene que
+Sea $G \sim DP(\alpha,H)$. Dado que $G$ es (aunque aleatoria) una distribuci\'on, es posible obtener realizaciones de ella. Sean $(\phi_1,..., \phi_n)$ una secuencia de realizaciones independientes de $G$, que toman valores dentro de su soporte $\Theta$. Sea de nuevo $(A_1,...,A_r)$ una partici\'on finita cualquiera del conjunto $\Theta$, y sea $n_k = |\{i: \phi_i \in A_k\}|$ el n\'umero de valores observados dentro del conjunto $A_k$. Por la propiedad conjugada entre la distribuci\'on de \textit{Dirichlet} y la distribuci\'on \textit{Multinomial}, se obtiene que
 \begin{equation*}
    (G(A_1),...,G(A_r))|\phi_1,...,\phi_n \sim Dir(\alpha H(A_1) + n_1,...,\alpha H(A_r) + n_r). 
 \end{equation*}

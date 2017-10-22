@@ -17,20 +17,20 @@ pero esto requerir\'ia conocer la funci\'on conjunta, misma que puede ser comple
 Este problema puede ser abordado mediante el Teorema de representaci\'on general de de Finetti. Para ello, antes se dar\'a una definici\'on.
 
 \begin{defin*}
-    Sea $y_1,...,y_n$, una secuencia de $n$ variables aleatorias, cuya distribuci\'on de probabilidad conjunta est\'a dada por $\mathbb{P}(y_1,...,y_n)$. Sea $\psi$ una funci\'on biyectiva, que va de $\{1,...,n\} \rightarrow \{1,...,n\}$, es decir, una funci\'on que crea una permutaci\'on del conjunto $\{1,...,n\}$.  
-    Entonces, se dice que $y_1,...,y_n$ es una \textbf{secuencia aleatoria infinitamente intercambiable} si se cumple que 
+    Sea $(y_1,...,y_n)$, una secuencia de $n$ variables aleatorias, cuya distribuci\'on de probabilidad conjunta est\'a dada por $\mathbb{P}(y_1,...,y_n)$. Sea $\psi$ una funci\'on biyectiva, que va de $\{1,...,n\} \rightarrow \{1,...,n\}$, es decir, una funci\'on que crea una permutaci\'on del conjunto $\{1,...,n\}$.  
+    Entonces, se dice que $(y_1,...,y_n)$ es una \textbf{secuencia aleatoria infinitamente intercambiable} si se cumple que 
     \begin{equation*}
         \mathbb{P}(y_1,...,y_n) = \mathbb{P}(y_{\psi(1)},...,y_{\psi(n)}),
     \end{equation*}
     para cualquier permutaci\'on $\psi$.
 \end{defin*}
 
-En pocas palabras, una secuencia $y_1,...,y_n$ se considerar\'a infinitamente intercambiable si el orden en que se etiquetan las variables no afecta su distribuci\'on conjunta. Es importante hacer notar que la com\'unmente usada independencia implica intercambiabilidad, pero lo contrario no se cumple. Es decir, la intercambiabilidad es un supuesto menos r\'igido que la independencia.
+En pocas palabras, una secuencia $(y_1,...,y_n)$ se considerar\'a infinitamente intercambiable si el orden en que se etiquetan las variables no afecta su distribuci\'on conjunta. Es importante hacer notar que la com\'unmente usada independencia implica intercambiabilidad, pero lo contrario no se cumple. Es decir, la intercambiabilidad es un supuesto menos r\'igido que la independencia.
 
 Dicho esto, es momento de plantear el \textbf{\textit{Teorema de represesentaci\'on general de de Finetti}}.\footnote{Una demostraci\'on de este teorema puede ser encontrada en \cite{Schervish_TheoryStats}.}
 
 \begin{theorem*}
-    Sea $y_1, ...,y_n$ una secuencia aleatoria infinitamente intercambiable de valores reales. Entonces existe una distribuci\'on de probabilidad $F$ sobre $\mathcal{F}$, el espacio de todas las distribuciones, de forma que la probabilidad conjunta de $y_1, ...,y_n$ se puede expresar como
+    Sea $(y_1, ...,y_n)$ una secuencia aleatoria infinitamente intercambiable de valores reales. Entonces existe una distribuci\'on de probabilidad $F$ sobre $\mathcal{F}$, el espacio de todas las distribuciones, de forma que la probabilidad conjunta de $(y_1, ...,y_n)$ se puede expresar como
     \begin{equation*}
         \mathbb{P}(y_1, ...,y_n) =
         \int_{\mathcal{F}}\left[\prod_{k=1}^n \mathbb{P}(y_k|G)\right]dF(G),
@@ -43,10 +43,10 @@ Dicho esto, es momento de plantear el \textbf{\textit{Teorema de represesentaci\
     \begin{equation*}
         G_n(y) = \frac{1}{n} \sum_{i=1}^n I(y_i \leq y).
     \end{equation*}
-    En otras palabras, el Teorema de de Finetti dice que $y_1, ...,y_n$ son condicionalmente independientes, dada cierta distribuci\'on $G$. A su vez dicha $G$ es aleatoria y sigue una distribuci\'on $F(G)$.
+    En otras palabras, el Teorema de de Finetti dice que $\{y_1, ...,y_n\}$ es un conjunto de variables aleatorias condicionalmente independientes, dada cierta distribuci\'on $G$. A su vez dicha $G$ es aleatoria y sigue una distribuci\'on $F(G)$.
 \end{theorem*}
 
-Cabe hacer notar que el Teorema de de Finetti plantea la distribuci\'on conjunta de $y_1, ...,y_n$ como una mezcla de verosimilitudes condicionalmente independientes en $G$, donde el peso asociada a cada una depende de $F(G)$. Por lo tanto, $F(G)$ expresa la creencia o conocimiento acerca de cu\'an probable es que $G$ sea id\'oneo para explicar el fen\'omeno, a\'un sin observar los datos.
+Cabe hacer notar que dicho teorema plantea la distribuci\'on conjunta de $(y_1, ...,y_n)$ como una mezcla de verosimilitudes condicionalmente independientes en $G$, donde el peso asociada a cada una depende de $F(G)$. Por lo tanto, $F(G)$ expresa la creencia o conocimiento acerca de cu\'an probable es que $G$ sea id\'oneo para explicar el fen\'omeno, a\'un sin observar los datos.
 
 Un subconjunto del espacio de todas las distribuciones $\mathcal{F}$ es el espacio de las distribuciones param\'etricas, es decir, aquellas que pueden ser descritas en su totalidad \'unicamente señalando el valor de un vector de par\'ametros de tamaño finito $\theta$, mismo que puede tomar valores en todo el soporte $\Theta$. Por lo tanto, si se hace el supuesto adicional que la distribuci\'on marginal de $y_i$ es param\'etrica, con vector de par\'ametros desconocido, se obtiene como corolario del Teorema de de Finetti que
 \begin{equation*}
@@ -106,12 +106,12 @@ Sin embargo, el rango de posibles modelos conjugados puede resultar limitado en 
 
 \section[Inferencia con variables predictivas]{Inferencia con variables predictivas\raisebox{.3\baselineskip}{\normalsize\footnotemark}}\footnotetext{Esta secci\'on carece de formalidad, pero busca darle la intuici\'on al lector para generalizar el resultado del teorema de de Finetti en el contexto en el que se desarrollar\'a este trabajo. Para una explicaci\'on formal, consultar \cite{Dawid_Exchangeability}.}
 
-Como se ver\'a en el siguiente cap\'itulo de esta tesis, un problema com\'un es estimar la distribuci\'on de ciertas variables aleatorias $y_1,...,y_n$, condicionadas a los valores $x_1,...,x_n$ de otras variables com\'unmente llamadas predictivas. En este caso, la secuencia $y_1,...,y_n$ ya no es intercambiable, porque cada valor $y_i$ depende en alguna medida del valor de su respectiva $x_i$, por lo que no es posible aplicar de manera directa el teorema de de Finetti. Para hacerlo de manera indirecta, se introducir\'a el t\'ermino de intercambiabilidad parcial.
+Como se ver\'a en el siguiente cap\'itulo de esta tesis, un problema com\'un es estimar la distribuci\'on de cierta secuencia de variables aleatorias $(y_1,...,y_n)$, condicionadas a los valores $(x_1,...,x_n)$ de otras variables com\'unmente llamadas predictivas. En este caso, la secuencia $(y_1,...,y_n)$ ya no es intercambiable, porque cada valor $y_i$ depende en alguna medida del valor de su respectiva $x_i$, por lo que no es posible aplicar de manera directa el teorema de de Finetti. Para hacerlo de manera indirecta, se introducir\'a el t\'ermino de intercambiabilidad parcial.
 
 \begin{defin*}
-    Sea $y_1|x_1,...,y_n|x_n$, una secuencia de $n$ variables aleatorias, condicionales en los valores de ciertas variables predictivas, cuya distribuci\'on de probabilidad conjunta est\'a dada por $\mathbb{
+    Sea $(y_1|x_1,...,y_n|x_n)$, una secuencia de $n$ variables aleatorias, condicionales en los valores de ciertas variables predictivas, cuya distribuci\'on de probabilidad conjunta est\'a dada por $\mathbb{
     P}(y_1,...,y_n|x_1,...,x_n)$. Sea $\psi$ una funci\'on biyectiva, que va de $\{k_1,...,k_r\} \rightarrow \{k_1,...,k_r\}$, es decir, una funci\'on que crea una permutaci\'on del conjunto $\{k_1,...,k_r\}$; y $\tilde{x}_1,..., \tilde{x}_1$ los distintos valores \'unicos que toman las $x_i's$.  
-    Entonces, se dice que $y_1,...,y_n$ es una \textbf{secuencia aleatoria infinita y parcialmente intercambiable} si se cumple que 
+    Entonces, se dice que $(y_1,...,y_n)$ es una \textbf{secuencia aleatoria infinita y parcialmente intercambiable} si se cumple que 
     \begin{equation*}
         \mathbb{P}(y_{k_1},...,y_{k_r}|\tilde{x}_k) = \mathbb{P}(y_{\psi(k_1)},...,y_{\psi(k_r)}|\tilde{x}_k),
     \end{equation*}

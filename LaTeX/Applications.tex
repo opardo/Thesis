@@ -32,27 +32,27 @@ Por otro lado, la distribuci\'on de la dispersi\'on $E \sim \mathcal{N}(0,1)$ ta
 
 Posteriormente se ajust\'o el modelo y se realiz\'o predicci\'on sobre un refinamiento del intervalo simulado de $x$, obteniendo buenos resultados (figura \ref{fitted_sgse}), ya que las funciones reales de los diversos cuantiles cayeron en su totalidad dentro del intervalo de probabilidad al 90\%, estimado por el modelo. Adem\'as, las medianas de la distribuciones posteriores siguieron un comportamiento similar a las originales.
 
-Por otro lado, como se detall\'o en el cap\'itulo anterior, con el uso del paquete \textit{GPDPQuantReg} tambi\'en es posible obtener varios diagn\'osticos de las cadenas de markov. Por ejemplo, se presentan los del cu\'antil $0.5$-\textit{\'esimo} en la figura \ref{diag_sgse}, mismos que reflejan un buen desempeño del algoritmo.
-
 \begin{figure}[H]
 	\centering
-	\caption{Datos simulados y cuantiles de referencia, para funci\'on simple y dispersi\'on simple}
+	\caption{Datos simulados y cuantiles de referencia, para funci\'on simple y dispersi\'on simple.}
 	\includegraphics[width=0.60\textwidth]{Figures/Simulation/simple_g_simple_error/sample.png}
 	\label{sample_sgse}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\caption{Ajuste del modelo \textit{GPDP}, para funci\'on simple y dispersi\'on simple}
+	\caption{Ajuste del modelo \textit{GPDP}, para funci\'on simple y dispersi\'on simple.}
 	\includegraphics[width=\textwidth]{Figures/Simulation/simple_g_simple_error/fitted_models.png}
 	\captionsetup{singlelinecheck=off,font=footnotesize}
-    \caption*{La l\'inea roja representa el valor real de cada cuantil, la l\'inea azul representa la mediana de la distribuci\'on posterior predictiva y el \'area gris su intervalo de probabilidad al 90\%.}
+    \caption*{Nota: La l\'inea roja representa el valor real de cada cuantil, la l\'inea azul representa la mediana de la distribuci\'on posterior predictiva y el \'area gris su intervalo de probabilidad al 90\%.}
 	\label{fitted_sgse}
 \end{figure}
 
+Por otro lado, como se detall\'o en el cap\'itulo anterior, con el uso del paquete \textit{GPDPQuantReg} tambi\'en es posible algunos de los diagn\'osticos de las cadenas de Markov, los cuales se detallan en el \autoref{chap:MCMC}. Por ejemplo, se presentan los del cu\'antil $0.5$-\textit{\'esimo} en la figura \ref{diag_sgse}, mismos que reflejan un buen desempeño del algoritmo.
+
 \begin{figure}[H]
 	\centering
-	\caption{Diagn\'osticos de las cadenas de markov del cu\'antil $0.5$-\textit{\'esimo}, para funci\'on simple y dispersi\'on simple}
+	\caption{Diagn\'osticos de las cadenas de Markov del cu\'antil $0.5$-\textit{\'esimo}, para funci\'on simple y dispersi\'on simple.}
 	\subfloat[Ergodicidad]{
 	    \includegraphics[width=0.45\textwidth]{Figures/Simulation/simple_g_simple_error/ergodicity.png}
 	}
@@ -79,17 +79,17 @@ Los datos simulados se pueden observar en la figura \ref{sample_cgse}, los cuale
 
 \begin{figure}[H]
 	\centering
-	\caption{Datos simulados y cuantiles de referencia, para funci\'on compleja y dispersi\'on simple}
+	\caption{Datos simulados y cuantiles de referencia, para funci\'on compleja y dispersi\'on simple.}
 	\includegraphics[width=0.60\textwidth]{Figures/Simulation/complex_g_simple_error/sample.png}
 	\label{sample_cgse}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\caption{Ajuste del modelo \textit{GPDP}, para funci\'on compleja y dispersi\'on simple}
+	\caption{Ajuste del modelo \textit{GPDP}, para funci\'on compleja y dispersi\'on simple.}
 	\includegraphics[width=\textwidth]{Figures/Simulation/complex_g_simple_error/fitted_models.png}
 	\captionsetup{singlelinecheck=off, font=footnotesize}
-    \caption*{La l\'inea roja representa el valor real de cada cuantil, la l\'inea azul representa la mediana de la distribuci\'on posterior predictiva y el \'area gris su intervalo de probabilidad al 90\%.}
+    \caption*{Nota: La l\'inea roja representa el valor real de cada cuantil, la l\'inea azul representa la mediana de la distribuci\'on posterior predictiva y el \'area gris su intervalo de probabilidad al 90\%.}
 	\label{fitted_cgse}
 \end{figure}
 
@@ -107,17 +107,17 @@ Un detalle notable es que, al igual que el caso de funci\'on simple y dispersi\'
 
 \begin{figure}[H]
 	\centering
-	\caption{Datos simulados y cuantiles de referencia, para funci\'on simple y dispersi\'on compleja}
+	\caption{Datos simulados y cuantiles de referencia, para funci\'on simple y dispersi\'on compleja.}
 	\includegraphics[width=0.60\textwidth]{Figures/Simulation/simple_g_complex_error/sample.png}
 	\label{sample_sgce}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\caption{Ajuste del modelo \textit{GPDP}, para funci\'on simple y dispersi\'on compleja}
+	\caption{Ajuste del modelo \textit{GPDP}, para funci\'on simple y dispersi\'on compleja.}
 	\includegraphics[width=\textwidth]{Figures/Simulation/simple_g_complex_error/fitted_models.png}
 	\captionsetup{singlelinecheck=off,font=footnotesize}
-    \caption*{La l\'inea roja representa el valor real de cada cuantil, la l\'inea azul representa la mediana de la distribuci\'on posterior predictiva y el \'area gris su intervalo de probabilidad al 90\%.}
+    \caption*{Nota: La l\'inea roja representa el valor real de cada cuantil, la l\'inea azul representa la mediana de la distribuci\'on posterior predictiva y el \'area gris su intervalo de probabilidad al 90\%.}
 	\label{fitted_sgce}
 \end{figure}
 
@@ -133,17 +133,17 @@ on de la zona de la que no se tuvieron datos, como en el caso de funci\'on compl
 
 \begin{figure}[H]
 	\centering
-	\caption{Datos simulados y cuantiles de referencia, para funci\'on compleja y dispersi\'on compleja}
+	\caption{Datos simulados y cuantiles de referencia, para funci\'on compleja y dispersi\'on compleja.}
 	\includegraphics[width=0.60\textwidth]{Figures/Simulation/complex_g_complex_error/sample.png}
 	\label{sample_cgce}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\caption{Ajuste del modelo \textit{GPDP}, para funci\'on compleja y dispersi\'on compleja}
+	\caption{Ajuste del modelo \textit{GPDP}, para funci\'on compleja y dispersi\'on compleja.}
 	\includegraphics[width=\textwidth]{Figures/Simulation/complex_g_complex_error/fitted_models.png}
 	\captionsetup{singlelinecheck=off,font=footnotesize}
-    \caption*{La l\'inea roja representa el valor real de cada cuantil, la l\'inea azul representa la mediana de la distribuci\'on posterior predictiva y el \'area gris su intervalo de probabilidad al 90\%.}
+    \caption*{Nota: La l\'inea roja representa el valor real de cada cuantil, la l\'inea azul representa la mediana de la distribuci\'on posterior predictiva y el \'area gris su intervalo de probabilidad al 90\%.}
 	\label{fitted_cgce}
 \end{figure}
 
@@ -151,11 +151,11 @@ on de la zona de la que no se tuvieron datos, como en el caso de funci\'on compl
 
 \subsection{Conceptos iniciales}
 
-Dentro de la Investigaci\'on de Mercados, una de las m\'etricas que se consideran m\'as importantes es la del \textit{Conocimiento de marca}, misma que se define como el porcentaje de una cierta poblaci\'on que declara conocer el nombre de la marca en cuesti\'on.
+En el contexto de la investigaci\'on de mercados una de las m\'etricas que se consideran m\'as importantes es la del \textit{Conocimiento de marca}, misma que se define como el porcentaje de una cierta poblaci\'on que declara conocer el nombre de la marca en cuesti\'on.
 
-Dentro de dicho ambiente, la teor\'ia dice que esa m\'etrica normalmente depende de la publicidad pautada semana a semana. Cuando una marca \'unicamente se publicita en televisi\'on, el valor com\'unmente usado para medir esa inversi\'on se denomina \textit{Adstocked GRP}s, y, en esencia, se compone de cu\'antas veces se transmiti\'o el comercial y cu\'anta gente estaba viendo la televisi\'on cuando se transmiti\'o. Asimismo, tambi\'en se suelen usar las inversiones de los competidores para explicar el \textit{Conocimiento de marca}, debido a que es com\'un que las personas se confundan y asocien a la marca un comercial del competidor.
+Dentro de dicho ambiente, la teor\'ia dice que esa m\'etrica normalmente depende de la publicidad pautada semana a semana. Cuando una marca \'unicamente se publicita en televisi\'on, el valor com\'unmente usado para medir esa inversi\'on se denomina \textit{Adstocked GRP}s, y, en esencia, se compone de cu\'antas veces se transmiti\'o el comercial y cu\'anta gente estaba viendo la televisi\'on cuando se transmiti\'o,  ponderado por qu\'e tan lejana en el tiempo fue dicha transmisi\'on, respecto al d\'ia de hoy. Asimismo, tambi\'en se suelen usar las inversiones de los competidores para explicar el \textit{Conocimiento de marca}, debido a que es com\'un que las personas se confundan y asocien a la marca un comercial del competidor.
 
-En el pasado, inversiones iguales han representado resultados distintos en los niveles de \textit{Conocimiento de marca}, situaci\'on que normalmente es asociada a la calidad de los comerciales, tanto los propios, como los del competidor. En otras palabras, comerciales m\'as memorables han generado un mayor \textit{Conocimiento de marca} a la marca que los pauta, y una aportaci\'on muy pequeña al competidor, cuando se han transmitido en aproximadamente la misma cantidad ocasiones y a una similar audiencia.
+En el pasado, inversiones iguales han representado resultados ligeramente distintos en los niveles de \textit{Conocimiento de marca}, situaci\'on que normalmente es asociada a la calidad de los comerciales, tanto los propios, como los del competidor. En otras palabras, comerciales m\'as memorables han generado un mayor \textit{Conocimiento de marca} a la que los pauta, y una aportaci\'on muy pequeña al competidor, cuando se han transmitido en aproximadamente la misma cantidad ocasiones y a una similar audiencia.
 
 Adem\'as, tambi\'en es importante revisar el concepto de \textit{marca madre} y \textit{subvariantes}, para nuestra siguiente aplicaci\'on del modelo GPDP. Una \textit{marca madre} es aquella que tiene fama por su propio nombre, pero que se ofrece al consumidor mediante productos (tambi\'en llamados \textit{subvariantes}) que son publicitados por s\'i solos. Por ejemplo, se puede pensar en la empresa de tecnolog\'ia \textit{Pera} que tiene comerciales que posicionan su nombre, pero tiene tambi\'en comerciales donde promociona \'unicamente el celular que producen, y en otros, \'unicamente la tableta.
 
@@ -167,10 +167,10 @@ Cierta \textit{marca madre} es cliente de la empresa de investigaci\'on de merca
 
 \begin{figure}[H]
 	\centering
-	\caption{Modelo de \textit{Conocimiento de marca} para datos de entrenamiento (2014-2015)}
+	\caption{Modelo de \textit{Conocimiento de marca} para datos de entrenamiento (2014-2015).}
 	\includegraphics[width=1\textwidth]{Figures/MarketResearch/fit_review.png}
 	\captionsetup{singlelinecheck=off,font=footnotesize}
-	\caption*{El intervalo de credibilidad se construy\'o usando las estimaciones de la mediana de los cuantiles $0.05$-\'esimo y $0.95$-\'esimo.}
+	\caption*{Nota: El intervalo de credibilidad se construy\'o usando las estimaciones de la mediana de los cuantiles $0.05$-\'esimo y $0.95$-\'esimo.}
 	\label{awareness_fit}
 \end{figure}
 
@@ -182,7 +182,7 @@ Traslado al lenguaje del modelo, se deseaba ver si el valor realmente observado 
 
 \begin{figure}[H]
 	\centering
-	\caption{\textit{Conocimiento de marca} en 2016, comparado con el modelo GPDP}
+	\caption{\textit{Conocimiento de marca} en 2016, comparado con el modelo GPDP.}
 	\includegraphics[width=1\textwidth]{Figures/MarketResearch/goals_2016.png}
 	\captionsetup{singlelinecheck=off,font=footnotesize}
 	\label{awareness_fit}

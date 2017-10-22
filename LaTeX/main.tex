@@ -26,10 +26,10 @@
 %\usepackage{subfig} %%Subfigures inside a figure
 %\usepackage{pst-all} %%PSTricks - not useable with pdfLaTeX
 \usepackage[pdftex,
-            pdfauthor={CARLOS OMAR PARDO G\'OMEZ},
-            pdftitle={T\'iTULO DE LA TESIS},
-            pdfsubject={\'aREA DE LA TESIS},
-            pdfkeywords={PALABRAS CLAVE},
+            pdfauthor={CARLOS OMAR PARDO GOMEZ},
+            pdftitle={UN MODELO BAYESIANO Y NO PARAM\'ETRICO DE REGRESI\'ON SOBRE CUANTILES},
+            pdfsubject={TESIS PARA EL T\'ITULO DE LICENCIADO},
+            pdfkeywords={BAYESIANO CUANTILES NO-PARAM\'ETRICO MODELO ESTAD\'ISTICA REGRESI\'ON},
             pdfproducer={Latex con hyperref},
             pdfcreator={pdflatex}]{hyperref}
 \usepackage[ansinew]{inputenc}
@@ -69,11 +69,14 @@
    \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
    \addspace\&\space}
 
+\usepackage[bottom]{footmisc} 
+
 %% Espaciado
 \usepackage{setspace}
 %\singlespacing        %% 1-spacing (default)
 \onehalfspacing       %% 1,5-spacing
 %\doublespacing        %% 2-spacing
+\setlength\parindent{0pt} 
 
 %%% Norma %%%
 %\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
@@ -143,12 +146,12 @@
 
 %Figura
 \begin{center}
-	\includegraphics{DocumentosLaTex/ITAM_2016}
+	\includegraphics[width=\textwidth]{Figures/Miscellaneous/logo-ITAM.png}
 \end{center}
 
-\vspace{1em}
+\vspace{2em}
 
-{\sc \large {\bf UN MODELO BAYESIANO Y NO PARAM\'ETRICO DE REGRESI\'ON SOBRE CUANTILES}}\\[3em]
+{\sc \large {\bf UN MODELO BAYESIANO Y NO PARAM\'ETRICO DE REGRESI\'ON SOBRE CUANTILES}}\\[4em]
 
 \textsc{\large Tesis}\\[1em]
 
@@ -158,14 +161,14 @@
 
 \textsc{presenta}\\[1em]
 
-\textsc{\Large Carlos Omar Pardo G\'omez}\\[1em]
+\textsc{\Large Carlos Omar Pardo Gomez}\\[1em]
 
 \textsc{\large Asesor: Dr. Juan Carlos Mart\'inez Ovando}
 
 \end{center}
 
 \vspace*{\fill}
-\textsc{M\'exico, D.F. \hspace*{\fill} 2017}
+\textsc{Ciudad de M\'exico \hspace*{\fill} 2017}
 
 \end{titlepage}
 
@@ -273,10 +276,9 @@ El cap\'itulo 1 describe la importancia de las aproximaciones distintas a la reg
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
 
-\input{Appendix_MCMC}
-
 \input{Appendix_Distributions}
 
+\input{Appendix_MCMC}
 
 \end{document}
 

@@ -48,7 +48,7 @@ Cabe aclarar que antes de correr los algoritmos, resulta conveniente primero est
 
 Recordando que los centros de masa y los pesos del Proceso de Dirichlet son independientes, pueden ser actualizados por separado, con el inconveniente de que hay un n\'umero infinito de par\'ametros que actualizar. Para resolverlo, se utilizará el algoritmo de truncamiento del \textit{slice sampling}, propuesto por \cite{Kalli_Slice}, y adaptado para el modelo propuesto en esta tesis.
 
-Sea $\xi_1,\xi_2,\xi_3,...$ una secuencia positiva, generalmente elegida determinista y decreciente. Sea N una variable aleatoria con soporte en los enteros positivos, una variable auxiliar incorporada al modelo.
+Sea $\xi_1,\xi_2,\xi_3,...$ una secuencia positiva, generalmente elegida determinista y decreciente. Sea $N$ una variable aleatoria con soporte en los enteros positivos, una variable auxiliar incorporada al modelo.
 
 \subsubsection{Actualizaci\'on de los centros de masa}
 
@@ -80,7 +80,6 @@ Entonces, se calcula
     \pi_k = \frac{\bar{\pi_k}}{\sum_{j=1}^N \bar{\pi_j}}
 \end{aligned}
 \end{equation*}
-
 
 \subsubsection{Actualizaci\'on de las clases y variables de truncamiento}
 
@@ -173,7 +172,7 @@ Una de las desventajas de los modelos no param\'etricos es que, a diferencia de 
 
 Por ello, resulta particularmente importante la faceta de la predicci\'on, que es la que m\'as explota sus ventajas, y en la que los modelos param\'etricos normalmente se quedan cortos. Espec\'ificamente esta secci\'on se enfocar\'a en la predicci\'on de $f_p$, que es el par\'ametro de mayor inter\'es del modelo.
 
-Debido al uso del simulador de Gibbs, despu\'es de realizar el ajuste se cuenta con un conjunto grande de realizaciones aproximadas de $f_p(X)$, provenientes de las cadenas de markov.
+Debido al uso del simulador de Gibbs, despu\'es de realizar el ajuste se cuenta con un conjunto grande de realizaciones aproximadas de $f_p(X)$, provenientes de las cadenas de Markov.
 
 Recordando lo visto en la secci\'on 4.2.4, cuando se tienen valores de $f_p(X)$, es posible usar la propiedad de la \textit{Normal condicional} para realizar predicci\'on. Sea $X \in \mathbb{R}^m \times \mathbb{R}^n$ la matriz de datos originales, $X_* \in \mathbb{R}^r \times \mathbb{R}^n$ la matriz de datos a predecir, $f_p(X)$ una realizaci\'on de la distribuci\'on posterior correspondiente a X, y $f_p(X_*)$ el vector aleatorio de los datos a predecir. Se tiene entonces que 
 \begin{equation*}
@@ -195,9 +194,9 @@ con
     .
 \end{aligned}
 \end{equation*}
-con $K(X_1,X_2) = K(X_1,X_2|\lambda=1)$, donde $X_1$ y $X_2$ pueden ser $X$ o $X_*$.
+donde $K(X_1,X_2) = K(X_1,X_2|\lambda=1)$, y $X_1$ y $X_2$ pueden ser $X$ o $X_*$.
 
-Por lo antes descrito, es posible obtener una realizaci\'on de $f_p(X_*)$ simulando de dicha distribuci\'on \textit{Normal}. De esta manera, por cada valor de $f_p(X)$ y $\lambda$ en la cadena de markov, se simula una realizaci\'on de $f_p(X_*)$, y entonces es posible aproximar la distribuci\'on posterior de $q_p(y|x)$, para los datos $X_*$.
+Por lo antes descrito, es posible obtener una realizaci\'on de $f_p(X_*)$ simulando de dicha distribuci\'on \textit{Normal}. De esta manera, por cada valor de $f_p(X)$ y $\lambda$ en la cadena de Markov, se simula una realizaci\'on de $f_p(X_*)$, y entonces es posible aproximar la distribuci\'on posterior de $q_p(y|x)$, para los datos $X_*$.
 
 \section{Hiper-par\'ametros iniciales}
 
@@ -207,7 +206,7 @@ Para mitigar este problema, a continuaci\'on se proponen una serie de heur\'isti
 
 \subsection{Funci\'on de medias $m_{f_p}$}
 
-Para asignar la funci\'on de medias del proceso gaussiano, se puede partir de la hip\'otesis que $m_{f_p}$ es constante, y por lo tanto, las variaciones son \'unicamente producto de la varianza de $f_p$ y $\varepsilon_p$. Dada la estructura de probabilidad posterior, la media de $f_p(x)$ podr\'a actualizarse si los datos cuentan con informaci\'on suficiente para suponer lo contrario. 
+Para asignar la funci\'on de medias del proceso gaussiano, se puede partir de la hip\'otesis que $m_{f_p}$ es constante, y, por lo tanto, las variaciones son \'unicamente producto de la varianza de $f_p$ y $\varepsilon_p$. Dada la estructura de probabilidad posterior, la media de $f_p(x)$ podr\'a actualizarse si los datos cuentan con informaci\'on suficiente para suponer lo contrario. 
 
 Una vez aceptada esta estructura para definir a la funci\'on de medias, resta asignar el valor constante que tomar\'a, siendo una idea el asignar el cuantil muestral $Q_p(y)$ de los datos de la variable de respuesta $y$, es decir,
 \begin{equation*}
@@ -280,7 +279,7 @@ Es decir, si se tienen alrededor de 100 observaciones, el n\'umero esperado de \
 
 Todas las ideas expuestas en este cap\'itulo han sido implementadas en el paquete \textit{GPDPQuantReg} del lenguaje de programaci\'on R, mismo que puede ser encontrado en el repositorio de Github\faGithub \space titulado: \textbf{opardo/GPDPQuantReg}.
 
-Al momento de escribir este trabajo, cuenta con tres funciones p\'ublicas: \textit{GPDPQuantReg}, para ajustar el modelo con el simulador de Gibbs; \textit{predict}, para realizar predicci\'on en un nuevo conjunto de datos del modelo ajustado; y \textit{diagnose}, para realizar el diagn\'ostico de la ergodicidad, la autocorrelaci\'on, la correlaci\'on cruzada y la traza de las cadenas de markov, para los distintos par\'ametros.
+Al momento de escribir este trabajo, cuenta con tres funciones p\'ublicas: \textit{GPDPQuantReg}, para ajustar el modelo con el simulador de Gibbs; \textit{predict}, para realizar predicci\'on en un nuevo conjunto de datos del modelo ajustado; y \textit{diagnose}, para realizar el diagn\'ostico de la ergodicidad, la autocorrelaci\'on, la correlaci\'on cruzada y la traza de las cadenas de Markov, para los distintos par\'ametros.
 
 A continuaci\'on se expone un ejemplo de uso, el cual es similar a lo que se realiz\'o para obtener los resultados del cap\'itulo siguiente.
 
