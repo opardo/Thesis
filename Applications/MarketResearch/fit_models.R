@@ -10,7 +10,7 @@ library(lubridate)
 library(ggplot2)
 
 # Define local_path where the repo lives (user dependent)
-local_path <- "C:/Users/MB75168/Documents/Projects/Personal/"
+local_path <- "/Users/opardo/Documents/Projects/Personal/"
 
 # Setwd for simple function and simple error folder
 setwd(paste0(local_path,"Thesis/Applications/MarketResearch/"))
@@ -100,7 +100,8 @@ fit_review <- ggplot(data = plot_fit, aes(x = weeks)) +
   scale_colour_manual("", values = c("blue", "red")) +
   scale_y_continuous(labels = scales::percent) +
   xlab("semanas") +
-  ylab("conocimiento")
+  ylab("conocimiento") + 
+  theme(legend.text=element_text(size=16))
 
 ggsave(
   filename = "results/fit_review.png",
@@ -172,7 +173,7 @@ goals_2016 <- ggplot(data = plot_goals, aes(x = weeks)) +
     # legend.position = 'bottom',
     legend.key = element_rect(size = 5),
     legend.key.size = unit(3, 'lines')
-  )
+  ) + theme(legend.text=element_text(size=16))
 
 ggsave(
   filename = "results/goals_2016.png",
