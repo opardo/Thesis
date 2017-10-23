@@ -6,7 +6,7 @@ En primer lugar se presenta el ajuste del modelo en datos simulados, con el fin 
 
 \section{Simulaci\'on}
 
-Los datos de esta secci\'on se obtuvieron de la siguiente manera. Sea $y \in \mathbb{R}$ el valor de la variable de respuesta, $x \in \mathbb{R}$ su respectiva covariable, $g: \mathbb{R} \rightarrow \mathbb{R}$ la funci\'on denominada \textit{originaria} y $E \in \mathbb{R}$ una dispersi\'on aleatoria, se simul\'o:
+Los datos de esta secci\'on se obtuvieron de la siguiente manera. Sea $y \in \mathbb{R}$ el valor de la variable de respuesta, $x \in \mathbb{R}$ su respectiva covariable, $g: \mathbb{R} \rightarrow \mathbb{R}$ la funci\'on denominada \textit{tendencia} y $E \in \mathbb{R}$ una dispersi\'on aleatoria, se simul\'o:
 \begin{equation*}
     y = g(x) + E.
 \end{equation*}
@@ -22,9 +22,9 @@ En todos los casos se ajust\'o el modelo para los cuantiles $0.5$\textit{-\'esim
 
 Por otro lado, para todos los casos se simularon 40 datos sin reemplazo, dentro del intervalo $(-15,15)$, con un refinamiento de 3 decimales.
 
-\subsection{Funci\'on simple, dispersi\'on simple}
+\subsection{Tendencia simple, dispersi\'on simple}
 
-Para obtener este conjunto de datos se utiliz\'o una funci\'on originaria $g$ considerada simple: la cuadr\'atica
+Para obtener este conjunto de datos se utiliz\'o una tendencia $g$ considerada simple: la cuadr\'atica
 \begin{equation*}
     g(x) = \frac{1}{40}x^2 - \frac{1}{20}x - 2.
 \end{equation*}
@@ -34,14 +34,14 @@ Posteriormente se ajust\'o el modelo y se realiz\'o predicci\'on sobre un refina
 
 \begin{figure}[H]
 	\centering
-	\caption{Datos simulados y cuantiles de referencia, para funci\'on simple y dispersi\'on simple.}
+	\caption{Datos simulados y cuantiles de referencia, para tendencia simple y dispersi\'on simple.}
 	\includegraphics[width=0.60\textwidth]{Figures/Simulation/simple_g_simple_error/sample.png}
 	\label{sample_sgse}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\caption{Ajuste del modelo \textit{GPDP}, para funci\'on simple y dispersi\'on simple.}
+	\caption{Ajuste del modelo \textit{GPDP}, para tendencia simple y dispersi\'on simple.}
 	\includegraphics[width=\textwidth]{Figures/Simulation/simple_g_simple_error/fitted_models.png}
 	\captionsetup{singlelinecheck=off,font=footnotesize}
     \caption*{Nota: La l\'inea roja representa el valor real de cada cuantil, la l\'inea azul representa la mediana de la distribuci\'on posterior predictiva y el \'area gris su intervalo de probabilidad al 90\%.}
@@ -52,7 +52,7 @@ Por otro lado, como se detall\'o en el cap\'itulo anterior, con el uso del paque
 
 \begin{figure}[H]
 	\centering
-	\caption{Diagn\'osticos de las cadenas de Markov del cu\'antil $0.5$-\textit{\'esimo}, para funci\'on simple y dispersi\'on simple.}
+	\caption{Diagn\'osticos de las cadenas de Markov del cu\'antil $0.5$-\textit{\'esimo}, para tendencia simple y dispersi\'on simple.}
 	\subfloat[Ergodicidad]{
 	    \includegraphics[width=0.45\textwidth]{Figures/Simulation/simple_g_simple_error/ergodicity.png}
 	}
@@ -68,34 +68,34 @@ Por otro lado, como se detall\'o en el cap\'itulo anterior, con el uso del paque
 	\label{diag_sgse}
 \end{figure}
 
-\subsection{Funci\'on compleja, dispersi\'on simple}
+\subsection{Tendencia compleja, dispersi\'on simple}
 
-En este caso, se mantuvo que $E \sim \mathcal{N}(1,0)$, pero la funci\'on $g$ usada fue m\'as compleja:
+En este caso, se mantuvo que $E \sim \mathcal{N}(1,0)$, pero la tendencia $g$ usada fue m\'as compleja:
 \begin{equation*}
     g(x) = \frac{1}{2} x \cos(x) - \exp\left(\frac{1}{10}x\right).
 \end{equation*}
 
-Los datos simulados se pueden observar en la figura \ref{sample_cgse}, los cuales al ajustar el modelo mostraron de nuevo buenos resultados (figura \ref{fitted_cgse}), apareciendo la funci\'on original adentro del intervalo de probabilidad al 90\% en pr\'acticamente todos los valores de $x$ en los que se realiz\'o predicci\'on, a excepci\'on de la \'ultima zona, en la que no hubo datos de entrenamiento.
+Los datos simulados se pueden observar en la figura \ref{sample_cgse}, los cuales al ajustar el modelo mostraron de nuevo buenos resultados (figura \ref{fitted_cgse}), apareciendo la tendencia original adentro del intervalo de probabilidad al 90\% en pr\'acticamente todos los valores de $x$ en los que se realiz\'o predicci\'on, a excepci\'on de la \'ultima zona, en la que no hubo datos de entrenamiento.
 
 \begin{figure}[H]
 	\centering
-	\caption{Datos simulados y cuantiles de referencia, para funci\'on compleja y dispersi\'on simple.}
+	\caption{Datos simulados y cuantiles de referencia, para tendencia compleja y dispersi\'on simple.}
 	\includegraphics[width=0.60\textwidth]{Figures/Simulation/complex_g_simple_error/sample.png}
 	\label{sample_cgse}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\caption{Ajuste del modelo \textit{GPDP}, para funci\'on compleja y dispersi\'on simple.}
+	\caption{Ajuste del modelo \textit{GPDP}, para tendencia compleja y dispersi\'on simple.}
 	\includegraphics[width=\textwidth]{Figures/Simulation/complex_g_simple_error/fitted_models.png}
 	\captionsetup{singlelinecheck=off, font=footnotesize}
     \caption*{Nota: La l\'inea roja representa el valor real de cada cuantil, la l\'inea azul representa la mediana de la distribuci\'on posterior predictiva y el \'area gris su intervalo de probabilidad al 90\%.}
 	\label{fitted_cgse}
 \end{figure}
 
-\subsection{Funci\'on simple, dispersi\'on compleja}
+\subsection{Tendencia simple, dispersi\'on compleja}
 
-En este caso, se uso una funci\'on lineal $g$:
+En este caso, se uso una tendencia lineal $g$:
 \begin{equation*}
     g(x) = \frac{1}{2} x.
 \end{equation*}
@@ -103,44 +103,44 @@ La complejidad se introdujo en $E \sim \textit{Gamma}(\alpha = 2,\beta = 1)$, de
 
 El conjunto de datos usado para este modelo aparece en la figura \ref{sample_sgce}, y a pesar de la complejidad de la dispersi\'on, se obtuvieron buenos resultados (figura \ref{fitted_sgce}), debido a que nuevamente las funciones reales de los diversos cuantiles cayeron en su totalidad dentro del intervalo de probabilidad al 90\%, estimado por el modelo.
 
-Un detalle notable es que, al igual que el caso de funci\'on simple y dispersi\'on simple, la estimaci\'on de la funci\'on del cuantil 0.95\textit{-\'esimo} muestra una varianza m\'as grande que los otros dos cuantiles. Esto debido a que en valores extremos el modelo refleja mayor incertidumbre de lo que en realidad podr\'ia estar ocurriendo.
+Un detalle notable es que, al igual que el caso de tendencia simple y dispersi\'on simple, la estimaci\'on de la funci\'on del cuantil 0.95\textit{-\'esimo} muestra una varianza m\'as grande que los otros dos cuantiles. Esto debido a que en valores extremos el modelo refleja mayor incertidumbre de lo que en realidad podr\'ia estar ocurriendo.
 
 \begin{figure}[H]
 	\centering
-	\caption{Datos simulados y cuantiles de referencia, para funci\'on simple y dispersi\'on compleja.}
+	\caption{Datos simulados y cuantiles de referencia, para tendencia simple y dispersi\'on compleja.}
 	\includegraphics[width=0.60\textwidth]{Figures/Simulation/simple_g_complex_error/sample.png}
 	\label{sample_sgce}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\caption{Ajuste del modelo \textit{GPDP}, para funci\'on simple y dispersi\'on compleja.}
+	\caption{Ajuste del modelo \textit{GPDP}, para tendencia simple y dispersi\'on compleja.}
 	\includegraphics[width=\textwidth]{Figures/Simulation/simple_g_complex_error/fitted_models.png}
 	\captionsetup{singlelinecheck=off,font=footnotesize}
     \caption*{Nota: La l\'inea roja representa el valor real de cada cuantil, la l\'inea azul representa la mediana de la distribuci\'on posterior predictiva y el \'area gris su intervalo de probabilidad al 90\%.}
 	\label{fitted_sgce}
 \end{figure}
 
-\subsection{Funci\'on compleja, dispersi\'on compleja}
+\subsection{Tendencia compleja, dispersi\'on compleja}
 
-En este modelo se usaron datos (figura \ref{sample_cgce}) provenientes tanto de una dispersi\'on compleja, $E \sim \textit{Gamma}(\alpha = 2,\beta = 1)$, como de una funci\'on $g$ compleja:
+En este modelo se usaron datos (figura \ref{sample_cgce}) provenientes tanto de una dispersi\'on compleja, $E \sim \textit{Gamma}(\alpha = 2,\beta = 1)$, como de una tendencia $g$ compleja:
 \begin{equation*}
     g(x) = \frac{1}{2} x \cos(x) - \exp\left(\frac{1}{10}x\right).
 \end{equation*}
 
 Despu\'es del ajuste (figura \ref{fitted_cgce}), el balance fue positivo, debido a que las funciones reales de los diversos cuantiles cayeron en su totalidad dentro del intervalo de probabilidad al 90\%, del estimado por el modelo, a excepci\'
-on de la zona de la que no se tuvieron datos, como en el caso de funci\'on compleja y dispersi\'on simple. Pero a diferencia de ese modelo, la dispersi\'on compleja produce una mayor incertidumbre, particularmente notoria en el caso del cuantil 0.95\textit{-\'esimo}.
+on de la zona de la que no se tuvieron datos, como en el caso de tendencia compleja y dispersi\'on simple. Pero a diferencia de ese modelo, la dispersi\'on compleja produce una mayor incertidumbre, particularmente notoria en el caso del cuantil 0.95\textit{-\'esimo}.
 
 \begin{figure}[H]
 	\centering
-	\caption{Datos simulados y cuantiles de referencia, para funci\'on compleja y dispersi\'on compleja.}
+	\caption{Datos simulados y cuantiles de referencia, para tendencia compleja y dispersi\'on compleja.}
 	\includegraphics[width=0.60\textwidth]{Figures/Simulation/complex_g_complex_error/sample.png}
 	\label{sample_cgce}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\caption{Ajuste del modelo \textit{GPDP}, para funci\'on compleja y dispersi\'on compleja.}
+	\caption{Ajuste del modelo \textit{GPDP}, para tendencia compleja y dispersi\'on compleja.}
 	\includegraphics[width=\textwidth]{Figures/Simulation/complex_g_complex_error/fitted_models.png}
 	\captionsetup{singlelinecheck=off,font=footnotesize}
     \caption*{Nota: La l\'inea roja representa el valor real de cada cuantil, la l\'inea azul representa la mediana de la distribuci\'on posterior predictiva y el \'area gris su intervalo de probabilidad al 90\%.}
@@ -174,9 +174,9 @@ Cierta \textit{marca madre} es cliente de la empresa de investigaci\'on de merca
 	\label{awareness_fit}
 \end{figure}
 
-Como se puede observar, el \textit{Conocimiento de marca} sigue un movimiento muy similar a la mediana que predijo el modelo, y, de hecho, en los \'ultimos meses se ha despegado positivamente.
+Es verificable que el \textit{Conocimiento de marca} sigue un movimiento muy similar a la mediana que predijo el modelo durante el primer año y medio, y, de hecho, en los \'ultimos se ha despegado positivamente.
 
-Todo esto se hizo ignorando el hecho de que tambi\'en se ten\'ian los datos de 2016, para ver c\'omo funcionar\'ia el modelo. Al cliente particularmente le interesaba ver esto porque la m\'etrica tuvo una estrepitosa ca\'ida durante el 2016 y ten\'ia la duda si era por una estrategia desafortunada de su inversi\'on o por el hecho de que su competidor hab\'ia cambiado completamente el concepto de sus comerciales, situaci\'on que podr\'ia estar provocando que la gente ya no se confundiera y los relacionara err\'oneamente a los de nuestro cliente.
+Todo lo anterior se hizo ignorando el hecho de que tambi\'en se ten\'ian los datos de 2016, con la intenci\'on de ver c\'omo funcionar\'ia el modelo. Al cliente particularmente le interesaba ver esto porque la m\'etrica tuvo una estrepitosa ca\'ida durante el 2016 y ten\'ia la duda si era por una estrategia desafortunada de su inversi\'on o por el hecho de que su competidor hab\'ia cambiado completamente el concepto de sus comerciales, situaci\'on que podr\'ia estar provocando que la gente ya no se confundiera y los relacionara err\'oneamente a los de la marca de nuestro cliente.
 
 Traslado al lenguaje del modelo, se deseaba ver si el valor realmente observado pudo haber sido predicho por el modelo o si lo consideraba poco probable, situaci\'on en la que efectivamente se podr\'ia hablar de un cambio estructural ocurrido dentro de este contexto. Los resultados obtenidos fueron los siguientes.
 

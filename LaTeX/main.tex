@@ -4,15 +4,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% HEADER
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[letterpaper,onside,11pt,review,usenames,dvipsnames]{report}
+\documentclass[oneside,11pt,review,usenames,dvipsnames]{report}
 % Alternative Options:
 %	Paper Size: a4paper / a5paper / b5paper / letterpaper / legalpaper / executivepaper
 % Duplex: oneside / twoside
 % Base Font Size: 10pt / 11pt / 12pt
-\setlength{\parskip}{\baselineskip}%
+\setlength{\parskip}{\baselineskip}
 
 %% Packages
-\usepackage[paperwidth=17cm, paperheight=22.5cm, bottom=2.5cm, right=2.5cm]{geometry}
+\usepackage[letterpaper, paperwidth=170mm, paperheight=225mm, bottom=20mm, right=20mm]{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm} %paquete para s\'imbolo matem\'aticos
@@ -48,7 +48,6 @@
 
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{mathtools}
 
@@ -130,6 +129,18 @@
 \newtheorem*{theorem*}{Teorema}
 \newtheorem*{prop*}{Propiedad}
 
+\newenvironment{dedication}
+  {\clearpage           % we want a new page          
+   \thispagestyle{empty}% no header and footer
+   \vspace*{\stretch{1}}% some space at the top
+   \itshape             % the text is in italics
+   \raggedleft          % flush to the right margin
+  }
+  {\par % end the paragraph
+   \vspace{\stretch{3}} % space at bottom is three times that at the top
+   \clearpage           % finish off the page
+  }
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Documento
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -137,148 +148,64 @@
 
 \pagestyle{empty} %No headings for the first pages.
 
-\title{Tesis} %Con este nombre se guardar\'a el proyecto en writeLaTex
+\title{UN MODELO BAYESIANO Y NO PARAM\'ETRICO DE REGRESI\'ON SOBRE CUANTILES} %Con este nombre se guardar\'a el proyecto en writeLaTex
 
-\begin{titlepage}
-\begin{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%    Secciones iniciales
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\textsc{\Large Instituto Tecnol\'ogico Aut\'onomo de M\'exico}\\[2em]
+\input{Sections/CoverPage.tex}
+\input{Sections/FirstPage.tex}
 
-%Figura
-\begin{center}
-	\includegraphics[width=\textwidth]{Figures/Miscellaneous/logo-ITAM.png}
-\end{center}
+\input{Sections/Declaration.tex}
+\input{Sections/Dedicatory.tex}
+%\input{Sections/Acknowledgements.tex}
+\input{Sections/Acknowledgements2.tex}
+\input{Sections/Preface.tex}
 
-\vspace{2em}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%    Índice
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-{\sc \large {\bf UN MODELO BAYESIANO Y NO PARAM\'ETRICO DE REGRESI\'ON SOBRE CUANTILES}}\\[4em]
-
-\textsc{\large Tesis}\\[1em]
-
-\textsc{que para obtener el t\'itulo}\\[1em]
-
-\textsc{Licenciado en Matem\'aticas Aplicadas}\\[1em]
-
-\textsc{presenta}\\[1em]
-
-\textsc{\Large Carlos Omar Pardo Gomez}\\[1em]
-
-\textsc{\large Asesor: Dr. Juan Carlos Mart\'inez Ovando}
-
-\end{center}
-
-\vspace*{\fill}
-\textsc{Ciudad de M\'exico \hspace*{\fill} 2017}
-
-\end{titlepage}
-
-
-%----------------------------------------------------------------------------------------
-%   DECLARACI\'oN
-%----------------------------------------------------------------------------------------
-\thispagestyle{empty}
-\vspace*{\fill}
-\begingroup
-Con fundamento en los art\'iculos 21 y 27 de la Ley Federal del Derecho de Autor y como titular de los derechos moral y patrimonial de la obra titulada "\textbf{UN MODELO BAYESIANO Y NO PARAM\'ETRICO DE REGRESI\'ON SOBRE CUANTILES}", otorgo de manera gratuita y permanente al Instituto Tecnol\'ogico Aut\'onomo de M\'exico y a la Biblioteca Ra\'ul Baill\'eres Jr., la autorizaci\'on para que fijen la obra en cualquier medio, incluido el electr\'onico, y la divulguen entre sus usuarios, profesores, estudiantes o terceras personas, sin que pueda percibir por tal divulgaci\'on una contraprestaci\'on.
-
-\centering
-
-\hspace{3em}
-
-\textsc{Carlos Omar Pardo G\'omez}
-
-\vspace{4em}
-
-\rule[1em]{20em}{0.5pt} % L\'inea para la fecha
-
-\textsc{Fecha}
- 
-\vspace{6em}
-
-\rule[1em]{20em}{0.5pt} % L\'inea para la firma
-
-\textsc{Firma}
-
-\endgroup
-\vspace*{\fill}
-
-%----------------------------------------------------------------------------------------
-%   DEDICATORIA
-%----------------------------------------------------------------------------------------
 \pagestyle{empty}
-\frontmatter
-
-\chapter*{}
-\begin{flushright}
-\textit{A Mago.}
-\end{flushright}
-
-
-%----------------------------------------------------------------------------------------
-%   AGRADECIMIENTOS
-%----------------------------------------------------------------------------------------
-\chapter*{Agradecimientos}
-\markboth{AGRADECIMIENTOS}{AGRADECIMIENTOS} % encabezado 
-¡Muchas gracias a todos!
-
-
-%----------------------------------------------------------------------------------------
-%   PREFACIO
-%----------------------------------------------------------------------------------------
-\pagestyle{plain}
-\chapter*{Prefacio}
-\markboth{PREFACIO}{PREFACIO} % encabezado 
-
-%%  Contenido
-\addtocontents{toc}{\protect\vspace*{\baselineskip}}
-
-El tema de esta tesis es describir un modelo de regresi\'on sobre cuantiles, debido a diversas bondades que presenta sobre el tradicional an\'alisis de regresi\'on a la media. Adem\'as, a través del paradigma bayesiano permite incorporar conocimiento previo del fen\'omeno, y presenta una gran flexibilidad, al contar con componentes no param\'etricos. Asimismo, se abordan los modelos tradicionales de regresi\'on, para entender las ventajas que presenta el nuevo modelo.
-
-El cap\'itulo 1 describe la importancia de las aproximaciones distintas a la regresi\'on a la media, así como la evoluci\'on hist\'orica de este tipo de modelos. El cap\'itulo 2 introduce al paradigma bayesiano y sus fundamentos generales. El cap\'itulo 3 se centra en los modelos bayesianos tradicionales de regresi\'on, tanto a la media, como sobre cuantiles. El cap\'itulo 4 plantea la especificaci\'on no param\'etrica particular del modelo de esta tesis, separ\'andolo de los tradicionales. El cap\'itulo 5 explica el algoritmo necesario para realizar inferencia y predicci\'on. El cap\'itulo 6 muestra simulaciones y aplicaciones del modelo, as\'i como los resultados obtenidos de evaluarlo en diversos conjuntos de datos. Finalmente, el cap\'itulo 7 hace referencia a las conclusiones de esta tesis, adem\'as de describir el trabajo futuro que se podr\'ia desarrollar.
-
-%----------------------------------------------------------------------------------------
-%   ÍNDICE
-%----------------------------------------------------------------------------------------
-
-
-
-\renewcommand{\baselinestretch}{0.75}\normalsize
+\begingroup
+\setlength{\parskip}{0pt}
 \tableofcontents
-\renewcommand{\baselinestretch}{1.0}\normalsize
+\endgroup
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%    Capitulos
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\input{Introduction}
+\clearpage
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\nouppercase{\leftmark}}
+\cfoot{\thepage}
 
-\input{BayesianParadigm}
-
-\input{Regression}
-
-\input{NonParametric}
-
-\input{GPDP}
-
-\input{Applications}
-
-\input{Conclusions}
+\input{Chapters/I-Introduction}
+\input{Chapters/II-BayesianParadigm}
+\input{Chapters/III-Regression}
+\input{Chapters/IV-NonParametric}
+\input{Chapters/V-GPDP}
+\input{Chapters/VI-Applications}
+\input{Chapters/VII-Conclusions}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%    Bibliografia
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \nocite{*} %Even non-cited BibTeX-Entries will be shown.
-\bibliographystyle{authordate1} %Style of Bibliography: plain / apalike / amsalpha / ...
-\bibliography{Bibliography} %You need a file 'literature.bib' for this.
+\bibliographystyle{authordate1}
+%Style of Bibliography: plain / apalike / amsalpha / ...
+\bibliography{Bibliography} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Apendices
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
-
-\input{Appendix_Distributions}
-
-\input{Appendix_MCMC}
+\input{Appendices/A-Distributions}
+\input{Appendices/B-MCMC}
 
 \end{document}
 
