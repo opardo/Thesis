@@ -1,0 +1,41 @@
+---
+title: "Tesis - Omar Pardo"
+author: "Juan Carlos Martinez-Ovando"
+date: "25 October 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Comentarios Generales
+
+* Posiblemente los sinodales mencionen algo acerca de usar minúsculas para realizaciones de variables aleatorias y mayúsculas para variables aleatorias no observadas aún. Cuando los veas, adelanta por iniciativa propia la discusión/aclaración en este tema.
+
+* `p.10` La definición de intercambiabilidad debe hacer referencia a **intecambiabilidad numerable** para un conjunto numerable $(X_j)_{j= 1}^{\infty}$ de variables aleatorias. La definición como la tienes en tu tesis es válida para todo $n$ finito.
+
+* El párrafo siguiente *debe* hacer referencia a la sucesión numerable de variables aleatorias.
+
+* `p.11` Por cierto, el teorema de representación de `de Finetti` es válido sólo para sucesiones numerables de variables aleatorias. **Revisa este aspecto en el Teorema...** 
+
+Al igual que la `Definición`, el `Teorema` es válido para todo $n< \infty$ finito.
+
+Ahonda en el hecho que el Teorema de de Finetti es de **existencia** más no de **unicidad**, i.e. dice que podemos emplear tal descomposición, mas no como hacerlo. Ese es uno de los principios para justificar el comentario
+
+> La probabilidad no existe...
+
+No es que no existe, es sólo que no éxiste como una sola medida de incertidumbre (basada en frecuencias), sino en términos de nuestras apreciaciones subjetivas.
+
+* `Propiedad conjugada` quizás deba ser referida como `Propiedad conjugacional`
+-----
+
+# Comentarios Particulares
+
+`p.12` El nunciado,
+
+> ... mediante la asignación de una distribución a $\theta$...
+
+debe ser
+
+> > ...mediante la asignación de una distribución para $\theta$...
