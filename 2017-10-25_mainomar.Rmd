@@ -28,14 +28,28 @@ Ahonda en el hecho que el Teorema de de Finetti es de **existencia** más no de *
 No es que no existe, es sólo que no éxiste como una sola medida de incertidumbre (basada en frecuencias), sino en términos de nuestras apreciaciones subjetivas.
 
 * `Propiedad conjugada` quizás deba ser referida como `Propiedad conjugacional`
+
+`p.18` Los plurales de letras griegas denotalos como $\varepsilon$s en lugar de 
+
+> $\varepsilon$´s
+
 -----
 
 # Comentarios Particulares
 
-`p.12` El nunciado,
+`p.12` El enunciado,
 
 > ... mediante la asignación de una distribución a $\theta$...
 
 debe ser
 
 > > ...mediante la asignación de una distribución para $\theta$...
+
+`p.14` La `Definición` especifícala en términos de $(y_1,\ldots,y_n)$ dado $(x_1,\ldots,x_n)$
+
+`p.18` Revisa que los reales positivos los denotes por $\Re_{+}$ en lugar de $\Re^{+}$
+
+`p.32` La primera ecuación excribe $x_i \in   \Re^{n} ...$ en una línea aparte...
+
+`p.33` Lo mismo, respecto a la primera ecuación con relación a $... | ...$. Lo mismo en las ecuaciones subsecuentes...
+
