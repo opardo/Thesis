@@ -10,20 +10,19 @@ Sea $\{(y_i,x_i)|i=1,...,m\}$ el conjunto de observaciones de la variable de res
 \begin{equation*}
     y = f_p(x) + {\varepsilon_p},
 \end{equation*}
-donde $f_p: \mathbb{R}^n \times \mathbb{R}$ es la funci\'on base y ${\varepsilon_p} \in \mathbb{R}$ es la dispersi\'on, ambos desconocidos.
+donde $f_p: \mathbb{R}^n \times \mathbb{R}$ es la funci\'on tendencia y ${\varepsilon_p} \in \mathbb{R}$ es la dispersi\'on, ambos desconocidos.
 
-Para reflejar la incertidumbre y el conocimiento previo del modelador, se supone a $f_p(X) \sim \mathcal{GP}(m_{f_p},k_{f_p})$, con funci\'on de medias $m_{f_p}$ dada por el modelador y funci\'on de covarianza $k_{f_p}$ 2-\textit{exponencial}, con par\'ametro de rango fijo $\tau = 1$. Es decir,
+Para reflejar la incertidumbre y el conocimiento previo del modelador, se supone a $f_p(X) \sim \mathcal{GP}(m,k)$, con funci\'on de medias $m$ dada por el modelador y funci\'on de covarianza $k$ 2-\textit{exponencial}, con par\'ametro de rango fijo $\tau = 1$. Es decir,
 \begin{equation*}
-    k_{f_p}(x_i, x_j | \lambda, \tau=1) = \lambda  \times exp\{-\norm{x_i - x_j}_2\},
+    k(x_i, x_j | \lambda, \tau=1) = \lambda  \times exp\{-\norm{x_i - x_j}_2\},
 \end{equation*}
-con $\lambda \sim GI(c_\lambda,d_\lambda)$; siendo $c_\lambda$ y $d_\lambda$ los par\'ametros de forma y escala de una \textit{Gamma-Inversa}. 
+con $\lambda \sim GI(c_\lambda,d_\lambda)$, siendo $c_\lambda$ y $d_\lambda$ los par\'ametros de forma y escala, respectivamente, de una \textit{Gamma-Inversa}. 
 
 La raz\'on de fijar $\tau = 1$ es para simplificar el proceso de inferencia que se ver\'a en la siguiente secci\'on, pero bien podr\'ia tambi\'en ser una variable aleatoria.
 
 En cuanto a la distribuci\'on inicial de $\varepsilon_p$, se supondr\'a un modelo de mezclas infinitas de Dirichlet, cuya distribuci\'on media $H$ del proceso de Dirichlet ser\'a una \textit{Gamma-Inversa}, con par\'ametros de forma $c_{DP}$ y escala $d_{DP}$.
 
 En resumen, el Modelo GPDP queda descrito de la siguiente forma:
-
 \begin{equation*}
 \begin{aligned}
     y_i| f_p(x_i), z_i, \sigma_k^* &\sim AL_p({\varepsilon_p}_i = y_i - f_p(x_i) | \sigma_{z_i}), \\
@@ -38,7 +37,7 @@ En resumen, el Modelo GPDP queda descrito de la siguiente forma:
 
 \section{Inferencia con el simulador de Gibbs}
 
-Dado que el modelo descrito no es conjugado, las distribuciones posteriores tienen que ser aproximadas mediante m\'etodos computacionales. Para hacer esto, se puede hacer uso de algoritmos MCMC (Monte Carlo Markov Chains), y particularmente del simulador de Gibbs. En caso de que el lector no est\'e familiarizado con este tipo de algoritmos, puede consultar una breve descripci\'on de ellos en el \autoref{chap:MCMC}.
+Dado que el modelo descrito no es conjugado, las distribuciones posteriores tienen que ser aproximadas mediante m\'etodos computacionales. Para hacer esto, se puede hacer uso de algoritmos MCMC (Monte Carlo Markov Chains), y particularmente del simulador de Gibbs. \footnote{En caso de que el lector no est\'e familiarizado con este tipo de algoritmos, puede consultar una breve descripci\'on de ellos en el \autoref{chap:MCMC}.}
 
 En este orden de ideas, a continuaci\'on se detallan las distribuciones condicionales posteriores de los par\'ametros del modelo, as\'i como la inclusi\'on de algunas variables latentes para permitir el funcionamiento del algoritmo.
 
@@ -200,9 +199,9 @@ Por lo antes descrito, es posible obtener una realizaci\'on de $f_p(X_*)$ simula
 
 \section{Hiper-par\'ametros iniciales}
 
-Una complicaci\'on que puede tener un modelo con la complejidad del GPDP, es que los hiper-par\'ametros que tiene que definir el modelador no son inmediatos, sino est\'an en la profunidad de un conjunto jer\'arquico de distribuciones. Por ello, no resulta sencillo asignarles valores iniciales.
+Una complicaci\'on que puede tener un modelo con la complejidad del GPDP es que los hiper-par\'ametros que tiene que definir el modelador no son inmediatos, sino est\'an en la profunidad de un conjunto jer\'arquico de distribuciones. Por ello, no resulta sencillo asignarles valores iniciales.
 
-Para mitigar este problema, a continuaci\'on se proponen una serie de heur\'isticas para su c\'alculo, mismas que se derivan de algunas ideas que me parecen senstas, pero no se originan de ning\'un cuerpo axiom\'atico y bien podr\'ian ser mejoradas. Tambi\'en es importante aclarar que por lo comentado al inicio de la secci\'on 5.2, para todas ellas se pensar\'a que los datos est\'an estandarizados.
+Para mitigar este problema, a continuaci\'on se proponen una serie de heur\'isticas para su c\'alculo, mismas que se derivan de algunas ideas que me parecen sensatas, pero no se originan de ning\'un cuerpo axiom\'atico y bien podr\'ian ser mejoradas. Tambi\'en es importante aclarar que por lo comentado al inicio de la secci\'on 5.2, para todas ellas se pensar\'a que los datos est\'an estandarizados.
 
 \subsection{Funci\'on de medias $m_{f_p}$}
 
@@ -210,7 +209,10 @@ Para asignar la funci\'on de medias del proceso gaussiano, se puede partir de la
 
 Una vez aceptada esta estructura para definir a la funci\'on de medias, resta asignar el valor constante que tomar\'a, siendo una idea el asignar el cuantil muestral $Q_p(y)$ de los datos de la variable de respuesta $y$, es decir,
 \begin{equation*}
-    m_{f_p}:\mathbb{R}^n \rightarrow \mathbb{R} | m_{f_p}(x) = Q_p(y).
+\begin{aligned}
+    m_{f_p}&:\mathbb{R}^n \rightarrow \mathbb{R} \mid \\
+    m_{f_p}&(x) = Q_p(y).
+\end{aligned}
 \end{equation*}
 
 \subsection{\textit{Gamma-Inversa}s de $\lambda$ y el Proceso de Dirichlet}
@@ -218,7 +220,7 @@ Una vez aceptada esta estructura para definir a la funci\'on de medias, resta as
 Tanto $c_\lambda$ y $d_\lambda$, como $c_{DP}$ y $d_{DP}$ son par\'ametros de distribuciones \textit{Gamma-Inversa}. Es oportuno recordar que si $U \sim \mathcal{GI}(c,d)$, entonces
 \begin{equation*}
 \begin{aligned}
-    \mathbb{E}[U] &= \frac{d}{c-1}, \text{ } c>1\\
+    \mathbb{E}[U] &= \frac{d}{c-1}, \text{ } c>1,\\
     Var(U) &= \frac{d^2}{(d-1)^2(d-2)}, \text{ } c>2.
 \end{aligned}
 \end{equation*}
@@ -242,9 +244,9 @@ Dado que se fijar\'a $Var(\varepsilon_p) = \frac{1}{2}$, por la heur\'istica ant
 
 \subsection{Par\'ametro de concentraci\'on $\alpha$}
 
-Este es el par\'ametro m\'as dif\'icil de definir, por su complejidad de interpretaci\'on. Pero cabe recordar que el valor de $\alpha$ tiene una relaci\'on positiva con el n\'umero \textit{clusters}. 
+Este es el par\'ametro m\'as dif\'icil de definir, por su complejidad de interpretaci\'on. Pero cabe recordar que el valor de $\alpha$ tiene una relaci\'on positiva con el n\'umero de subpoblaciones. 
 
-De hecho, sea $\bar{m}$ el n\'umero de clusters y $m$ el n\'umero de datos de entrenamiento, \cite{Yee_DirProc} expone que
+De hecho, sea $\bar{m}$ el n\'umero de subpoblaciones y $m$ el n\'umero de datos de entrenamiento, \cite{Yee_DirProc} expone que
 \begin{equation*}
     \mathbb{E}[\bar{m}|\alpha, m] 
     \simeq 
@@ -273,7 +275,7 @@ Si se define $\alpha = \frac{\sqrt{m}}{2}$, se tiene que
 \end{aligned}
 \end{equation*}
 
-Es decir, si se tienen alrededor de 100 observaciones, el n\'umero esperado de \textit{clusters} ser\'a alrededor de la s\'eptima parte de las observaciones. Valor que a falta de mayor exploraci\'on en este tema, parece sensato.
+Es decir, si se tienen alrededor de 100 observaciones, el n\'umero esperado de subpoblaciones ser\'a alrededor de la s\'eptima parte de las observaciones. Valor que a falta de mayor exploraci\'on en este tema, parece sensato.
 
 \section{Paquete \textit{GPDPQuantReg} en R}
 
