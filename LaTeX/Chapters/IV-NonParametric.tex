@@ -11,25 +11,25 @@ Una idea inicial para darle la vuelta es redefinir variables, de tal manera que 
 
 Entonces, se puede definir el vector $x$ de covariables como $x = (1,\dot{x},\dot{x}^2,\dot{x}^3)$ y aplicar las t\'ecnicas de regresi\'on lineal ya mencionadas.
 
-Otra cr\'itica que se le podr\'ia hacer a este modelo es la rigidez en la interacci\'on entre variables. Para ejemplificar esto, se podr\'ia pensar en un modelo de la forma:
+Otra cr\'itica que se le podr\'ia hacer a este modelo es la rigidez en la interacci\'on entre variables. Para ejemplificar esto, se podr\'ia pensar en un modelo de la forma
 \begin{equation*}
     y = \beta_0 + \beta_1\dot{x}_1 + \beta_2\dot{x}_2 + \beta_3\dot{x_1}\dot{x_2} + \varepsilon.
 \end{equation*}
 
 Es posible entonces declarar el vector $x$ de variables de entrada de la forma $x = (1,\dot{x}_1,\dot{x}_2,\dot{x}_1\dot{x}_2)$, y el procedimiento ser\'ia an\'alogo.
 
-Y a\'un es posible dar un siguiente paso, saliendo del terreno de los polinomios y entrando en el de las funciones biyectivas. Se podr\'ia pensar en un caso como el siguiente (donde siempre se cumpla que $\dot{y} > 1$):
+Y a\'un es posible dar un siguiente paso, saliendo del terreno de los polinomios y entrando en el de las funciones biyectivas. Se podr\'ia pensar en un caso como el siguiente.
 \begin{equation*}
 \begin{aligned}
-    ln(\dot{y}) &= \dot{\beta_0}\dot{x}_1^{\beta_1}\dot{x}_2^{\beta_2} e^{\varepsilon} \\
-    \implies ln(ln(\dot{y})) &= ln(\dot{\beta_0}) + \beta_1 ln(\dot{x}_1) + \beta_2 ln(\dot{x}_2) + \varepsilon \\
+    \dot{y} &= \dot{\beta_0}\dot{x}_1^{\beta_1}\dot{x}_2^{\beta_2} e^{\varepsilon} \\
+    \implies ln(\dot{y}) &= ln(\dot{\beta_0}) + \beta_1 ln(\dot{x}_1) + \beta_2 ln(\dot{x}_2) + \varepsilon \\
     \implies y &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon, 
 \end{aligned}
 \end{equation*}
 con
 \begin{equation*}
 \begin{aligned}
-    y &= ln(ln(\dot{y})), \\
+    y &= ln(\dot{y}), \\
     \beta_0 &= ln(\dot{\beta_0}), \\
     x_1 &= ln(\dot{x}_1), \\
     x_2 &= ln(\dot{x}_2),
@@ -53,12 +53,12 @@ Como menciona \cite{Wasserman_Nonparametric}: \textit{La idea b\'asica de la inf
 
 Y si bien esto puede sonar irreal, la idea intuitiva que est\'a detr\'as de este tipo de modelos es que el modelador no deber\'ia fijar el n\'umero de par\'ametros antes de analizar la informaci\'on, sino que los datos deben ser los que indiquen cu\'antos y cu\'ales son los par\'ametros significativos.
 
-\section[En la distribuci\'on de $f_p$, v\'ia procesos gaussianos]{
-    En $F_{f_p}$, v\'ia procesos gaussianos
+\section[En la distribuci\'on de $f_p$, v\'ia procesos Gaussianos]{
+    En $F_{f_p}$, v\'ia procesos Gaussianos
     \footnote{Las ideas de esta secci\'on son inspiradas por \cite{Rasmussen_GauProc}.}
 }
 
-\subsection{Introducci\'on a los procesos gaussianos}
+\subsection{Introducci\'on a los procesos Gaussianos}
 
 Retomando las ideas del cap\'itulo anterior, los modelos de regresi\'on tienen como objetivo describir la distribuci\'on de una variable aleatoria $y$, condicional a los valores de las covariables $x$, es decir $y|x \sim \mathbb{P}(y|x)$. Dado que es complicado aproximar con exactitud toda la distribuci\'on, com\'unmente se enfocan en una medici\'on particular representada por la funci\'on $f_p$, que en el caso de la \textit{regresi\'on sobre cuantiles} se define como $q_p(y|x) = f_p(x)$.
 
@@ -98,11 +98,11 @@ Por lo tanto, bajo el supuesto de que cada $f_p(x_i)$ es una variable aleatoria,
 Aunado a esto, dadas sus especificaciones concretas, $f_p(X)$ puede ser caracterizado como un proceso m\'as espec\'ifico que simplemente estoc\'astico. Para ello, se postula la siguiente definici\'on.
 
 \begin{defin}
-    Un \textbf{proceso gaussiano} ($Y \in \mathbb{R}^m$), es una colección finita de \texit{m}-variables aleatorias que tienen una distribución gaussiana (normal) conjunta.
+    Un \textbf{proceso Gaussiano} ($Y \in \mathbb{R}^m$), es una colección finita de \texit{m}-variables aleatorias que tienen una distribución Gaussiana (Normal) conjunta.
 \end{defin}
 
 \begin{obs*}
-    De acuerdo a la construcci\'on del vector $f_p(X) \in \mathbb{R}^m$, y tomando en cuenta la Definici\'on 3, $\bm{f_p(X)}$ \textbf{es un proceso gaussiano}.
+    De acuerdo a la construcci\'on del vector $f_p(X) \in \mathbb{R}^m$, y tomando en cuenta la Definici\'on 3, $\bm{f_p(X)}$ \textbf{es un proceso Gaussiano}.
 \end{obs*}
 
 % ****************************************************
@@ -149,9 +149,9 @@ Sea $X \in \mathbb{R}^m \times \mathbb{R}^n$ y $X' \in \mathbb{R}^r \times \math
     X' =     
     \left[
         \begin{array}{c}
-        x_1  \\
+        x'_1  \\
         ... \\
-        x_r
+        x'_r
         \end{array}
     \right].
 \end{equation*}
@@ -175,7 +175,7 @@ La \textbf{función vector de medias de $\bm{f_p}$ (M\textsubscript{$\bm{f_p}$})
 La \textbf{función matriz de covarianzas de $\bm{f_p}$ (K\textsubscript{$\bm{f_p}$})} se define como
 \begin{equation*}
 \begin{aligned}
-    K_{f_p}&: \mathbb{R}^m \times \mathbb{R}^n \rightarrow \mathbb{R}^m \times \mathbb{R}^m
+    K_{f_p}&: \mathbb{R}^m \times \mathbb{R}^n \times \mathbb{R}^m \times \mathbb{R}^r \rightarrow \mathbb{R}^m \times \mathbb{R}^m
     \mid\\
     K_{f_p}(X,X') &=     
     \left[
@@ -189,9 +189,9 @@ La \textbf{función matriz de covarianzas de $\bm{f_p}$ (K\textsubscript{$\bm{f_
 \end{equation*}
 \end{defin*}
 
-Dadas estas definiciones, se puede observar que el proceso gaussiano $f_p(X) \in \mathbb{R}^m$ está completamente caracterizado por su función de medias $m_{f_p}$ y su función de covarianzas $k_{f_p}$. Por lo tanto, la manera en que se definan estas dos funciones representar\'a el conocimiento inicial que se tiene del objeto de estudio. 
+Dadas estas definiciones, se puede observar que el proceso Gaussiano $f_p(X) \in \mathbb{R}^m$ está completamente caracterizado por su función de medias $m_{f_p}$ y su función de covarianzas $k_{f_p}$. Por lo tanto, la manera en que se definan estas dos funciones representar\'a el conocimiento inicial que se tiene del objeto de estudio. 
 
-A partir de este punto, y cuando el contexto lo permita, por simplicidad de notaci\'on se omitirá el uso del subíndice $f_p$ en las funciones reci\'en definidas. Además, cuando se des\'ee referirse al proceso estoc\'astico $f_p(X)$ que se distribuye como un proceso gaussiano, se har\'a con la siguiente notaci\'on:
+A partir de este punto, y cuando el contexto lo permita, por simplicidad de notaci\'on se omitirá el uso del subíndice $f_p$ en las funciones reci\'en definidas. Además, cuando se des\'ee referirse al proceso estoc\'astico $f_p(X)$ que se distribuye como un proceso Gaussiano, se har\'a con la siguiente notaci\'on:
 \begin{equation*}
     f_p(X) \sim \mathcal{GP} (m,k).
 \end{equation*}
@@ -223,9 +223,9 @@ Adem\'as, esta relaci\'on entre covarianza y distancia suele ser inversa, es dec
 Un ejemplo de este tipo de funciones son las $\bm{\gamma}$\textbf{\textit{-exponencial}}, mismas que se definen de la siguiente manera:
 \begin{equation*}
     k(x,x') = 
-    k(\norm{x,x'}_\gamma;\gamma,\lambda, \tau) = 
+    k(\norm{x-x'}_\gamma;\gamma,\lambda, \tau) = 
     \lambda \times \exp\left(-
-    \tau \norm{x,x'}_\gamma
+    \tau \norm{x-x'}_\gamma
     \right),
 \end{equation*}
 donde $\lambda$ es un par\'ametro de escala y $\tau$ de rango. 
@@ -234,8 +234,8 @@ Las de uso m\'as com\'un suelen ser la $1$ y $2$\textit{-exponencial}. Ambas tie
 
 Otra posible funci\'on de covarianza es la \textbf{\textit{racional cudr\'atica}}, caracterizada como 
 \begin{equation*}
-    k(x,x') = k(\norm{x,x'}_2;\alpha,\lambda,\tau) = 
-    \lambda \times \left(1 + \tau \frac{\norm{x,x'}_2^2}{2\alpha}\right)^{-\alpha},
+    k(x,x') = k(\norm{x-x'}_2;\alpha,\lambda,\tau) = 
+    \lambda \times \left(1 + \tau \frac{\norm{x-x'}_2^2}{2\alpha}\right)^{-\alpha},
 \end{equation*}
 con $\alpha,\lambda,\tau > 0$.
 
@@ -286,7 +286,7 @@ con
 \end{equation*}
 
 \begin{obs*}
-    $f_p(X_*)|f_p(X)$ es una colección finita de r-variables aleatorias que tienen una distribuci\'on Normal multivariada conjunta, por lo tanto, $\bm{f(X_*)|f(X)}$ \textbf{es un proceso gaussiano}.
+    $f_p(X_*)|f_p(X)$ es una colección finita de r-variables aleatorias que tienen una distribuci\'on Normal multivariada conjunta, por lo tanto, $\bm{f(X_*)|f(X)}$ \textbf{es un proceso Gaussiano}.
 \end{obs*}
 
 De esta manera quedan sentadas las bases de la distribuci\'on no param\'etrica de $f_p$. A continuaci\'on se analizar\'an las de la distribuci\'on de $\varepsilon_p$, y en el pr\'oximo cap\'itulo se estudiar\'a c\'omo hacer inferencia conjuntando ambas, mediante el uso del modelo central de esta tesis.
@@ -298,7 +298,7 @@ De esta manera quedan sentadas las bases de la distribuci\'on no param\'etrica d
 
 Un proceso de Dirichlet, visto de manera general, es una distribuci\'on sobre distribuciones. Es decir, cada realizaci\'on de él es en sí misma una distribuci\'on de probabilidad. Adem\'as, cada una de esas distribuciones ser\'a no param\'etrica, debido a que no ser\'a posible describirla con un n\'umero finito de par\'ametros.
 
-En el caso particular de este trabajo y de su misi\'on de encontrar un modelo bayesiano y no param\'etrico para la regresi\'on sobre cuantiles, los procesos de Dirichlet ser\'an utilizados para ajustar la distribuci\'on de la dispersi\'on $\varepsilon_p$ alrededor de $f_p$.
+En el caso particular de este trabajo y de su misi\'on de encontrar un modelo Bayesiano y no param\'etrico para la regresi\'on sobre cuantiles, los procesos de Dirichlet ser\'an utilizados para ajustar la distribuci\'on de la dispersi\'on $\varepsilon_p$ alrededor de $f_p$.
 
 \subsection{Definici\'on de los procesos de Dirichlet}
 
@@ -456,6 +456,6 @@ Adem\'as, por construcci\'on, esta formulaci\'on es equivalente al modelo de mez
 
 En este orden de ideas, la tarea del modelador \'unicamente consistir\'a en definir el valor del par\'ametro de concentraci\'on $\alpha$, as\'i como a la distribuci\'on de $H$ y sus respectivos hiper-par\'ametros, con la restricci\'on de que su soporte deber\'a ser un subconjunto de $\mathbb{R}_+$. Por lo tanto, la distribuci\'on \textit{Gamma} o la \textit{Gamma-Inversa} se postulan como opciones convenientes.
 
-En el siguiente cap\'itulo se retomar\'a este modelo para especificar la dispersi\'on de la regresi\'on sobre cuantiles, y conjunt\'andolo con los procesos gaussianos (vistos antes en este cap\'itulo), se obtendr\'a el modelo GPDP, centro de esta tesis.
+En el siguiente cap\'itulo se retomar\'a este modelo para especificar la dispersi\'on de la regresi\'on sobre cuantiles, y conjunt\'andolo con los procesos Gaussianos (vistos antes en este cap\'itulo), se obtendr\'a el modelo GPDP, centro de esta tesis.
 
 \newpage

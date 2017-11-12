@@ -4,7 +4,7 @@
 
 Despu\'es de analizar la introducci\'on de componentes no param\'etricos en las distribuciones, tanto de $f_p$, como de $\varepsilon_p$, a continuaci\'on se enunciar\'a el modelo central de esta tesis, con sus especificaciones correspondientes.
 
-A partir de este punto, a dicho modelo se le denominar\'a \textbf{Modelo GPDP} (por las siglas en ingl\'es de procesos gaussianos y procesos de Dirichlet).
+A partir de este punto, a dicho modelo se le denominar\'a \textbf{Modelo GPDP} (por las siglas en ingl\'es de procesos Gaussianos y procesos de Dirichlet).
 
 Sea $\{(y_i,x_i)|i=1,...,m\}$ el conjunto de observaciones de la variable de respuesta y sus respectivas covariables, cuya relaci\'on se supone como
 \begin{equation*}
@@ -12,7 +12,7 @@ Sea $\{(y_i,x_i)|i=1,...,m\}$ el conjunto de observaciones de la variable de res
 \end{equation*}
 donde $f_p: \mathbb{R}^n \times \mathbb{R}$ es la funci\'on tendencia y ${\varepsilon_p} \in \mathbb{R}$ es la dispersi\'on, ambos desconocidos.
 
-Para reflejar la incertidumbre y el conocimiento previo del modelador, se supone a $f_p(X) \sim \mathcal{GP}(m,k)$, con funci\'on de medias $m$ dada por el modelador y funci\'on de covarianza $k$ 2-\textit{exponencial}, con par\'ametro de rango fijo $\tau = 1$. Es decir,
+Para reflejar la incertidumbre y el conocimiento previo del modelador, se supone a $f_p(X) \sim \mathcal{GP}(m,k)$, con funci\'on de medias $m$ dada por el modelador y funci\'on de covarianza 2-\textit{exponencial}, con par\'ametro de rango fijo $\tau = 1$. Es decir,
 \begin{equation*}
     k(x_i, x_j | \lambda, \tau=1) = \lambda  \times exp\{-\norm{x_i - x_j}_2\},
 \end{equation*}
@@ -26,12 +26,12 @@ En resumen, el Modelo GPDP queda descrito de la siguiente forma:
 \begin{equation*}
 \begin{aligned}
     y_i| f_p(x_i), z_i, \sigma_k^* &\sim AL_p({\varepsilon_p}_i = y_i - f_p(x_i) | \sigma_{z_i}), \\
-    f_p(X)|m_{f_p}, \lambda &\sim \mathcal{GP}(m_{f_p},k_{f_p}|\lambda), \\
+    f_p(X)|m, \lambda &\sim \mathcal{GP}(m,k(\lambda)|\lambda), \\
     \lambda &\sim GI(c_\lambda,d_\lambda), \\
     z_i | \pi &\sim Mult(\pi), \\
     \pi | \alpha &\sim GEM(\alpha), \\
     \sigma_k^* | c_{DP}, d_{DP} &\sim GI(\sigma_k|c_{DP}, d_{DP}),\\
-    k_{f_p}(x_i, x_j | \lambda) &= \lambda  \times exp\{-\norm{x_i - x_j}_2\}.
+    k(x_i, x_j | \lambda) &= \lambda  \times exp\{-\norm{x_i - x_j}_2\}.
 \end{aligned}
 \end{equation*}
 
@@ -205,7 +205,7 @@ Para mitigar este problema, a continuaci\'on se proponen una serie de heur\'isti
 
 \subsection{Funci\'on de medias $m_{f_p}$}
 
-Para asignar la funci\'on de medias del proceso gaussiano, se puede partir de la hip\'otesis que $m_{f_p}$ es constante, y, por lo tanto, las variaciones son \'unicamente producto de la varianza de $f_p$ y $\varepsilon_p$. Dada la estructura de probabilidad posterior, la media de $f_p(x)$ podr\'a actualizarse si los datos cuentan con informaci\'on suficiente para suponer lo contrario. 
+Para asignar la funci\'on de medias del proceso Gaussiano, se puede partir de la hip\'otesis que $m_{f_p}$ es constante, y, por lo tanto, las variaciones son \'unicamente producto de la varianza de $f_p$ y $\varepsilon_p$. Dada la estructura de probabilidad posterior, la media de $f_p(x)$ podr\'a actualizarse si los datos cuentan con informaci\'on suficiente para suponer lo contrario. 
 
 Una vez aceptada esta estructura para definir a la funci\'on de medias, resta asignar el valor constante que tomar\'a, siendo una idea el asignar el cuantil muestral $Q_p(y)$ de los datos de la variable de respuesta $y$, es decir,
 \begin{equation*}
