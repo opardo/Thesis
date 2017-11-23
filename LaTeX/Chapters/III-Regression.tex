@@ -2,23 +2,23 @@
 
 \section{Concepto general}
 
-Los modelos de regresi\'on tienen como objetivo describir la distribuci\'on de una variable aleatoria $y \in \mathbb{R}$, normalmente conocida como la \textit{variable de respuesta}, condicional a los valores de las variables $x \in \mathbb{R}^n$, conocidas como \textit{covariables} o \textit{variables de entrada}. Visto en t\'erminos matem\'aticos, se puede expresar como
+Los modelos de regresi\'on tienen como objetivo describir la distribuci\'on de una variable aleatoria $y \in \mathbb{R}$, generalmente llamada \textit{variable de respuesta}, condicional a los valores de las variables $x \in \mathbb{R}^n$, conocidas como \textit{covariables} o \textit{variables de entrada}. Visto en t\'erminos matem\'aticos, se puede expresar como
 \begin{equation*}
     y|x \sim \mathbb{P}(y|x).
 \end{equation*}
 
-Si bien esta relaci\'on se da por hecha y es fija, normalmente es desconocida. Por lo tanto, la intenci\'on de estos modelos es realizar alguna aproximaci\'on de ella. Dado que es complicado aproximar con exactitud toda la distribuci\'on, com\'unmente se enfocan en una caracter\'istica particular, como la media o la mediana.
+Si bien esta relaci\'on se da por hecha y es fija, normalmente es desconocida. Por lo tanto, la intenci\'on de estos modelos es realizar alguna aproximaci\'on de ella. Dado que es complicado aproximar con exactitud toda la distribuci\'on, com\'unmente se utilizan un n\'umero finito de par\'ametros para describirla. Adem\'as, la interpretaci\'on de dichos par\'ametros suele tener relevancia para el modelador, como es el caso de la media o la mediana. 
 
-Tambi\'en es importante resaltar que com\'unmente se toma a los valores de $x$ como fijos y no aleatorios, como ser\'a el caso de este trabajo, pero tambi\'en se podr\'ia pensar en modelos donde haga sentido la distribuci\'on conjunta de $y$ y $x$, misma que se podr\'ia obtener como
+Tambi\'en es importante resaltar que este trabajo tiene inter\'es en modelar a $y$, dado que ya se observaron los valores de $x$. Sin embargo, se podr\'ia pensar en modelos donde haga sentido la distribuci\'on conjunta de $y$ y $x$, misma que se podr\'ia obtener como
 \begin{equation*}
     \mathbb{P}(y,x) = \mathbb{P}(y|x) \times \mathbb{P}(x).
 \end{equation*}
 
 \section{Regresión a la media}
 
-La \textit{regresi\'on a la media} es el caso particular m\'as usado de los modelos de regresi\'on, tanto en el paradigma Bayesiano, como en otros. Esto sucede debido al bajo uso de recursos que requiere su estimaci\'on, adem\'as de su capacidad interpretativa.
+La \textit{regresi\'on a la media} es el caso particular m\'as usado de los modelos de regresi\'on, tanto en el paradigma Bayesiano, como en otros. Esto sucede debido al bajo uso de recursos que requiere su estimaci\'on, particularmente porque familias conjugadas suelen hacer sentido en este contexto. De hecho, fuera del paradigma Bayesiano suelen ser com\'unmente usados debido a que se asocian con la minimizaci\'on de t\'erminos cuadrados, con las bondades de diferenciabilidad que eso implica. Adem\'as se valora la capacidad interpretativa que suelen tener los par\'ametros estimados.
 
-En notaci\'on probabil\'istica, retomando el hecho de que $y|x \sim \mathbb{P}(y|x)$, busca aproximar a la funci\'on $f$, tal que 
+En notaci\'on probabil\'istica, retomando el hecho de que $y|x \sim \mathbb{P}(y|x)$, el modelo de regresi\'on a la media busca aproximar a la funci\'on $f$, tal que 
 \begin{equation*}
     \mathbb{E}(y|x) = f(x).
 \end{equation*}
@@ -44,7 +44,7 @@ La \textit{regresi\'on lineal a la media} es el caso particular m\'as usado en e
 \end{equation*}
 donde $\beta \in \mathbb{R}^n$ se piensa con valores constantes, pero desconocidos, y la tarea es estimarlos, al igual que $\sigma^2$.
 
-Para hacer esto, el enfoque Bayesiano le asigna una distribución inicial de probabilidad a ambos par\'ametros, reflejando la incertidumbre que tiene el modelador acerca de su valor real. Es decir, sea $H$ la hip\'otesis o el conocimiento previo al que tiene acceso el modelador, se tiene que 
+Para hacer esto, el enfoque Bayesiano le asigna una distribución inicial de probabilidad a ambos par\'ametros, reflejando la incertidumbre que tiene el modelador acerca de su valor real. Es decir, sea $CP$ la hip\'otesis o el conocimiento previo al que tiene acceso el modelador, se tiene que 
 \begin{equation*}
     \beta,\sigma^2 \sim \mathbb{P}(\beta,\sigma^2|CP).
 \end{equation*}

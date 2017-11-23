@@ -40,12 +40,12 @@ Dicho esto, es momento de plantear el \textbf{\textit{Teorema de represesentaci\
     \begin{equation*}
         G_n(y) = \frac{1}{n} \sum_{i=1}^n I(y_i \leq y).
     \end{equation*}
-    En otras palabras, el Teorema de de Finetti dice que $\{y_1,y_2,\ldots\}$ es un conjunto de variables aleatorias condicionalmente independientes, dada cierta distribuci\'on $G$. A su vez dicha $G$ es aleatoria y sigue una distribuci\'on $F(G)$.
+    En otras palabras, el Teorema de de Finetti dice que $\{y_1,y_2,\ldots\}$ es un conjunto de variables aleatorias condicionalmente independientes, dada cierta distribuci\'on $G$. A su vez dicha $G$ es desconocida y la incertidumbre respecto a ella se cuantifica mediante la distribuci\'on $F(G)$.
 \end{theorem*}
 
 Cabe hacer notar que dicho teorema plantea la distribuci\'on conjunta de $(y_1,y_2,\ldots)$ como una mezcla de verosimilitudes condicionalmente independientes en $G$, donde el peso asociada a cada una depende de $F(G)$. Por lo tanto, $F(G)$ expresa la creencia o conocimiento acerca de cu\'an probable es que $G$ sea id\'onea para explicar el fen\'omeno, a\'un sin observar los datos.
 
-Un subconjunto del espacio de todas las distribuciones $\mathcal{F}$ es el espacio de las distribuciones param\'etricas, es decir, aquellas que pueden ser descritas en su totalidad \'unicamente señalando el valor de un vector de par\'ametros de tamaño finito $\theta$, mismo que puede tomar valores en todo el soporte $\Theta$\footnote{En lo que resta de esta secci\'on las proposiciones y resultados har\'an referencia al conjunto restringido de distribuciones param\'etricas, apelando a que as\'i los nuevos conceptos tengan mayor claridad para el lector, considerando que este tipo de distribuciones son con las que se suele estar m\'as familiarizado. Pero todos ser\'an generalizables al conjunto de distribuciones $\mathcal{F}$.}. Por lo tanto, si se hace el supuesto adicional que la distribuci\'on marginal de $y_i$ es param\'etrica, con vector de par\'ametros desconocido, se obtiene como corolario del Teorema de de Finetti que
+Un subconjunto del espacio de todas las distribuciones $\mathcal{F}$ es el espacio de las distribuciones param\'etricas, es decir, aquellas que pueden ser descritas en su totalidad \'unicamente señalando el valor de un vector de par\'ametros de tamaño finito $\theta$, mismo que puede tomar valores en todo un soporte $\Theta$\footnote{En lo que resta de esta secci\'on las proposiciones y resultados har\'an referencia al conjunto restringido de distribuciones param\'etricas, apelando a que as\'i los nuevos conceptos tengan mayor claridad para el lector, considerando que este tipo de distribuciones son con las que se suele estar m\'as familiarizado. Pero todos ser\'an generalizables al conjunto de distribuciones $\mathcal{F}$.}. Por lo tanto, si se hace el supuesto adicional que la distribuci\'on marginal de $y_i$ es param\'etrica, con vector de par\'ametros desconocido $theta$, se obtiene como corolario del Teorema de de Finetti que
 \begin{equation*}
     \mathbb{P}(y_1,y_2,\ldots) =
     \int_{\Theta}\left[\prod_{k=1}^\infty \mathbb{P}(y_k|\theta)\right]\mathbb{P}(\theta)d\theta.
@@ -53,7 +53,7 @@ Un subconjunto del espacio de todas las distribuciones $\mathcal{F}$ es el espac
 
 Siguiendo el razonamiento anterior, $\mathbb{P}(\theta)$ indica la probabilidad de que $\theta$ sea el vector de par\'ametros id\'oneo para explicar el fen\'omeno, antes de observar cualquier dato.
 
-La intuci\'on detr\'as de este resultado es que, al igual que en otros paradigmas, se supone a $\theta$ como constante, pero desconocido, y la tarea es estimarlo. Una particularidad del paradigma Bayesiano es expresar la incertidumbre que tiene el modelador acerca del valor verdadero mediante la asignaci\'on de una distribuci\'on para $\theta$, sujeta a la informaci\'on inicial o conocimiento previo que se tenga del fen\'omeno $(CP)$. Es decir, $\mathbb{P}(\theta|CP)$. Como una simplificaci\'on de la notaci\'on, en la literatura normalmente se escribe como $\mathbb{P}(\theta) = \mathbb{P}(\theta|CP)$ y se conoce como la \textit{probabilidad inicial} del par\'ametro.
+La intuici\'on detr\'as de este resultado es que, al igual que en otros paradigmas, se supone a $\theta$ como constante, pero desconocido, y la tarea es estimarlo. Una particularidad del paradigma Bayesiano es expresar la incertidumbre que tiene el modelador acerca del valor verdadero mediante la asignaci\'on de una distribuci\'on para $\theta$, sujeta a la informaci\'on inicial o conocimiento previo $(CP)$ que se tenga del fen\'omeno. Es decir, $\mathbb{P}(\theta|CP)$. Como una simplificaci\'on de la notaci\'on, en la literatura normalmente se escribe como $\mathbb{P}(\theta) = \mathbb{P}(\theta|CP)$ y se conoce como la \textit{probabilidad inicial} del par\'ametro.
 
 As\'i, el Teorema de representaci\'on general garantiza que para variables aleatorias infinitamente intercambiables existe una distribuci\'on del vector de par\'ametros, tal que la probabilidad conjunta se puede expresar como la verosimilitud de variables independientes, condicionales a un vector de par\'ametros, multiplicada por la distribuci\'on inicial de dicho vector de par\'ametros, que es independiente de los valores que tomen las variables aleatorias. Con el teorema se prueba la existencia de dicha representaci\'on, mas no su unicidad. En los siguientes p\'arrafos se har\'a uso de ella para realizar inferencia en variables aleatorias.
 
@@ -73,7 +73,7 @@ donde a su vez, usando el \textbf{Teorema de Bayes}, se obtiene que
 \end{equation*}
 que en el paradigma Bayesiano se conoce como la \textit{probabilidad posterior} del par\'ametro. 
 
-Se puede observar que el denominador no depende de $\theta$, y en realidad es una constante dada por la representaci\'on del teorema de de Finetti de la probabilidad conjunta, por lo que normalmente la probabilidad condicional del vector de par\'ametros no se expresa como una igualdad, sino con la proporcionalidad
+Se puede observar que el denominador no depende de $\theta$, y en realidad es una constante dada por la representaci\'on del Teorema de de Finetti de la probabilidad conjunta, por lo que normalmente la probabilidad condicional del vector de par\'ametros no se expresa como una igualdad, sino con la proporcionalidad
 \begin{equation*}
     \mathbb{P}(\theta|y_1,\ldots,y_n) 
     \propto 
@@ -81,7 +81,7 @@ Se puede observar que el denominador no depende de $\theta$, y en realidad es un
 \end{equation*}
 y s\'olo difiere de la igualdad por una constante que permita que, al integrar sobre todo el soporte de $\theta$, el resultado sea igual a 1.
 
-Cabe resaltar que el factor $\mathbb{P}(y_1,\ldotsy_n|\theta)$ es lo que se conoce tambi\'en en otros paradigmas como \textit{verosimilitud}, y que en caso de independencia condicional puede ser reescrito como
+Cabe resaltar que el factor $\mathbb{P}(y_1,\ldotsy_n|\theta)$ es lo que se conoce tambi\'en en otros paradigmas como \textit{verosimilitud}, y que en caso de independencia condicional, dada por el Teorema de de Finetti, puede ser reescrito como
 \begin{equation*}
     \mathbb{P}(y_1,\ldots,y_n|\theta)  = \prod_{i=1}^n \mathbb{P}(y_i|\theta).
 \end{equation*}
@@ -89,13 +89,13 @@ Por lo tanto, es posible afirmar que el aprendizaje en el paradigma Bayesiano se
 \begin{equation*}
     Posterior \propto Verosimilitud \times Inicial,
 \end{equation*}
-es decir, surge de conjuntar el conocimiento inicial con la informaci\'on contenida en los datos.
+es decir, el conocimiento final surge de conjuntar el conocimiento inicial con la informaci\'on contenida en los datos.
 
 Es importante notar que bajo este enfoque se obtiene una distribuci\'on de probabilidad completa para  el pron\'ostico de $y_{n+1}$. \'Esta se puede utilizar para el c\'alculo de estimaciones puntuales o intervalos (que en el caso del paradigma Bayesiano son llamados de \textit{probabilidad}) mediante funciones de utilidad o p\'erdida, y haciendo uso de la Teor\'ia de la Decisi\'on.
 
 \section{Propiedad conjugada}
 
-En los casos en los que la probabilidad posterior, que resulta del producto de la verosimilitud y la inicial, pertenece a la misma familia de la distribuci\'on inicial y \'unicamente difiere en el valor de los par\'ametros, se dice que la distribuci\'on de los par\'ametros y la verosimilitud pertenecen a una \textbf{familia conjugada}.
+En los casos en los que la probabilidad posterior, que resulta del producto de la verosimilitud y la inicial, pertenece a la misma familia de la distribuci\'on inicial y \'unicamente difiere en el valor de los par\'ametros, se dice que la distribuci\'on de los par\'ametros con respecto a cierta verosimilitud pertenece a una \textbf{familia conjugada}.
 
 Esta propiedad es conveniente, porque permite a la distribuci\'on posterior tener forma anal\'itica cerrada, evitando tener que usar m\'etodos num\'ericos para aproximarla. Adem\'as permite ver de forma m\'as clara c\'omo afectan los datos a la actualizaci\'on, respecto a la distribuci\'on inicial.
 
@@ -103,9 +103,9 @@ Algunas de las familias conjugadas m\'as conocidas son la \textit{Normal-Normal}
 
 Sin embargo, el rango de posibles modelos conjugados puede resultar limitado en algunos contextos pr\'acticos debido a que el fen\'omeno en estudio puede ser mejor representado con ciertas distribuciones espec\'ificas, que usualmente no pertenecen a familias conjugadas.
 
-\section[Inferencia con variables predictivas]{Inferencia con variables predictivas\raisebox{.3\baselineskip}{\normalsize\footnotemark}}\footnotetext{Esta secci\'on carece de una formalidad completa, pero busca darle la intuici\'on al lector para generalizar el resultado del teorema de de Finetti en el contexto en el que se desarrollar\'a este trabajo. Para una explicaci\'on m\'as formal, consultar \cite{Dawid_Exchangeability}.}
+\section[Inferencia con variables explicativas o predictivas]{Inferencia con variables explicativas o predictivas\raisebox{.3\baselineskip}{\normalsize\footnotemark}}\footnotetext{Esta secci\'on carece de una formalidad completa, pero busca darle la intuici\'on al lector para generalizar el resultado del Teorema de de Finetti en el contexto en el que se desarrollar\'a este trabajo. Para una explicaci\'on m\'as formal, consultar \cite{Dawid_Exchangeability}.}
 
-Como se ver\'a en el siguiente cap\'itulo de esta tesis, un problema com\'un es estimar la distribuci\'on de cierta sucesi\'on de variables aleatorias $(y_1,y_2,\ldots)$, condicionadas a los valores $(x_1,x_2,\ldots)$ de otras variables com\'unmente llamadas predictivas. En este caso, la sucesi\'on $(y_1,y_2,\ldots)$ ya no es intercambiable, porque cada valor $y_i$ depende en alguna medida del valor de su respectiva $x_i$, por lo que no es posible aplicar de manera directa el teorema de de Finetti. Para hacerlo de manera indirecta, se introducir\'a el t\'ermino de intercambiabilidad parcial.
+Como se ver\'a en el siguiente cap\'itulo de esta tesis, un problema com\'un es estimar la distribuci\'on de cierta sucesi\'on de variables aleatorias $(y_1,y_2,\ldots)$, condicionadas a los valores $(x_1,x_2,\ldots)$ de otras variables com\'unmente llamadas explicativas o predictivas. En este caso, la sucesi\'on $(y_1,y_2,\ldots)$ ya no es intercambiable, porque cada valor $y_i$ depende en alguna medida del valor de su respectiva $x_i$, por lo que no es posible aplicar de manera directa el Teorema de de Finetti. Para hacerlo de manera indirecta, se introducir\'a el t\'ermino de intercambiabilidad parcial.
 
 \begin{defin*}
     Sea $(y_1,y_2,...)$ dada $(x_1,x_2,...)$, una sucesi\'on numerable de variables aleatorias, asociadas con los correspondientes valores de ciertas variables predictivas, y cuya distribuci\'on de probabilidad conjunta est\'a dada por $\mathbb{P}(y_1,y_2,\ldots|x_1,x_2,\ldots)$. Sea $\psi$ una funci\'on biyectiva que crea una permutaci\'on finita de un conjunto, es decir, permuta un n\'umero finito de elementos y al resto los deja fijos; y sean $\tilde{x}_1,\tilde{x}_2,\ldots$ los distintos valores \'unicos que toman las $x$'s.  
@@ -118,13 +118,13 @@ Como se ver\'a en el siguiente cap\'itulo de esta tesis, un problema com\'un es 
     Es decir, todas aquellas $y$'s cuyas $x$'s tienen el mismo valor, son infinitamente intercambiables entre s\'i. 
 \end{defin*}
 
-Si adem\'as se cumpliera que el orden de los valores \'unicos $\tilde{x}$'s es intercambiable, entonces, intuitivamente se podr\'ia tomar la $G$ del teorema de de Finetti como dependiente de las $x_i$'s, $G(x_i)$, y se obtendr\'ia que
+Si adem\'as se cumpliera que el orden de los valores \'unicos $\tilde{x}$'s es intercambiable, entonces, intuitivamente se podr\'ia tomar la $G$ del Teorema de de Finetti como dependiente de las $x_i$'s, $G(x_i)$, y se obtendr\'ia que
 \begin{equation*}
     \mathbb{P}(y_1,y_2,\ldots|x_1,x_2,\ldots) =
     \int_{\mathcal{F}}\left[\prod_{k=1}^\infty \mathbb{P}(y_k|G(x_i))\right]dF(G(x_1,\ldots,x_n)),
 \end{equation*}
 donde las $y$'s resultar\'ian ser independientes entre s\'i, condicionadas a una distribuci\'on que depende la $x_i$ asociada.
 
-El tema del siguiente cap\'itulo ser\'a la discusi\'on de m\'etodos de inferencia sobre las variables $y$, dentro de este contexto espec\'ifico de dependencia de una variable predictiva $x$, normalmente conocidos como \textbf{modelos de regresi\'on}.
+El tema del siguiente cap\'itulo ser\'a la discusi\'on de m\'etodos de inferencia sobre las variables $y$, dentro de este contexto espec\'ifico de dependencia de una variable explicativa o predictiva $x$, normalmente conocidos como \textbf{modelos de regresi\'on}.
 
 \newpage
