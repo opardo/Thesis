@@ -3,22 +3,21 @@ plot_sample <- function(sample_data, values_range, qerror, g_x) {
   sample_plot <- sample_data %>%
     right_join(data_frame(x = values_range), by = "x") %>%
     mutate(
-      q0.025 = g_x(x) + qerror(0.025),
-      q0.500 = g_x(x) + qerror(0.500),
-      q0.975 = g_x(x) + qerror(0.975)
-    ) %>%
-    gather(cuantil, value, c(q0.975, q0.500, q0.025))
-
-  # Labels' order
-  sample_plot$cuantil <- factor(
-    sample_plot$cuantil,
-    levels = c("q0.975", "q0.500", "q0.025"),
-    ordered = TRUE
-  )
+      lower = g_x(x) + qerror(0.025),
+      median = g_x(x) + qerror(0.500),
+      upper = g_x(x) + qerror(0.975)
+    )
+  
+  interval_label <- "Intervalo de probabilidad al 90%"
 
   # Plot the simulated data
   sample_plot <- ggplot(data = sample_plot, aes(x = x)) +
-    geom_line(aes(y = value, colour = cuantil)) +
+    geom_line(aes(y = median), colour="blue") +
+    geom_ribbon(
+      aes(ymin = lower, ymax = upper, x = x, fill = interval_label),
+      alpha = 0.3
+    ) +
+    scale_fill_manual("", values = "grey12") +
     geom_point(aes(y = y)) +
     xlab("x") +
     ylab("y")
