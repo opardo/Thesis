@@ -1,22 +1,24 @@
 plot_sample <- function(sample_data, values_range, qerror, g_x) {
   # Join datasets to plot
-  sample_plot <- sample_data %>%
+  sample_plot_df <- sample_data %>%
     right_join(data_frame(x = values_range), by = "x") %>%
     mutate(
-      lower = g_x(x) + qerror(0.025),
-      median = g_x(x) + qerror(0.500),
-      upper = g_x(x) + qerror(0.975)
+      Mediana = as.factor("Mediana original de la \n distribución de los datos"),
+      lower = g_x(x) + qerror(0.025, x),
+      median = g_x(x) + qerror(0.500, x),
+      upper = g_x(x) + qerror(0.975, x)
     )
   
-  interval_label <- "Intervalo de probabilidad al 90%"
+  interval_label <- "Intervalo original de \n probabilidad de los datos, \n al 95%"
 
   # Plot the simulated data
-  sample_plot <- ggplot(data = sample_plot, aes(x = x)) +
-    geom_line(aes(y = median), colour="blue") +
+  sample_plot <- ggplot(data = sample_plot_df, aes(x = x)) +
+    geom_line(data = sample_plot_df, aes(y = median, group = Mediana, colour = Mediana)) +
     geom_ribbon(
       aes(ymin = lower, ymax = upper, x = x, fill = interval_label),
       alpha = 0.3
     ) +
+    scale_colour_manual("", values = c("blue")) +
     scale_fill_manual("", values = "grey12") +
     geom_point(aes(y = y)) +
     xlab("x") +
@@ -39,7 +41,7 @@ plot_fitted_model <- function(
   prediction <- prediction %>%
     select(-mean) %>%
     rename(`fitted median` = median) %>%
-    mutate(original = g_x(x) + qerror(p)) %>%
+    mutate(original = g_x(x) + qerror(p,x)) %>%
     melt(c("x", "lower", "upper"))
 
   interval_label <- paste0(toString(100 * credibility), "% credible interval")
@@ -72,9 +74,9 @@ plot_multiple_quantiles <- function(
 ) {
   original <- prediction_250 %>%
     mutate(
-      q0.250 = g_x(x) + qerror(0.250),
-      q0.500 = g_x(x) + qerror(0.500),
-      q0.950 = g_x(x) + qerror(0.950)
+      q0.250 = g_x(x) + qerror(0.250, x),
+      q0.500 = g_x(x) + qerror(0.500, x),
+      q0.950 = g_x(x) + qerror(0.950, x)
     ) %>%
     select(x, starts_with("q")) %>%
     gather(cuantil, value, -x)
@@ -110,4 +112,4 @@ plot_multiple_quantiles <- function(
   return(multiple_quantiles_plot)
 }
 
-zero_function <- function(x) return(0 * x)
+zero_function <- function(x) return(0.0 * x)
