@@ -41,12 +41,13 @@ TradQuantReg_intervals <- function(Y_pred, X, credibility) {
     lower = Y_pred %>% apply(2, function(col) quantile(col, p_lower)) %>% unname,
     upper= Y_pred %>% apply(2, function(col) quantile(col, p_upper)) %>% unname
   )
-  prediction <- cbind(X, results)
+  prediction <- cbind(X, results) %>% 
+    mutate(x = x1) %>% select(x, mean, median, lower, upper)
   return(prediction)
 }
 
 TradQuantReg_p_prediction <- function(pi, y_preds_list, X, credibility) {
-  y_preds_p <- lapply(y_preds_list, function(y_preds) y_preds[[pi]])
+  y_preds_p <- lapply(y_preds_list, function(y_preds) y_preds[[as.character(pi)]])
   results_p <- data.frame(matrix(
     unlist(y_preds_p),
     nrow = length(y_preds_p),

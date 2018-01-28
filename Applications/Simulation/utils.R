@@ -35,7 +35,8 @@ plot_fitted_model <- function(
   qerror,
   p,
   lower_limit,
-  upper_limit
+  upper_limit,
+  title = NULL
 ) {
 
   prediction <- prediction %>%
@@ -45,7 +46,13 @@ plot_fitted_model <- function(
     melt(c("x", "lower", "upper"))
 
   interval_label <- paste0(toString(100 * credibility), "% credible interval")
-
+  
+  if (is.null(title)) {
+    title <- paste0("Cuantil ", p, "-ésimo")
+  } else {
+    title <- paste0(title," \n ","Cuantil ", p, "-ésimo")
+  }
+  
   # Get plot
   fitted_model_plot <- ggplot(data = prediction, aes(x = x)) +
     geom_line(aes(y = value, colour = variable)) +
@@ -56,7 +63,7 @@ plot_fitted_model <- function(
     scale_colour_manual("", values = c("blue", "red")) +
     scale_fill_manual("", values = "grey12") +
     # geom_point(data = sample_data, aes(y = y), color = "black") +
-    ggtitle(paste0("Cuantil ", p, "-ésimo")) +
+    ggtitle(title) +
     theme(plot.title = element_text(hjust = 0.5)) +
     xlab("x") +
     ylab("y") +
@@ -113,3 +120,16 @@ plot_multiple_quantiles <- function(
 }
 
 zero_function <- function(x) return(0.0 * x)
+
+cor_pred <- function(prediction, p) {
+  return(cor(prediction$median, g_x(prediction$x) + qerror(p, prediction$x)) ^ 2)
+}
+
+mse_pred <- function(prediction, p) {
+  return(mean((prediction$median - (g_x(prediction$x) + qerror(p, prediction$x))) ^ 2))
+}
+
+within_pred <- function(prediction, p) {
+  y_real <- g_x(prediction$x) + qerror(p, prediction$x)
+  return(mean(ifelse(y_real >= prediction$lower & y_real <= prediction$upper, 1, 0)))
+}

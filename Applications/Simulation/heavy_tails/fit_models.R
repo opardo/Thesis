@@ -15,13 +15,15 @@ local_path <- "/Users/opardo/Documents/Projects/Personal/"
 
 # Import utils
 source(paste0(local_path,"Thesis/Applications/Simulation/utils.R"), local = TRUE)
+source(paste0(local_path,"Thesis/Applications/trad_quant_reg.R"), local = TRUE)
 
 # Setwd for simple function and simple error folder
 setwd(paste0(local_path,"Thesis/Applications/Simulation/heavy_tails/"))
 
 # Save or load data options
-save <- TRUE
-load <- FALSE
+run <- FALSE
+save <- FALSE
+load <- TRUE
 plots <- TRUE
 
 set.seed(20188)
@@ -42,6 +44,9 @@ m <- 60
 values_range <- round(seq(-15, 15, 0.01), 3)
 x <- sort(sample(values_range, m))
 sample_data <- data_frame(x = x, y = g_x(x) + error(x))
+sample_trad_data <- sample_data %>% 
+  mutate(x1 = x, x2 = x^2, x3 = x^3, x4 = x^4, x5 = x^5) %>% 
+  select(x1, x2, x3, x4, x5, y)
 
 sample_plot <- plot_sample(sample_data, values_range, qerror, g_x)
 sample_plot
@@ -49,15 +54,19 @@ sample_plot
 # MCMC ALGORITHM
 
 # Fit models
-GPDP_25 <- GPDPQuantReg(y ~ x, sample_data, p = 0.25, d_DP = 2, d_lambda = 2, mcit = 15000, burn = 5000, thin = 5)
-GPDP_50 <- GPDPQuantReg(y ~ x, sample_data, p = 0.50, d_DP = 2, d_lambda = 2, mcit = 15000, burn = 5000, thin = 5)
-GPDP_95 <- GPDPQuantReg(y ~ x, sample_data, p = 0.95, d_DP = 2, d_lambda = 2, mcit = 15000, burn = 5000, thin = 5)
+TradReg_params <- TradQuantReg(sample_trad_data, y ~ .)
 
 # Save/load fitted models
-if (save) {
-  write_rds(GPDP_25, "models/GPDP_25.rds")
-  write_rds(GPDP_50, "models/GPDP_50.rds")
-  write_rds(GPDP_95, "models/GPDP_95.rds")
+if (run) {
+  GPDP_25 <- GPDPQuantReg(y ~ x, sample_data, p = 0.25, d_DP = 2, d_lambda = 2, mcit = 15000, burn = 5000, thin = 5)
+  GPDP_50 <- GPDPQuantReg(y ~ x, sample_data, p = 0.50, d_DP = 2, d_lambda = 2, mcit = 15000, burn = 5000, thin = 5)
+  GPDP_95 <- GPDPQuantReg(y ~ x, sample_data, p = 0.95, d_DP = 2, d_lambda = 2, mcit = 15000, burn = 5000, thin = 5)
+  
+  if (save) {
+    write_rds(GPDP_25, "models/GPDP_25.rds")
+    write_rds(GPDP_50, "models/GPDP_50.rds")
+    write_rds(GPDP_95, "models/GPDP_95.rds")
+  }
 }
 if (load) {
   GPDP_25 <- read_rds("models/GPDP_25.rds")
@@ -72,16 +81,32 @@ diagnose(GPDP_95)
 
 # Predict
 predictive_data <- data_frame(x = seq(-15, 15, 0.1))
+predictive_trad_data <- predictive_data %>% 
+  mutate(x1 = x, x2 = x^2, x3 = x^3, x4 = x^4, x5 = x^5) %>% 
+  select(x1, x2, x3, x4, x5)
 credibility <- 0.95
-prediction_25 <- predict(GPDP_25, predictive_data, credibility)
-prediction_50 <- predict(GPDP_50, predictive_data, credibility)
-prediction_95 <- predict(GPDP_95, predictive_data, credibility)
+
+trad_predictions <- TradQuantReg_predict(
+  TradReg_params,
+  predictive_trad_data,
+  c(0.25, 0.5, 0.95),
+  credibility
+)
+trad_prediction_25 <- trad_predictions[['0.25']] 
+trad_prediction_50 <- trad_predictions[['0.5']] 
+trad_prediction_95 <- trad_predictions[['0.95']] 
 
 # Save/load prediction
-if (save) {
-  write_rds(prediction_25, "predictions/prediction_25.rds")
-  write_rds(prediction_50, "predictions/prediction_50.rds")
-  write_rds(prediction_95, "predictions/prediction_95.rds")
+if (run) {
+  prediction_25 <- predict(GPDP_25, predictive_data, credibility)
+  prediction_50 <- predict(GPDP_50, predictive_data, credibility)
+  prediction_95 <- predict(GPDP_95, predictive_data, credibility)
+  
+  if (save) {
+    write_rds(prediction_25, "predictions/prediction_25.rds")
+    write_rds(prediction_50, "predictions/prediction_50.rds")
+    write_rds(prediction_95, "predictions/prediction_95.rds")
+  }
 }
 if (load) {
   prediction_25 <- read_rds("predictions/prediction_25.rds")
@@ -90,10 +115,10 @@ if (load) {
 }
 
 # Get plots' limits
-upper_limit <- 12
-lower_limit <- -7
+upper_limit <- 13
+lower_limit <- -8
 
-plot_results <- function(prediction, p) {
+plot_results <- function(prediction, p, title = "Modelo GPDP") {
   return(plot_fitted_model(
     prediction = prediction,
     credibility,
@@ -102,25 +127,29 @@ plot_results <- function(prediction, p) {
     qerror,
     p = p,
     lower_limit,
-    upper_limit
+    upper_limit,
+    title
   ))
 }
 
 # Plot fitted models
+trad_results_25 <- plot_results(trad_prediction_25, 0.25, "Modelo Tradicional") 
+trad_results_50 <- plot_results(trad_prediction_50, 0.50, "Modelo Tradicional")
+trad_results_95 <- plot_results(trad_prediction_95, 0.95, "Modelo Tradicional")
+
 results_25 <- plot_results(prediction_25, 0.25)
 results_50 <- plot_results(prediction_50, 0.50)
 results_95 <- plot_results(prediction_95, 0.95)
 
-fitted_models <- grid.arrange(
-  results_25,
-  results_50,
+predictions_plot <- grid.arrange(
+  trad_results_95,
   results_95,
-  ncol = 1
+  trad_results_50,
+  results_50,
+  trad_results_25,
+  results_25,
+  ncol = 2
 )
-
-results_25
-results_50
-results_95
 
 # Save plots
 if (plots) {
@@ -131,13 +160,36 @@ if (plots) {
     height = 5
   )
   ggsave(
-    filename = "results/fitted_models.png",
-    plot = fitted_models,
-    width = 8,
-    height = 12
+    filename = "results/predictions.png",
+    plot = predictions_plot ,
+    width = 10,
+    height = 15
   )
 }
 
-cor(prediction_25$median, g_x(prediction_25$x) + qerror(0.25, prediction_25$x)) ^ 2
-cor(prediction_50$median, g_x(prediction_50$x) + qerror(0.50, prediction_50$x)) ^ 2
-cor(prediction_95$median, g_x(prediction_95$x) + qerror(0.95, prediction_95$x)) ^ 2
+# MSE between prediction and real value
+mse_pred(trad_prediction_25, 0.25)
+mse_pred(trad_prediction_50, 0.50)
+mse_pred(trad_prediction_95, 0.95)
+
+mse_pred(prediction_25, 0.25)
+mse_pred(prediction_50, 0.50)
+mse_pred(prediction_95, 0.95)
+
+# Squared-correlation between prediction and real value
+cor_pred(trad_prediction_25, 0.25)
+cor_pred(trad_prediction_50, 0.50)
+cor_pred(trad_prediction_95, 0.95)
+
+cor_pred(prediction_25, 0.25)
+cor_pred(prediction_50, 0.50)
+cor_pred(prediction_95, 0.95)
+
+# Real values' percentage within the credibility interval
+within_pred(trad_prediction_25, 0.25)
+within_pred(trad_prediction_50, 0.50)
+within_pred(trad_prediction_95, 0.95)
+
+within_pred(prediction_25, 0.25)
+within_pred(prediction_50, 0.50)
+within_pred(prediction_95, 0.95)
