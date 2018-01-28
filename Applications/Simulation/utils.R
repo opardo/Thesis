@@ -133,3 +133,16 @@ within_pred <- function(prediction, p) {
   y_real <- g_x(prediction$x) + qerror(p, prediction$x)
   return(mean(ifelse(y_real >= prediction$lower & y_real <= prediction$upper, 1, 0)))
 }
+
+gral_comp_matrix_metric <- function(tp_25, tp_50, tp_95, p_25, p_50, p_95, func) {
+  mat <- matrix(nrow = 3, ncol = 2)
+  rownames(mat) <- c("0.25","0.50","0.95")
+  colnames(mat) <- c("Tradicional", "GPDP")
+  mat[1,1] <- func(tp_25, 0.25)
+  mat[2,1] <- func(tp_50, 0.50)
+  mat[3,1] <- func(tp_95, 0.95)
+  mat[1,2] <- func(p_25, 0.25)
+  mat[2,2] <- func(p_50, 0.50)
+  mat[3,2] <- func(p_95, 0.95)
+  return(mat)
+}

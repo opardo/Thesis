@@ -167,29 +167,19 @@ if (plots) {
   )
 }
 
+# Comparison
+comp_matrix_metric <- function(func){
+  return(gral_comp_matrix_metric(
+    trad_prediction_25, trad_prediction_50, trad_prediction_95, 
+    prediction_25, prediction_50, prediction_95,
+    func
+  ))
+}
+
 # MSE between prediction and real value
-mse_pred(trad_prediction_25, 0.25)
-mse_pred(trad_prediction_50, 0.50)
-mse_pred(trad_prediction_95, 0.95)
-
-mse_pred(prediction_25, 0.25)
-mse_pred(prediction_50, 0.50)
-mse_pred(prediction_95, 0.95)
-
+comp_matrix_metric(mse_pred)
 # Squared-correlation between prediction and real value
-cor_pred(trad_prediction_25, 0.25)
-cor_pred(trad_prediction_50, 0.50)
-cor_pred(trad_prediction_95, 0.95)
-
-cor_pred(prediction_25, 0.25)
-cor_pred(prediction_50, 0.50)
-cor_pred(prediction_95, 0.95)
-
+comp_matrix_metric(cor_pred)
 # Real values' percentage within the credibility interval
-within_pred(trad_prediction_25, 0.25)
-within_pred(trad_prediction_50, 0.50)
-within_pred(trad_prediction_95, 0.95)
+comp_matrix_metric(within_pred)
 
-within_pred(prediction_25, 0.25)
-within_pred(prediction_50, 0.50)
-within_pred(prediction_95, 0.95)
