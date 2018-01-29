@@ -21,10 +21,10 @@ source(paste0(local_path,"Thesis/Applications/trad_quant_reg.R"), local = TRUE)
 setwd(paste0(local_path,"Thesis/Applications/Simulation/classic/"))
 
 # Save or load data options
-run <- TRUE
-save <- TRUE
-load <- FALSE
-plots <- TRUE
+run <- FALSE
+save <- FALSE
+load <- TRUE
+plots <- FALSE
 
 set.seed(2018)
 
@@ -48,30 +48,36 @@ sample_trad_data <- sample_data %>%
   mutate(x1 = x, x2 = x^2, x3 = x^3, x4 = x^4, x5 = x^5) %>% 
   select(x1, x2, x3, x4, x5, y)
 
-sample_plot <- plot_sample(sample_data, values_range, qerror, g_x)
+sample_plot <- plot_sample(sample_data, values_range, qerror, g_x, -5, 10)
 sample_plot
 
 # MCMC ALGORITHM
 
 # Fit models
+ptm <- proc.time()
 TradReg_params <- TradQuantReg(sample_trad_data, y ~ .)
+time_trad_fit <- proc.time() - ptm
 
 # Save/load fitted models
 if (run) {
+  ptm <- proc.time()
   GPDP_25 <- GPDPQuantReg(y ~ x, sample_data, p = 0.25, d_DP = 2, d_lambda = 2, mcit = 15000, burn = 5000, thin = 5)
   GPDP_50 <- GPDPQuantReg(y ~ x, sample_data, p = 0.50, d_DP = 2, d_lambda = 2, mcit = 15000, burn = 5000, thin = 5)
   GPDP_95 <- GPDPQuantReg(y ~ x, sample_data, p = 0.95, d_DP = 2, d_lambda = 2, mcit = 15000, burn = 5000, thin = 5)
+  time_fit <- proc.time() - ptm
   
   if (save) {
     write_rds(GPDP_25, "models/GPDP_25.rds")
     write_rds(GPDP_50, "models/GPDP_50.rds")
     write_rds(GPDP_95, "models/GPDP_95.rds")
+    write_rds(time_fit, "models/time_fit.rds")
   }
 }
 if (load) {
   GPDP_25 <- read_rds("models/GPDP_25.rds")
   GPDP_50 <- read_rds("models/GPDP_50.rds")
   GPDP_95 <- read_rds("models/GPDP_95.rds")
+  # time_fit <- read_rds("models/time_fit.rds")
 }
 
 # Diagnose GPDP_MCMC
@@ -86,6 +92,7 @@ predictive_trad_data <- predictive_data %>%
   select(x1, x2, x3, x4, x5)
 credibility <- 0.95
 
+ptm <- proc.time()
 trad_predictions <- TradQuantReg_predict(
   TradReg_params,
   predictive_trad_data,
@@ -94,29 +101,30 @@ trad_predictions <- TradQuantReg_predict(
 )
 trad_prediction_25 <- trad_predictions[['0.25']] 
 trad_prediction_50 <- trad_predictions[['0.5']] 
-trad_prediction_95 <- trad_predictions[['0.95']] 
+trad_prediction_95 <- trad_predictions[['0.95']]
+time_trad_pred <- proc.time() - ptm
 
 # Save/load prediction
 if (run) {
+  ptm <- proc.time()
   prediction_25 <- predict(GPDP_25, predictive_data, credibility)
   prediction_50 <- predict(GPDP_50, predictive_data, credibility)
   prediction_95 <- predict(GPDP_95, predictive_data, credibility)
+  time_pred <- proc.time() - ptm
   
   if (save) {
     write_rds(prediction_25, "predictions/prediction_25.rds")
     write_rds(prediction_50, "predictions/prediction_50.rds")
     write_rds(prediction_95, "predictions/prediction_95.rds")
+    write_rds(time_pred, "predictions/time_pred.rds")
   }
 }
 if (load) {
   prediction_25 <- read_rds("predictions/prediction_25.rds")
   prediction_50 <- read_rds("predictions/prediction_50.rds")
   prediction_95 <- read_rds("predictions/prediction_95.rds")
+  # time_pred <- read_rds("predictions/time_pred.rds")
 }
-
-# Get plots' limits
-upper_limit <- 13
-lower_limit <- -8
 
 plot_results <- function(prediction, p, title = "Modelo GPDP") {
   return(plot_fitted_model(
@@ -126,8 +134,8 @@ plot_results <- function(prediction, p, title = "Modelo GPDP") {
     sample_data,
     qerror,
     p = p,
-    lower_limit,
-    upper_limit,
+    lower_limit = -7,
+    upper_limit = 13,
     title
   ))
 }
@@ -141,7 +149,7 @@ results_25 <- plot_results(prediction_25, 0.25)
 results_50 <- plot_results(prediction_50, 0.50)
 results_95 <- plot_results(prediction_95, 0.95)
 
-predictions_plot <- grid.arrange(
+ predictions_plot <- grid.arrange(
   trad_results_95,
   results_95,
   trad_results_50,
@@ -156,29 +164,49 @@ if (plots) {
   ggsave(
     filename = "results/sample.png",
     plot = sample_plot,
-    width = 8,
+    width = 7,
     height = 5
   )
   ggsave(
     filename = "results/predictions.png",
     plot = predictions_plot ,
-    width = 10,
-    height = 15
+    width = 9,
+    height = 11
   )
 }
 
 # Comparison
 comp_matrix_metric <- function(func){
   return(gral_comp_matrix_metric(
-    trad_prediction_25, trad_prediction_50, trad_prediction_95, 
-    prediction_25, prediction_50, prediction_95,
+    trad_prediction_95, trad_prediction_50, trad_prediction_25, 
+    prediction_95, prediction_50, prediction_25,
     func
   ))
 }
 
 # MSE between prediction and real value
-comp_matrix_metric(mse_pred)
+mse <- comp_matrix_metric(mse_pred) 
 # Squared-correlation between prediction and real value
-comp_matrix_metric(cor_pred)
+corr <- comp_matrix_metric(cor_pred)
 # Real values' percentage within the credibility interval
-comp_matrix_metric(within_pred)
+withn <- comp_matrix_metric(within_pred) 
+
+xtable(
+  mse,
+  caption = "Error cuadrático promedio (datos que cumplen supuestos tradicionales)",
+  align = c("c","c","c"),
+  label = "mse_classic"
+)
+xtable(
+  corr,
+  caption = "Correlación al cuadrado (datos que cumplen supuestos tradicionales)",
+  align = c("c","c","c"),
+  label = "corr_classic"
+)
+xtable(
+  100 * withn,
+  caption = "Porcentaje de valores reales dentro del intervalo de confianza (datos que cumplen supuestos tradicionales)",
+  align = c("c","c","c"),
+  digits = c(2,0,0),
+  label = "within_classic"
+)

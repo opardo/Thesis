@@ -1,4 +1,4 @@
-plot_sample <- function(sample_data, values_range, qerror, g_x) {
+plot_sample <- function(sample_data, values_range, qerror, g_x, lower_limit, upper_limit) {
   # Join datasets to plot
   sample_plot_df <- sample_data %>%
     right_join(data_frame(x = values_range), by = "x") %>%
@@ -18,11 +18,15 @@ plot_sample <- function(sample_data, values_range, qerror, g_x) {
       aes(ymin = lower, ymax = upper, x = x, fill = interval_label),
       alpha = 0.3
     ) +
-    scale_colour_manual("", values = c("blue")) +
+    scale_colour_manual("", values = c("red")) +
     scale_fill_manual("", values = "grey12") +
     geom_point(aes(y = y)) +
     xlab("x") +
     ylab("y")
+  
+  if (!is.null(lower_limit) & !is.null(upper_limit)) {
+    sample_plot <- sample_plot + ylim(lower_limit, upper_limit)
+  }
 
   return(sample_plot)
 }
@@ -134,15 +138,15 @@ within_pred <- function(prediction, p) {
   return(mean(ifelse(y_real >= prediction$lower & y_real <= prediction$upper, 1, 0)))
 }
 
-gral_comp_matrix_metric <- function(tp_25, tp_50, tp_95, p_25, p_50, p_95, func) {
+gral_comp_matrix_metric <- function(tp_95, tp_50, tp_25, p_95, p_50, p_25, func) {
   mat <- matrix(nrow = 3, ncol = 2)
-  rownames(mat) <- c("0.25","0.50","0.95")
-  colnames(mat) <- c("Tradicional", "GPDP")
-  mat[1,1] <- func(tp_25, 0.25)
+  rownames(mat) <- c("0.95","0.50","0.25")
+  colnames(mat) <- c("Modelo Tradicional", "Modelo GPDP")
+  mat[1,1] <- func(tp_95, 0.95)
   mat[2,1] <- func(tp_50, 0.50)
-  mat[3,1] <- func(tp_95, 0.95)
-  mat[1,2] <- func(p_25, 0.25)
+  mat[3,1] <- func(tp_25, 0.25)
+  mat[1,2] <- func(p_95, 0.95)
   mat[2,2] <- func(p_50, 0.50)
-  mat[3,2] <- func(p_95, 0.95)
+  mat[3,2] <- func(p_25, 0.25)
   return(mat)
 }
