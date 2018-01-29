@@ -9,6 +9,7 @@ library(dplyr)
 library(tidyr)
 library(R.utils)
 library(gridExtra)
+library(xtable)
 
 # Define local_path where the repo lives (user dependent)
 local_path <- "/Users/opardo/Documents/Projects/Personal/"
@@ -21,9 +22,9 @@ source(paste0(local_path,"Thesis/Applications/trad_quant_reg.R"), local = TRUE)
 setwd(paste0(local_path,"Thesis/Applications/Simulation/classic/"))
 
 # Save or load data options
-run <- FALSE
-save <- FALSE
-load <- TRUE
+run <- TRUE
+save <- TRUE
+load <- FALSE
 plots <- FALSE
 
 set.seed(2018)
