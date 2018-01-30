@@ -22,9 +22,9 @@ source(paste0(local_path,"Thesis/Applications/trad_quant_reg.R"), local = TRUE)
 setwd(paste0(local_path,"Thesis/Applications/Simulation/classic/"))
 
 # Save or load data options
-run <- TRUE
-save <- TRUE
-load <- FALSE
+run <- FALSE
+save <- FALSE
+load <- TRUE
 plots <- FALSE
 
 set.seed(2018)
@@ -78,7 +78,7 @@ if (load) {
   GPDP_25 <- read_rds("models/GPDP_25.rds")
   GPDP_50 <- read_rds("models/GPDP_50.rds")
   GPDP_95 <- read_rds("models/GPDP_95.rds")
-  # time_fit <- read_rds("models/time_fit.rds")
+  time_fit <- read_rds("models/time_fit.rds")
 }
 
 # Diagnose GPDP_MCMC
@@ -124,7 +124,7 @@ if (load) {
   prediction_25 <- read_rds("predictions/prediction_25.rds")
   prediction_50 <- read_rds("predictions/prediction_50.rds")
   prediction_95 <- read_rds("predictions/prediction_95.rds")
-  # time_pred <- read_rds("predictions/time_pred.rds")
+  time_pred <- read_rds("predictions/time_pred.rds")
 }
 
 plot_results <- function(prediction, p, title = "Modelo GPDP") {

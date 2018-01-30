@@ -24,7 +24,7 @@ setwd(paste0(local_path,"Thesis/Applications/Simulation/discontinuous/"))
 run <- FALSE
 save <- FALSE
 load <- TRUE
-plots <- TRUE
+plots <- FALSE
 
 set.seed(2018)
 
@@ -204,16 +204,19 @@ withn <- comp_matrix_metric(within_pred)
 xtable(
   mse,
   caption = "Error cuadrático promedio (datos con discontinuidades)",
-  align = c("c","c","c")
+  align = c("c","c","c"),
+  label = "mse_discontinuous"
 )
 xtable(
   corr,
   caption = "Correlación al cuadrado (datos con discontinuades)",
-  align = c("c","c","c")
+  align = c("c","c","c"),
+  label = "corr_discontinuous"
 )
 xtable(
   100 * withn,
   caption = "Porcentaje de valores reales dentro del intervalo de confianza (datos con discontinuidades)",
   align = c("c","c","c"),
-  digits = c(2,0,0)
+  digits = c(2,0,0),
+  label = "within_discontinuous"
 )
