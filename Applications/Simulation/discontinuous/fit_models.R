@@ -9,6 +9,7 @@ library(dplyr)
 library(tidyr)
 library(R.utils)
 library(gridExtra)
+library(xtable)
 
 # Define local_path where the repo lives (user dependent)
 local_path <- "/Users/opardo/Documents/Projects/Personal/"
