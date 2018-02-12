@@ -58,6 +58,7 @@ sample_plot
 ptm <- proc.time()
 TradReg_params <- TradQuantReg(sample_trad_data, y ~ .)
 time_trad_fit <- proc.time() - ptm
+write_rds(time_trad_fit, "models/time_trad_fit.rds")
 
 # Save/load fitted models
 if (run) {
@@ -104,6 +105,7 @@ trad_prediction_25 <- trad_predictions[['0.25']]
 trad_prediction_50 <- trad_predictions[['0.5']] 
 trad_prediction_95 <- trad_predictions[['0.95']]
 time_trad_pred <- proc.time() - ptm
+write_rds(time_trad_pred, "predictions/time_trad_pred.rds")
 
 # Save/load prediction
 if (run) {

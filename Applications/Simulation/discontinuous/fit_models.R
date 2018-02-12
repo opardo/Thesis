@@ -68,6 +68,7 @@ sample_plot
 ptm <- proc.time()
 TradReg_params <- TradQuantReg(sample_trad_data, y ~ .)
 time_trad_fit <- proc.time() - ptm
+write_rds(time_trad_fit, "models/time_trad_fit.rds")
 
 # Save/load fitted models
 if (run) {
@@ -88,7 +89,7 @@ if (load) {
   GPDP_25 <- read_rds("models/GPDP_25.rds")
   GPDP_50 <- read_rds("models/GPDP_50.rds")
   GPDP_95 <- read_rds("models/GPDP_95.rds")
-  # time_fit <- read_rds("models/time_fit.rds")
+  time_fit <- read_rds("models/time_fit.rds")
 }
 
 # Diagnose GPDP_MCMC
@@ -114,6 +115,7 @@ trad_prediction_25 <- trad_predictions[['0.25']]
 trad_prediction_50 <- trad_predictions[['0.5']] 
 trad_prediction_95 <- trad_predictions[['0.95']]
 time_trad_pred <- proc.time() - ptm
+write_rds(time_trad_pred, "predictions/time_trad_pred.rds")
 
 # Save/load prediction
 if (run) {
@@ -134,7 +136,6 @@ if (load) {
   prediction_25 <- read_rds("predictions/prediction_25.rds")
   prediction_50 <- read_rds("predictions/prediction_50.rds")
   prediction_95 <- read_rds("predictions/prediction_95.rds")
-  # time_pred <- read_rds("predictions/time_pred.rds")
 }
 
 plot_results <- function(prediction, p, title = "Modelo GPDP") {
