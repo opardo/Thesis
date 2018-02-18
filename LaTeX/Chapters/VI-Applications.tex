@@ -37,7 +37,7 @@ Finalmente, se obtuvieron m\'etricas que permitieran comparar a grandes rasgos l
 
 A continuaci\'on se presentan los diversos conjuntos de datos simulados. Primero que nada, se expone uno que cumple con los supuestos de la regresi\'on tradicional a la media. Posteriormente, se presentan otros que desaf\'ian alguno de sus supuestos, con el fin de comparar c\'omo lidian dicho modelo, y el modelo GPDP, con ello. Finalmente, se comparan los resultados.
 
-\subsection{Cumplen los supuestos tradicionales de regresi\'on}
+\subsection{Supuestos tradicionales de regresi\'on}
 
 El primer caso que se presenta es el de un conjunto de datos que se simul\'o con las condiciones com\'unmente supuestas dentro de los modelos de regresi\'on: funci\'on de \textit{tendencia} polinomial y error normal alrededor de ella, independiente del valor de $x$. Es decir, los errores presentaron homocedasticidad. Expresado en t\'erminos matem\'aticos,
 \begin{equation*}
@@ -140,7 +140,7 @@ La ergodicidad parece adecuada, debido a que después de las primeras iteracione
 
 La correlaci\'on cruzada entre par\'ametros tambi\'en es cercana a 0, por lo que la simulaci\'on de un par\'ametro de la cadena no muestra una gran dependencia del valor de otro par\'ametro, en la misma iteraci\'on. Por ello, hay motivos para afirmar que la cadena de Markov no cay\'o en ciclos que no reflejen su distribuci\'on estacionaria. De hecho, esto se puede confirmar al observar la traza de $f$, ya que no muestra comportamientos c\'iclicos y aunque se centra en un intervalo, tambi\'en hay valores que salen de \'el de forma espor\'adica.
 
-\subsection{Con error de colas pesadas}
+\subsection{Error de colas pesadas}
 
 En el siguiente conjunto de datos se utiliz\'o la distribuci\'on Cauchy para simular el error. A pesar de ser sim\'etrica y centrada en 0, dicha distribuci\'on es peculiar debido a que su esperanza y varianza no est\'an definidas. El motivo de ello son sus colas pesadas, mismas que originan con frecuencia valores muy alejados del centro. Adem\'as, se introdujo un componente sinoidal en la funci\'on tendencia, mismo que puede ser aproximado con un polinomio tanto como se quiera, utilizando t\'erminos de su serie de Taylor. Sin embargo, tambi\'en tiene un valor absoluto, que s\'olo puede ser aproximado parcialmente por la familia de los polinomios.
 
@@ -218,7 +218,7 @@ En cuanto a la estimaci\'on de la tendencia, el modelo tradicional interpret\'o 
 
 Por otro lado, el modelo GPDP hizo una estimaci\'on muy certera en la mayor\'ia de los puntos, como se refleja en los cuadros \ref{mse_heavy_tails} y \ref{within_heavy_tails}. La vecindad alrededor de $x = 10$, que coincide con el valor at\'ipico m\'as dram\'atico, es donde el ajuste pudo haber sido mucho mejor. Sin embargo, creo que es importante recalcar que el problema se limit\'o a un error de estimaci\'on local, que no afect\'o a los puntos m\'as alla de cierta pequeña vecindad. De hecho, el siguiente valor at\'ipico en magnitud, alrededor de $x = 5$, fue manejado aceptablemente por el modelo para los tres cuantiles.
 
-\subsection{Con heterocedasticidad}
+\subsection{Heterocedasticidad}
 
 Otro supuesto com\'un en muchos modelos de regresi\'on es la homocedasticidad, es decir, que los errores no dependen de $x$. Para este ejemplo particular decid\'i observar c\'omo afectar\'ia a la estimaci\'on el hecho de que la distribuci\'on de los errores aleatorios dependiera del valor de la variable explicativa, es decir, datos que presentaran heterocedasticidad.
 
@@ -295,7 +295,7 @@ Como se puede observar en la figura \ref{models_heteroscedasticity}, el modelo t
 
 En cuanto al modelo GPDP, los cuadros \ref{mse_heteroscedasticity}, \ref{corr_heteroscedasticity} y \ref{within_heteroscedasticity} tambi\'en muestran que conforme se tom\'o un cuantil m\'as lejano a la mediana, la calidad de la estimaci\'on empeor\'o. Sin embargo, la ca\'ida fue menos fuerte, particularmente para las medidas de correlaci\'on y porcentaje de valores dentro del intervalo. Esto se debe principalmente a que el modelo tradicional modela la media, y a partir de ah\'i cada cuantil s\'olo representa un cambio de nivel, pero manteniendo la forma de la funci\'on. En cambio, el modelo GPDP contempla que cada cuantil puede tener una forma propia, distinta de los otros cuantiles.
 
-\subsection{Con error asim\'etrico}
+\subsection{Error asim\'etrico}
 
 Hasta este punto se han realizado perturbaciones al modelo tradicional de regresi\'on en la forma de la distribuci\'on de los datos (colas pesadas y heterocedasticidad). Sin embargo, dichas perturbaciones mantuvieron una caracter\'istica del modelo tradicional: la simetr\'ia del error. En el siguiente conjunto de datos se desafi\'o dicha condici\'on, usando un error aleatorio asim\'etrico. Particularmente se utiliz\'o $\omega(x) \sim Gamma(1,1)$.
 
@@ -374,7 +374,7 @@ La misma figura sugiere que el modelo tradicional interpret\'o a la funci\'on de
 
 Por otro lado, se puede verificar en las tablas \ref{mse_asymmetric}, \ref{corr_asymmetric} y \ref{within_asymmetric} que el modelo GPDP logr\'o un mejor desempeño en todas las m\'etricas, para todos los cuantiles. Sin embargo, no hay que perder de vista que de todos los casos vistos hasta este punto, es el que present\'o intervalos de probabilidad m\'as amplios. Es decir, es el caso en el que hay mayor incertidumbre respecto a la predicci\'on. Adem\'as, present\'o niveles de correlaci\'on bajos, comparativamente hablando. No necesariamente la causa fue el error asim\'etrico, sino pudo provenir de que la forma de la funci\'on tendencia es at\'ipica y compleja de inferir para muchos modelos.
 
-\subsection{Con discontinuidades}
+\subsection{Discontinuidades}
 
 Dejando atr\'as las modificaciones en el error $\omega(x)$, ahora se presenta una situaci\'on at\'ipica en la funci\'on tendencia. Tanto el modelo tradicional, como el modelo GPDP, suponen continuidad en las funciones de los cuantiles. Por ello, me pareci\'o interesante averiguar c\'omo se comportar\'ia su ajuste, en caso de modelar datos que provinieran de una funci\'on tendencia discontinua. Particularmente se simul\'o utilizando la funci\'on
 \begin{equation*}
@@ -479,11 +479,11 @@ Finalmente, es interesante comparar la diferencia en tiempos de ajuste y predicc
   \hline
 Datos & Tradicional (seg) & GPDP (seg) \\ 
   \hline
-Supuestos tradicionales & 0.020 & 2498.17 \\ 
-  Colas pesadas & 0.004 & 4006.81 \\ 
-  Heterocedasticidad & 0.004 & 3502.93 \\ 
-  Error asimétrico & 0.004 & 6707.43 \\ 
-  Discontinuidades & 0.004 & 3062.40 \\ 
+Supuestos tradicionales & 0.020 & 2,498.17 \\ 
+  Colas pesadas & 0.004 & 4,006.81 \\ 
+  Heterocedasticidad & 0.004 & 3,502.93 \\ 
+  Error asimétrico & 0.004 & 6,707.43 \\ 
+  Discontinuidades & 0.004 & 3,062.40 \\ 
    \hline
 \end{tabular}
 \label{fit_time}
@@ -496,11 +496,11 @@ Supuestos tradicionales & 0.020 & 2498.17 \\
   \hline
 Datos & Tradicional (seg) & GPDP (seg) \\ 
   \hline
-Supuestos tradicionales & 6.354 & 563.82 \\ 
-  Colas pesadas & 4.724 & 529.00 \\ 
-  Heterocedasticidad & 5.287 & 534.53 \\ 
-  Error asimétrico & 5.737 & 537.44 \\ 
-  Discontinuidades & 5.033 & 533.19 \\ 
+Supuestos tradicionales & 6.35 & 563.82 \\ 
+  Colas pesadas & 4.72 & 529.00 \\ 
+  Heterocedasticidad & 5.29 & 534.53 \\ 
+  Error asimétrico & 5.74 & 537.44 \\ 
+  Discontinuidades & 5.03 & 533.19 \\ 
    \hline
 \end{tabular}
 \label{pred_time}

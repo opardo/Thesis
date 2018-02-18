@@ -1,4 +1,50 @@
-\chapter{Algoritmo de predicci\'on del cuantil $p$\textit{-\'esimo}, utilizando el modelo tradicional de regresi\'on a la media} \label{trad_mean_alg}
+\chapter{Predicci\'on de cuantiles, utilizando el modelo tradicional de regresi\'on a la media} \label{trad_mean_alg}
 
+Una vez ajustado el modelo tradicional de regresi\'on a la media (descrito en la secci\'on \ref{trad_mean_reg}), un problema de inter\'es es predecir alg\'un cuantil en espec\'ifico de la variable de respuesta, dado un nuevo valor en las covariables.
+
+Recordando los supuestos del modelo, se tiene que
+\begin{equation*}
+    y = x^T\beta + \varepsilon,
+\end{equation*}
+con $\varepsilon \sim \mathcal{N}(0,\sigma^2)$, tal que $\beta$ y $\sigma^2$ se piensan como constantes, pero desconocidas. 
+
+Dicha incertidumbre se traduce en una distribuci\'on de probabilidad para los par\'ametros, conocida como \textit{Normal-Gamma Inversa (NGI)}. Una de las mayores ventajas de usar tal distribuci\'on es que es conjugada respecto a la distribuci\'on Normal de los datos. Por lo tanto, una vez observados los datos, la distribuci\'on posterior de los par\'ametros $(\beta, \sigma^2)$ continuar\'a siendo \textit{NGI}.
+
+Suponiendo que se tiene un nuevo vector de covariables $x_* \in \mathbb{R}^n$ para el cual se desea hacer una predicci\'on $y_*$ de la variable de respuesta, su distribuci\'on de probabilidad es
+\begin{equation*}
+    y_* | x_*, \beta, \sigma^2 \sim \mathcal{N}(x_*^T\beta, \sigma^2).
+\end{equation*}
+
+Si el inter\'es del modelador es estimar el cuantil \textit{p-\'esimo} de $y_*$, se tiene entonces que
+\begin{equation*}
+    q_p(y_*|x_*, \beta, \sigma^2) = x_*^T\beta + q_p(\varepsilon|\sigma^2),
+\end{equation*}
+con $q_p(\varepsilon|\sigma^2)$ el cuantil \textit{p-\'esimo} de $\mathcal{N}(0,\sigma^2)$.
+
+Como es posible notar en el resultado anterior, una vez que se tiene una realizaci\'on de la distribuci\'on posterior de los par\'ametros $(\beta, \sigma^2)$, obtener una realizaci\'on de la predicci\'on del cuantil \'unicamente requiere de la aplicaci\'on de una funci\'on, dejando a un lado toda aleatoriedad. En ese orden de ideas, ser\'a posible estimar la distribuci\'on posterior predictiva del cuantil \textit{p-\'esimo} mediante la simulaci\'on de un n\'umero grande de sus propias realizaciones, a partir de simular valores de la distribuci\'on posterior de los par\'ametros. 
+
+Sea $k$ el n\'umero de simulaciones a obtener de la distribuci\'on predictiva, y recordando que $(\beta,\sigma^2) \sim \mathcal{NGI}(\bar{M},\bar{V},\bar{a},\bar{b})$ (la distribuci\'on posterior de los par\'ametros), se puede reescribir como
+\begin{equation*}
+\begin{aligned}
+    \sigma^2 &\sim \mathcal{GI}(\bar{a},\bar{b}), \\
+    \beta &\sim \mathcal{N}(\bar{M},\sigma^2 \bar{V}).
+\end{aligned}
+\end{equation*}
+Se tiene, entonces, que el algoritmo para obtener realizaciones de la distribuci\'on posterior predictiva del cuantil \textit{p-\'esimo} se puede representar de la siguiente forma.
+
+
+\\ \\
+\begin{algorithm}[H]
+ {
+     \For{$t=1,2,...,k$}
+     {
+        $1. \text{ Simular } \sigma^2_t \sim \mathcal{GI}(\bar{a},\bar{b})\;$\\
+        $2. \text{ Simular } \beta_t \sim \mathcal{N}(\bar{M},\sigma^2_t \bar{V})\;$\\
+        $3. \text{ Obtener } q_p(y_*)_t = x_*^T\beta_t + q_p(\varepsilon|\sigma^2_t) \;$
+     }
+ }
+ \caption{Simulador predictivo del cuantil \textit{p-\'esimo}, usando el modelo tradicional de regresi\'on a la media.}
+\end{algorithm}
+\BlankLine
 
 \newpage
