@@ -6,7 +6,7 @@ Para la elaboraci\'on de este cap\'itulo se ajustaron modelos de diversos cuanti
 \begin{equation*}
     y = g(x) + \omega(x).
 \end{equation*}
-Cabe resaltar que se utiliza la notaci\'on $g$, y $\omega$, para diferenciarlas de $f_p$ y $\varepsilon_p$, que son las usadas en el planteamiento de los modelos te\'oricos, vistos en los cap\'itulos anteriores. La raz\'on es que no necesariamente se cumple que $\mathbb{E}[\omega|x] = 0$ \'o $q(\omega|x) = 0$. De hecho, como se ver\'a en las siguientes l\'ineas, la funci\'on que se querr\'a estimar no ser\'a $g$, sino las correspondientes $f_p$ para diferentes cuantiles de inter\'es.
+Cabe resaltar que se utiliza la notaci\'on $g$, y $\omega$, para diferenciarlas de $f_p$ y $\varepsilon_p$, que son las usadas en el planteamiento de los modelos te\'oricos, vistos en los cap\'itulos anteriores. La raz\'on es que no necesariamente se cumple que $q_p(\omega|x) = 0$. De hecho, como se ver\'a en las siguientes l\'ineas, la funci\'on que se querr\'a estimar no ser\'a $g$, sino las correspondientes $f_p$ para diferentes cuantiles de inter\'es.
 
 La funci\'on real del cuantil $p$\textit{-\'esimo} de $y|x$ se puede obtener como
 \begin{equation*}
@@ -22,24 +22,21 @@ Una vez simulados los datos, se ajustaron el modelo tradicional de regresi\'on a
 
 Sin embargo, decidi\'i realizar esa particular comparaci\'on para descubrir qu\'e tan bueno podr\'ia ser un modelo que contempla ideas alternativas en todas las facetas de la regresi\'on (estad\'istico a modelar, tendencia y error aleatorio), cuando se le comparara con el que utiliza \'unicamente supuestos tradicionales. Eso no significa que si se mezclan algunas ideas alternativas, con algunas tradicionales, no se pueda obtener un tercer modelo, que resulte a\'un mejor. Pero el alcance de esta tesis se limita a comparar \'unicamente esos dos modelos.
 
-Para el ajuste el modelo tradicional se utiliz\'o un poliniomio de orden 5. Es decir, se utilizaron como covariables los valores de $x, x^2, \ldots, x^5$, adem\'as del t\'ermino independiente. A\'un as\'i, dicho ajuste fue simple, ya que requiri\'o \'unicamente de multiplicaciones matriciales para actualizar sus par\'ametros posteriores.
+Para el ajuste del modelo tradicional se utiliz\'o un poliniomio de orden 5. Es decir, se utilizaron como covariables los valores de $x, x^2, \ldots, x^5$, adem\'as del t\'ermino independiente. A\'un as\'i, dicho ajuste fue simple, computacionalmente hablando, ya que requiri\'o \'unicamente de multiplicaciones matriciales para actualizar sus par\'ametros posteriores. Como par\'ametros iniciales de la distribuci\'on Normal de $\beta$, se utiliz\'o el vector de medias con valores iguales a 0, y como matriz de varianzas y covarianzas, la identidad. En el caso de la \textit{Gamma-Inversa} de $\sigma^2$, el valor de forma usado fue 2, y el de escala, 1.
 
 Por otra parte, el ajuste del GPDP involucr\'o el c\'alculo de una cadena de Markov con ciertas particularidades. En todos los casos se desecharon las primeras $5,000$ simulaciones, para as\'i evitar dependencia de los valores iniciales. Posteriormente, se simularon $15,000$ valores para cada par\'ametro, pero de ellos \'unicamente se guard\'o uno de cada cinco, con la intenci\'on de buscar replicar el comportamiento independiente, que se supone entre los valores. Por lo tanto, se utilizaron $3,000$ valores simulados para aproximar la distribuci\'on posterior de cada par\'ametro. Dicho ajuste se realiz\'o utilizando el paquete \textit{GPDPQuantReg} en R, mismo que, como se detalló en el cap\'itulo anterior, implementa el modelo GPDP para la regresi\'on sobre cuantiles.
 
-%En primer lugar se presenta el ajuste del modelo en datos simulados, con el fin de comparar los resultados con los valores conocidos de antemano. Posteriormente se presenta para un conjunto de datos reales, con la intenci\'on de obtener conclusiones en aplicaciones pr\'acticas, mediante el uso del modelo central de esta tesis.%
-
-
-Posteriormente, se realiz\'o la predicci\'on para cada $x \in (-15,15)$, tal que $x$ tuviera valor cero para todos los decimales a partir de las cent\'esimas. Se utilizaron ambos modelos para simular $3,000$ predicciones de cada $f_p(x)$ (el algoritmo utilizado para simular valores del modelo tradicional se detalla en el \autoref{trad_mean_alg}). Posteriormente, se calcularon los cuantiles  muestrales $0.025$ y $0.975$\textit{-\'esimos}, para crear el intervalo de probabilidad al $95\%$ de la estimaci\'on posterior de la predicci\'on. Adem\'as, se calcul\'o el cuantil $0.5$\textit{-\'esimo} (la mediana), para tener una medida de tendencia central de dicha estimaci\'on. 
+Posteriormente, se realiz\'o la predicci\'on para cada $x \in [-15,15]$, tal que $x$ tuviera valor cero para todos los decimales a partir de las cent\'esimas. Es decir, $-15.0,-14.9,\ldots,14.9,15.0$. Se utilizaron ambos modelos para simular $3,000$ predicciones de cada $f_p(x)$ \footnote{El algoritmo utilizado para simular cuantiles del modelo tradicional de regresi\'on a la media se detalla en el \autoref{trad_mean_alg}.}. Posteriormente, se calcularon los cuantiles  muestrales $0.025$ y $0.975$\textit{-\'esimos}, para crear el intervalo de probabilidad al $95\%$ de la estimaci\'on posterior de la predicci\'on. Adem\'as, se calcul\'o el cuantil $0.5$\textit{-\'esimo} (la mediana), para tener una medida de tendencia central de dicha estimaci\'on. 
 
 Finalmente, se obtuvieron m\'etricas que permitieran comparar a grandes rasgos la calidad de estimaci\'on de ambos modelos. Se contrast\'o la estimaci\'on mediana de la predicci\'on con el valor real del cuantil, y se obtuvo el error cuadr\'atico medio, as\'i como la correlaci\'on al cuadrado. Adem\'as se calcul\'o qu\'e porcentaje de los valores reales cayeron dentro del intervalo de probabilidad al 95\%, estimado para la predicci\'on.
 
 \section{Conjuntos de datos simulados}
 
-A continuaci\'on se presentan los diversos conjuntos de datos simulados. Primero que nada, se expone uno que cumple con los supuestos de la regresi\'on tradicional a la media. Posteriormente, se presentan otros que desaf\'ian alguno de sus supuestos, con el fin de comparar c\'omo lidian dicho modelo, y el modelo GPDP, con ello. Finalmente, se comparan los resultados.
+A continuaci\'on se presentan los diversos conjuntos de datos simulados. Primero, se expone uno que cumple con los supuestos de la regresi\'on tradicional a la media. Posteriormente, se presentan otros que desaf\'ian alguno de sus supuestos, con el fin de comparar c\'omo lidian dicho modelo, y el modelo GPDP, con tal inconveniente. Finalmente, se comparan los resultados.
 
-\subsection{Supuestos tradicionales de regresi\'on}
+\subsection{Supuestos tradicionales de regresi\'on a la media}
 
-El primer caso que se presenta es el de un conjunto de datos que se simul\'o con las condiciones com\'unmente supuestas dentro de los modelos de regresi\'on: funci\'on de \textit{tendencia} polinomial y error normal alrededor de ella, independiente del valor de $x$. Es decir, los errores presentaron homocedasticidad. Expresado en t\'erminos matem\'aticos,
+El primer caso que se presenta es el de un conjunto de datos que se simul\'o con las condiciones com\'unmente supuestas dentro de los modelos de regresi\'on a la media: funci\'on de tendencia polinomial y error normal alrededor de ella, independiente del valor de $x$. Es decir, los errores presentaron homocedasticidad. Expresado en t\'erminos matem\'aticos,
 \begin{equation*}
     g(x) = \frac{1}{1000}x^3 - \frac{1}{40}x^2 - \frac{1}{10}x + 6,
 \end{equation*}
@@ -116,9 +113,9 @@ Lo anterior es confirmado por la tabla \ref{within_classic}, ya que para el caso
 
 Hay comentarios del ajuste de este conjunto de datos que coincidir\'an con otros, por lo que en la secci\'on \ref{models_comp} se har\'an apuntes generales acerca de ellos.
 
-Por otro lado, como se detall\'o en el cap\'itulo anterior, con el uso del paquete \textit{GPDPQuantReg} tambi\'en es posible obtener diagn\'osticos de las cadenas de Markov del modelo GPDP, los cuales se explican de manera m\'as detallada en el \autoref{chap:MCMC}. Como ejemplo, se presentan los del ajuste del cu\'antil $0.5$-\textit{\'esimo} para los datos de esta subsecci\'on, en la figura \ref{diag_sgse}.
+Por otro lado, como se detall\'o en el cap\'itulo anterior, con el uso del paquete \textit{GPDPQuantReg} tambi\'en es posible obtener diagn\'osticos de las cadenas de Markov del modelo GPDP, los cuales se explican de manera m\'as detallada en el \autoref{chap:MCMC}. Como ejemplo, se presentan los del ajuste del cu\'antil $0.5$-\textit{\'esimo} para los datos de esta subsecci\'on, en la figura \ref{diag_sgse}. Los par\'ametros que se analizan son la $\lambda$, par\'ametro de escala de la funci\'on covarianza del proceso Gaussiano; y, adem\'as, se eligi\'o una observaci\'on de forma aleatoria, para la que se dio seguimiento al valor de $\sigma$ y $f_p(x)$. 
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 	\centering
 	\caption{Diagn\'osticos de las cadenas de Markov del cu\'antil $0.5$-\textit{\'esimo}, de datos que cumplen los supuestos tradicionales de regresi\'on.}
 	\subfloat[Ergodicidad]{
@@ -138,11 +135,11 @@ Por otro lado, como se detall\'o en el cap\'itulo anterior, con el uso del paque
 
 La ergodicidad parece adecuada, debido a que después de las primeras iteraciones, el promedio del valor de los par\'ametros se estabiliza en un nivel relativamente fijo para todas las iteraciones siguientes. La autocorrelaci\'on es excelente, ya que para los tres par\'ametros validados se muestra el valor de 1 en la correlaci\'on consigo mismo (por construcci\'on, siempre es as\'i), pero a partir del siguiente valor en la cadena de Markov, la correlaci\'on es pr\'acticamente 0. Es decir, los valores simulados s\'i parecen haber sido simulados de la distribuci\'on posterior, de forma independiente entre s\'i.
 
-La correlaci\'on cruzada entre par\'ametros tambi\'en es cercana a 0, por lo que la simulaci\'on de un par\'ametro de la cadena no muestra una gran dependencia del valor de otro par\'ametro, en la misma iteraci\'on. Por ello, hay motivos para afirmar que la cadena de Markov no cay\'o en ciclos que no reflejen su distribuci\'on estacionaria. De hecho, esto se puede confirmar al observar la traza de $f$, ya que no muestra comportamientos c\'iclicos y aunque se centra en un intervalo, tambi\'en hay valores que salen de \'el de forma espor\'adica.
+La correlaci\'on cruzada entre par\'ametros tambi\'en es cercana a 0, por lo que la simulaci\'on de un par\'ametro de la cadena no muestra una gran dependencia del valor de otro par\'ametro, en la misma iteraci\'on. Por ello, hay motivos para pensar que la cadena de Markov no cay\'o en ciclos distintos a su distribuci\'on estacionaria. De hecho, esto se puede confirmar al observar la traza de $f$, ya que no muestra comportamientos c\'iclicos y aunque se centra en cierto intervalo de valores, tambi\'en hay simulaciones que salen de \'el de forma espor\'adica.
 
 \subsection{Error de colas pesadas}
 
-En el siguiente conjunto de datos se utiliz\'o la distribuci\'on Cauchy para simular el error. A pesar de ser sim\'etrica y centrada en 0, dicha distribuci\'on es peculiar debido a que su esperanza y varianza no est\'an definidas. El motivo de ello son sus colas pesadas, mismas que originan con frecuencia valores muy alejados del centro. Adem\'as, se introdujo un componente sinoidal en la funci\'on tendencia, mismo que puede ser aproximado con un polinomio tanto como se quiera, utilizando t\'erminos de su serie de Taylor. Sin embargo, tambi\'en tiene un valor absoluto, que s\'olo puede ser aproximado parcialmente por la familia de los polinomios.
+En el siguiente conjunto de datos se utiliz\'o la distribuci\'on Cauchy para simular el error. A pesar de ser sim\'etrica y centrada en 0, dicha distribuci\'on es peculiar debido a que su esperanza y varianza no est\'an definidas. El motivo de ello son sus colas pesadas, mismas que originan con cierta frecuencia valores muy alejados del centro. Adem\'as, se introdujo un componente sinoidal en la funci\'on tendencia, mismo que puede ser aproximado con un polinomio tanto como se quiera, utilizando t\'erminos de su serie de Taylor. Sin embargo, tambi\'en tiene un valor absoluto, que requiere un n\'umero grande de t\'erminos para poder ser aproximado certeramente por la familia de los polinomios.
 
 La expresi\'on de la funci\'on tendencia utilizada es \begin{equation*}
     g(x) = \frac{1}{4}|x| + sen(x).
@@ -156,7 +153,7 @@ Por otro lado, el error se distribuy\'o $\omega(x) \sim Cauchy(0,0.1)$. Los dato
 	\label{sample_heavy_tails}
 \end{figure}
 
-Como se puede observar, la mayor\'ia de los datos est\'an concentrados alrededor de la funci\'on tendencia. Sin embargo, ocasionalmente los valores se disparan y se alejan ampliamente de dicha concentraci\'on. Claros ejemplos son el dato que est\'a muy por debajo de los dem\'as, cerca de $x = -10$, y uno que est\'a muy por arriba, alrededor de $x = -5$. Lo interesante de este ejemplo fue ver c\'omo se comportaban ambos modelos ante dichos datos at\'ipicos, as\'i como la aproximaci\'on de una funci\'on que no se puede expresar fielmente con polinomios, que es el valor absoluto. Los resultados se muestran a continuaci\'on.
+Como se puede observar, la mayor\'ia de los datos est\'an concentrados alrededor de la funci\'on tendencia. Sin embargo, ocasionalmente los valores se disparan y se alejan ampliamente de dicha concentraci\'on. Claros ejemplos son el dato que est\'a muy por debajo de los dem\'as, cerca de $x = -10$, y uno que est\'a muy por arriba, alrededor de $x = -5$. Lo interesante de este ejemplo fue ver c\'omo se comportaban ambos modelos ante dichos datos at\'ipicos. Los resultados se muestran a continuaci\'on.
 
 \begin{table}[H]
 \centering
@@ -214,7 +211,7 @@ Cuantil & Modelo Tradicional & Modelo GPDP \\
 
 Una vez obtenidos los resultados de ambos modelos, resulta interesante observar varios aspectos de la figura \ref{models_heavy_tails}. Tocando el tema de la influencia de valores at\'ipicos, parece claro que el modelo tradicional los manej\'o estimando valores muy altos para $\sigma^2$, del error que supone normal. Esto ocasion\'o que para los cuantiles distintos a la mediana, estimara que estaban m\'as lejos del centro, de lo que realmente estaban. Dicha situaci\'on se puede confirmar utilizando el cuadro \ref{within_heavy_tails}, ya que s\'olo el $41\%$ de los datos reales cay\'o dentro del intervalo de probabilidad estimado para el cuantil $0.25$\textit{-\'esimo}, y peor a\'un para el $0.95$\textit{-\'esimo}, donde s\'olo el $9\%$ lo hizo.
 
-En cuanto a la estimaci\'on de la tendencia, el modelo tradicional interpret\'o que los datos ven\'ian de lo que parece ser una par\'abola, con m\'inimo y centro en 0, acerc\'andose al comportamiento del valor absoluto. Desafortunadamente no logr\'o atrapar el comportamiento sinoidal y atribuy\'o las fluctuaciones al error aleatorio. Eso se puede ver claramente en su estimaci\'on del cuantil $0.5$\textit{-\'esimo}, donde captur\'o el nivel de manera adecuada, pero como muestra la figura \ref{models_heavy_tails} y el cuadro \ref{corr_heavy_tails}, muchos valores salieron tanto por arriba, como por abajo, del intervalo.
+En cuanto a la estimaci\'on de la tendencia, el modelo tradicional interpret\'o que los datos ven\'ian de lo que parece ser una par\'abola, con m\'inimo y centro en 0, acerc\'andose relativamente al comportamiento del valor absoluto. Desafortunadamente no logr\'o atrapar el comportamiento sinoidal y atribuy\'o las fluctuaciones al error aleatorio. Eso se puede ver claramente en su estimaci\'on del cuantil $0.5$\textit{-\'esimo}, donde captur\'o el nivel de manera adecuada, pero como muestra la figura \ref{models_heavy_tails} y el cuadro \ref{corr_heavy_tails}, muchos valores salieron tanto por arriba, como por abajo, del intervalo.
 
 Por otro lado, el modelo GPDP hizo una estimaci\'on muy certera en la mayor\'ia de los puntos, como se refleja en los cuadros \ref{mse_heavy_tails} y \ref{within_heavy_tails}. La vecindad alrededor de $x = 10$, que coincide con el valor at\'ipico m\'as dram\'atico, es donde el ajuste pudo haber sido mucho mejor. Sin embargo, creo que es importante recalcar que el problema se limit\'o a un error de estimaci\'on local, que no afect\'o a los puntos m\'as alla de cierta pequeña vecindad. De hecho, el siguiente valor at\'ipico en magnitud, alrededor de $x = 5$, fue manejado aceptablemente por el modelo para los tres cuantiles.
 
@@ -370,7 +367,7 @@ Cuantil & Modelo Tradicional & Modelo GPDP \\
 
 La figura \ref{models_asymmetric} permite observar que el modelo tradicional infiere una mediana, en su mayor\'ia, mayor que la real. Esto se debe a que, por el supuesto de simetr\'ia, impl\'icitamente modela a la mediana como si fuera la media, siendo la segunda m\'as grande en su valor real, que la primera. 
 
-La misma figura sugiere que el modelo tradicional interpret\'o a la funci\'on de los diversos cuantiles pr\'acticamente como una constante, y atribuy\'o las variaciones \'unicamente al error aleatorio. La sugerencia de la constante tambi\'en se sustenta en el cuadro \ref{corr_asymmetric}, donde es posible ver que la correlaci\'on es de 0, respecto a los valores originales. Adem\'as, la hip\'otesis de que las variaciones se le atribuyeron al error aleatorio se apoya en los bajos porcentajes de valores reales dentro de los intervalos de predicci\'on, presentados en el cuadro \ref{within_asymmetric}.
+La misma figura sugiere que el modelo tradicional interpret\'o a la funci\'on de los diversos cuantiles pr\'acticamente como una constante, y atribuy\'o las variaciones \'unicamente al error aleatorio. La sugerencia de la constante tambi\'en se sustenta en el cuadro \ref{corr_asymmetric}, donde es posible ver que la correlaci\'on es pr\'acticamente 0 (la primer cifra significativa es el tercer decimal), respecto a los valores originales. Adem\'as, la hip\'otesis de que las variaciones se le atribuyeron al error aleatorio se apoya en los bajos porcentajes de valores reales dentro de los intervalos de predicci\'on, presentados en el cuadro \ref{within_asymmetric}.
 
 Por otro lado, se puede verificar en las tablas \ref{mse_asymmetric}, \ref{corr_asymmetric} y \ref{within_asymmetric} que el modelo GPDP logr\'o un mejor desempeño en todas las m\'etricas, para todos los cuantiles. Sin embargo, no hay que perder de vista que de todos los casos vistos hasta este punto, es el que present\'o intervalos de probabilidad m\'as amplios. Es decir, es el caso en el que hay mayor incertidumbre respecto a la predicci\'on. Adem\'as, present\'o niveles de correlaci\'on bajos, comparativamente hablando. No necesariamente la causa fue el error asim\'etrico, sino pudo provenir de que la forma de la funci\'on tendencia es at\'ipica y compleja de inferir para muchos modelos.
 
@@ -396,7 +393,7 @@ El comportamiento discontinuo se puede entender de mejor manera gr\'aficamente, 
 	\label{sample_discontinuous}
 \end{figure}
 
-Como se puede observar en la figura \ref{sample_discontinuous}, y en la expresi\'on matem\'atica antes mencionada, la funci\'on tendencia tiene tres secciones: la primera con un comportamiento oscilatorio, la segunda, un trozo de par\'abola, y la \'ultima, un logaritmo, que por el nivel de la covariable, asemeja a una recta. Todas son aproximables con polinomios, usando series de Taylor. Sin embargo, entre cada secci\'on hay un salto de discontinuidad, por lo que la funci\'on global no puede ser expresada fielmente usando dicha familia. De hecho, como ya se mencion\'o, la funci\'on ni siquiera cumple un supuesto m\'as flexible, que es el de continuidad. Ante dicha dificultad se ajustaron los modelos tradicional y GPDP, obteniendo los resultados que se presentan a continuaci\'on. 
+Como se puede observar en la figura \ref{sample_discontinuous}, y en la expresi\'on matem\'atica antes mencionada, la funci\'on tendencia tiene tres secciones: la primera con un comportamiento oscilatorio, la segunda, un trozo de par\'abola, y la \'ultima, un logaritmo, que por el nivel de la covariable, asemeja a una recta. Todas, por separado, son continuas. Por lo tanto, son aproximables con polinomios en un intervalo cerrado. Sin embargo, entre cada secci\'on hay un salto de discontinuidad, por lo que la funci\'on global no puede ser expresada fielmente usando dicha familia. Ante dicha dificultad se ajustaron los modelos tradicional y GPDP, obteniendo los resultados que se presentan a continuaci\'on. 
 
 \begin{table}[H]
 \centering
@@ -460,11 +457,11 @@ Por otro lado, como lo confirma la exploraci\'on visual de la figura \ref{models
 \section{Comparaci\'on general entre modelos}
 \label{models_comp}
 
-El an\'alisis de los datos anteriores brinda informaci\'on para pensar que el ajuste del modelo GPDP fue, la mayor\'ia de las veces, igual o mejor que el del modelo tradicional de regresi\'on a la media, cuando el objetivo fue estimar el valor de los cuantiles. Esto se dio principalmente cuando se modelaron valores extremos, o los datos provinieron de situaciones que violan los supuestos de la regresi\'on tradicional. 
+El an\'alisis de los datos anteriores brinda informaci\'on para pensar que el ajuste del modelo GPDP fue, la mayor\'ia de las veces, igual o mejor que el del modelo tradicional de regresi\'on a la media, cuando el objetivo fue estimar el valor de los cuantiles. Esto se dio principalmente cuando se modelaron valores extremos, o los datos provinieron de situaciones que violan los supuestos de la regresi\'on tradicional a la media. 
 
-Pasando a un an\'alisis m\'as minucioso, observ\'e detalles que considero vale la pena resaltar. Para empezar, la magnitud de los intervalos de probabilidad de predicci\'on, ya que los que present\'o el modelo GPDP fueron com\'unmente m\'as anchos que los del tradicional. Esto no significa que su estimaci\'on haya sido peor. De hecho, quiz\'as fue lo contrario. Mientras que los intervalos de probabilidad al $95\%$ del modelo GPDP contuvieron, al menos, al $95\%$ de los valores reales de los cuantiles (como era de esperarse), hubo intervalos del modelo tradicional al $95\%$ de probabilidad que contuvieron \'unicamente al $9\%$ de los valores reales.
+Pasando a un an\'alisis m\'as minucioso, observ\'e detalles que considero vale la pena resaltar. Para empezar, la magnitud de los intervalos de probabilidad de predicci\'on, ya que los que present\'o el modelo GPDP fueron com\'unmente m\'as anchos que los del tradicional. Esto no significa que su estimaci\'on haya sido peor. De hecho, quiz\'as fue lo contrario. Mientras que los intervalos de probabilidad al $95\%$ del modelo GPDP siempre contuvieron, al menos, al $95\%$ de los valores reales de los cuantiles (como era esperado), hubo intervalos del modelo tradicional al $95\%$ de probabilidad que contuvieron \'unicamente al $9\%$ de los valores reales.
 
-Hablando de los intervalos de probabilidad, es interesante observar que aquellos provenientes del GPDP se hicieron m\'as angostos, conforme hubo m\'as datos observados cercanos a ese valor, y m\'as anchos, ante la ausencia de datos en la vecindad pr\'oxima. Este comportamiento provin\'o de la estructura de correlaci\'on dada por el proceso Gaussiano, recordando que depende de la distancia entre los datos. En lo personal, conceptualmente me gusta m\'as ese comportamiento, compar\'andolo con el que sucede en el modelo tradicional de regresi\'on a la media, donde el intervalo de predicci\'on del cuantil tiene anchura estable. La raz\'on es que considero que entre mayor sea la cantidad de datos cercanos, se deber\'ia tener menor incertidumbre, y viceversa.
+Hablando de los intervalos de probabilidad, es interesante observar que aquellos provenientes del GPDP se hicieron m\'as angostos, conforme hubo m\'as datos observados cercanos a ese valor, y m\'as anchos, ante la ausencia de datos en la vecindad pr\'oxima. Este comportamiento provino de la estructura de correlaci\'on dada por el proceso Gaussiano, recordando que depende de la distancia entre los datos. Por su parte, en el modelo tradicional de regresi\'on a la media, el intervalo de predicci\'on tuvo menor anchura en la parte media de los datos de $x$, y creci\'o muy ligeramente conforme se acerc\'o a los valores m\'inimo y m\'aximo observados. En lo personal, prefiero el comportamiento del modelo GPDP, ya que considero que entre mayor sea la cantidad de datos cercanos, se deber\'ia tener menor incertidumbre, y viceversa.
 
 Tambi\'en es interesante observar que la mediana de la predicci\'on en el modelo tradicional se encontr\'o usualmente en medio del intervalo. Por otro lado, debido a que supone que el error es una mezcla infinita de procesos de Dirichlet, el modelo GPDP present\'o, en algunos casos, asimetr\'ia en la distribuci\'on posterior predictiva.
 
@@ -479,11 +476,11 @@ Finalmente, es interesante comparar la diferencia en tiempos de ajuste y predicc
   \hline
 Datos & Tradicional (seg) & GPDP (seg) \\ 
   \hline
-Supuestos tradicionales & 0.020 & 2,498.17 \\ 
-  Colas pesadas & 0.004 & 4,006.81 \\ 
-  Heterocedasticidad & 0.004 & 3,502.93 \\ 
-  Error asimétrico & 0.004 & 6,707.43 \\ 
-  Discontinuidades & 0.004 & 3,062.40 \\ 
+Supuestos tradicionales & menos de 1 & 2,498 \\ 
+  Colas pesadas & menos de 1 & 4,006 \\ 
+  Heterocedasticidad & menos de 1 & 3,502 \\ 
+  Error asimétrico & menos de 1 & 6,707 \\ 
+  Discontinuidades & menos de 1 & 3,062 \\ 
    \hline
 \end{tabular}
 \label{fit_time}
@@ -496,11 +493,11 @@ Supuestos tradicionales & 0.020 & 2,498.17 \\
   \hline
 Datos & Tradicional (seg) & GPDP (seg) \\ 
   \hline
-Supuestos tradicionales & 6.35 & 563.82 \\ 
-  Colas pesadas & 4.72 & 529.00 \\ 
-  Heterocedasticidad & 5.29 & 534.53 \\ 
-  Error asimétrico & 5.74 & 537.44 \\ 
-  Discontinuidades & 5.03 & 533.19 \\ 
+Supuestos tradicionales & 6.4 & 563.8 \\ 
+  Colas pesadas & 4.7 & 529.0 \\ 
+  Heterocedasticidad & 5.3 & 534.5 \\ 
+  Error asimétrico & 5.7 & 537.4 \\ 
+  Discontinuidades & 5.0 & 533.2 \\ 
    \hline
 \end{tabular}
 \label{pred_time}
@@ -508,11 +505,11 @@ Supuestos tradicionales & 6.35 & 563.82 \\
 
 Analizando los tiempos de ajuste, y recordando que se usaron 60 datos en todos los casos, es clara la bondad dada por la propiedad conjugada del modelo tradicional. \'Esta permite obtener una expresi\'on anal\'itica cerrada para la distribuci\'on posterior de los par\'ametros, y por ende, el ajuste consiste \'unicamente en multiplicaciones matriciales que toman menos de un segundo. Adem\'as, por las caracter\'isticas de este modelo, \'unicamente se requiri\'o ajustar una vez por conjunto de datos, independientemente de que se usara para varios cuantiles.
 
-Por otro lado, el modelo GPDP requiere un ajuste distinto por cuantil, y el tiempo que tarda en correr est\'a siempre en funci\'on de la cantidad de iteraciones que se eligen realizar. En el caso particular de este trabajo, se corrieron 20,000 iteraciones para todos los casos, lo cual representa un n\'umero poco sobresaliente, comparado con las que normalmente se utilizan cuando se busca tener una precisi\'on relativamente confiable. El modelo que menos tard\'o requiri\'o m\'as de 40 minutos para realizar el ajuste, por lo que la diferencia es abismal entre ambos modelos.
+Por otro lado, el modelo GPDP requiere un ajuste distinto por cuantil, y el tiempo que tarda en correr est\'a siempre en funci\'on de la cantidad de iteraciones que se eligen realizar. En el caso particular de este trabajo, se corrieron 20,000 iteraciones para todos los casos, lo cual representa un n\'umero poco sobresaliente, comparado con las que normalmente se utilizan cuando se busca tener una precisi\'on alta. El modelo que menos tard\'o requiri\'o m\'as de 40 minutos para realizar el ajuste, por lo que la diferencia es abismal entre ambos modelos.
 
 De hecho, es interesante ver c\'omo hay grandes diferencias dentro de los propios ajustes del modelo GPDP. La raz\'on principal es la simulaci\'on de una distribuci\'on normal truncada en cada iteraci\'on del algoritmo, usando un m\'etodo de aceptaci\'on y rechazo. Cuando los datos cumplieron los supuestos tradicionales, fue cuando le cost\'o menos trabajo realizar las simulaciones. En cambio, cuando se us\'o una funci\'on con muchas subidas y bajadas, y error asim\'etrico, el algoritmo requiri\'o m\'as del doble de tiempo para poder ajustar el modelo.
 
-Para el caso de las predicciones, el n\'umero de puntos aument\'o a 300 para todos los casos. Sin embargo, debido a que estas simulaciones ya no pertenecen a una cadena de Markov en ning\'un caso, se pueden correr en paralelo para ambos modelos. Ambos requieren simular una distribuci\'on Normal, pero el tradicional simula una marginal por cada dato, mientras que el GPDP requiere simular una conjunta, de dimensi\'on igual al n\'umero de datos. Esa es la raz\'on por la que tarda 100 veces m\'as.
+Para el caso de las predicciones, el n\'umero de puntos aument\'o a 300 para todos los casos. Sin embargo, debido a que estas simulaciones ya no pertenecen a una cadena de Markov, se pueden correr en paralelo para los dos modelos. Ambos requieren simular una distribuci\'on Normal, pero el tradicional simula una marginal por cada dato, mientras que el GPDP requiere simular una conjunta, de dimensi\'on igual al n\'umero de datos. Esa es la raz\'on por la que tarda 100 veces m\'as.
 
 As\'i, mientras que el modelo GPDP mostr\'o, en general, mejores resultados en la precisi\'on, el modelo tradicional de regresi\'on a la media fue mucho m\'as efectivo en tiempo. Por ello, el modelador deber\'ia considerar cu\'al de ambas prefiere en su estudio, para poder tomar una mejor decisi\'on de qu\'e modelo elegir.
 

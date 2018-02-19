@@ -4,7 +4,7 @@
 
 En el cap\'itulo anterior se analizaron los modelos tradicionales de regresi\'on, tanto a la media, como sobre cuantiles, para una variable de respuesta $y$, dado un cierto conjunto de covariables $x$. Si bien tienen muchas ventajas, es relevante no olvidar que cuentan con un supuesto fuerte: la relación entre la variable dependiente $y$ y las variables independientes $x$ \'unicamente se da de forma lineal en los par\'ametros. Pero las funciones lineales s\'olo son un subconjunto de las funciones existentes. Por ello, valdr\'ia la pena analizar si es posible relajar este supuesto y tener un modelo m\'as general.
 
-Una idea inicial para darle la vuelta es redefinir variables, de tal manera que se pueda obtener un polinomio. Por ejemplo, se supone que $\dot{x}$ es un buen predictor de la media de $y$, pero como polinomio de orden 3, es decir,
+Una idea inicial para darle la vuelta es redefinir variables, de tal manera que se pueda obtener un polinomio. Por ejemplo, suponga que $\dot{x}$ es un buen predictor de la media de $y$, pero como polinomio de orden 3, es decir,
 \begin{equation*}
     y = \beta_0 + \beta_1\dot{x} + \beta_2\dot{x}^2 + \beta_3\dot{x}^3 + \varepsilon.
 \end{equation*}
@@ -18,12 +18,12 @@ Otra limitaci\'on con la que podr\'ia contar el modelo tradicional es que no tom
 
 Es posible llevar dicha representaci\'on al modelo tradicional, declarando al vector $x$ de variables de entrada como $x = (1,\dot{x}_1,\dot{x}_2,\dot{x}_1\dot{x}_2)$, y el procedimiento ser\'ia an\'alogo.
 
-Y a\'un es posible dar un siguiente paso, saliendo del terreno de los polinomios y entrando en el de las funciones biyectivas. Se podr\'ia pensar en un caso como el siguiente.
+Y a\'un es posible dar un siguiente paso, saliendo del terreno de los polinomios y entrando en el de las funciones biyectivas. Se podr\'ia pensar en un caso como el siguiente, donde $\dot{y},\dot{x}_1,\dot{x}_2 > 0$.
 \begin{equation*}
 \begin{aligned}
     \dot{y} &= \dot{\beta_0}\dot{x}_1^{\beta_1}\dot{x}_2^{\beta_2} e^{\varepsilon} \\
-    \implies ln(\dot{y}) &= ln(\dot{\beta_0}) + \beta_1 ln(\dot{x}_1) + \beta_2 ln(\dot{x}_2) + \varepsilon \\
-    \implies y &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon, 
+    \iff ln(\dot{y}) &= ln(\dot{\beta_0}) + \beta_1 ln(\dot{x}_1) + \beta_2 ln(\dot{x}_2) + \varepsilon \\
+    \iff y &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon, 
 \end{aligned}
 \end{equation*}
 con
@@ -37,15 +37,15 @@ con
 \end{equation*}
 y el procedimiento se convierte, de nuevo, en el del modelo tradicional.
 
-La intenci\'on de presentar estos ejemplos es que el lector se de cuenta del gran conjunto de funciones que es posible cubrir usando el modelo tradicional de regresi\'on lineal. Sin embargo, tambi\'en le permitir\'an darse cuenta de c\'omo se puede complicar la relaci\'on de dependencia entre $y$ y las covariables $x$, de tal manera que si la funci\'on de la que realmente se originaron los datos tiene un comportamiento at\'ipico, podr\'ia no ser capturado por el modelo planteado hasta ahora. As\'i surge la necesidad de buscar un m\'etodo que permita aproximar cualquier tipo de relaci\'on entre $y$ y $x$, sin restringirla al subconjunto de polinomios. 
+La intenci\'on de presentar estos ejemplos es que el lector se de cuenta del gran conjunto de funciones que es posible cubrir usando el modelo tradicional de regresi\'on lineal. Sin embargo, tambi\'en le permitir\'an observar c\'omo se puede complicar la relaci\'on de dependencia entre $y$ y las covariables $x$, de tal manera que si la funci\'on de la que realmente se originaron los datos tiene un comportamiento at\'ipico, podr\'ia no ser capturado por el modelo planteado hasta ahora. As\'i surge la necesidad de buscar un m\'etodo que permita aproximar cualquier tipo de relaci\'on entre $y$ y $x$, sin restringirla al subconjunto de polinomios. 
 
-Por otro lado, en cuanto el error, la distribuci\'on asim\'etrica de Laplace cumple el cometido de que el cuantil $p$-\'esimo sea igual a 0. Es decir, impl\'icitamente provoca la asimetr\'ia necesaria para que el porcentaje de valores por debajo de $f_p(x)$ se aproxime al $p \times 100\%$, y por arriba, al $(1-p) \times 100\%$.
+Por otro lado, en cuanto el error, la distribuci\'on asim\'etrica de Laplace cumple el cometido de que el cuantil \textit{p-\'esimo} sea igual a 0. Es decir, impl\'icitamente provoca la asimetr\'ia necesaria para que el porcentaje de valores por debajo de $f_p(x)$ se aproxime al $p \times 100\%$, y por arriba, al $(1-p) \times 100\%$.
 
 Si bien esta es una caracter\'istica necesaria, puede no ser suficiente debido a que contempla que la distribuci\'on de los errores es la misma para distintos valores de las covariables. Dicha problem\'atica podr\'ia ser mitigada mediante el uso de una mezcla de distribuciones, con pesos variables para cada observaci\'on. Particularmente es posible usar distribuciones asim\'etricas de Laplace con diferentes valores para $\sigma$ y probabilidad asociada a cada una, de acuerdo a su factibilidad. 
 
 Entonces surgen algunas preguntas como ¿cu\'antos valores de $\sigma$ deber\'ia de contener el modelo y cu\'ales deber\'ian ser esos valores? Normalmente no existe una respuesta definitiva a ambas preguntas y se deja la decisi\'on arbitraria al modelador. Pero, ¿qu\'e pasar\'ia si se planteara un modelo de mezclas infinitas de distribuciones? As\'i, se podr\'ia encontrar la mezcla \'optima, ya que cualquier mezcla con n\'umero fijo de par\'ametros ser\'ia un caso particular.
 
-En resumen, tanto la estimaci\'on de la distribuci\'on de $f_p$, como la de $\varepsilon_p$, podr\'ian mejorarse usando modelos de infinitos par\'ametros, que generalizan a los modelos con un n\'umero de par\'ametros predefinido. Con los m\'etodos estad\'isticos tradicionales es imposible hacerlo, y m\'as si el tiempo es finito. Pero esto abre la puerta a una visi\'on menos explorada para hacer estad\'istica: los \textbf{m\'etodos no param\'etricos}.
+En resumen, tanto la estimaci\'on de la distribuci\'on de $f_p$, como la de $\varepsilon_p$, podr\'ian mejorarse usando modelos de infinitos par\'ametros, que generalizan a los modelos con un n\'umero de par\'ametros predefinido. Con los m\'etodos estad\'isticos tradicionales es imposible hacerlo, pero esto abre la puerta a una visi\'on menos explorada para hacer estad\'istica: los \textbf{m\'etodos no param\'etricos}.
 
 Como menciona \cite{Wasserman_Nonparametric}: \textit{La idea b\'asica de la inferencia no param\'etrica es usar los datos para inferir una medida desconocida, haciendo los menos supuestos posibles. Normalmente esto significa usar modelos estad\'isticos de dimensi\'on infinita. De hecho, un mejor nombre para la inferencia no param\'etrica podr\'ia ser inferencia de dimensi\'on infinita.}
 
@@ -58,7 +58,7 @@ Y si bien esto puede sonar irreal, la idea intuitiva que est\'a detr\'as de este
 
 \subsection{Introducci\'on a los procesos Gaussianos}
 
-Retomando las ideas del cap\'itulo anterior, los modelos de regresi\'on tienen como objetivo describir la distribuci\'on de una variable aleatoria $y$, condicional a los valores de las covariables $x$, es decir $y|x \sim \mathbb{P}(y|x)$. Dado que es complicado aproximar con exactitud toda la distribuci\'on, com\'unmente se enfocan en un estad\'istico particular representando por la funci\'on $f_p$, que en el caso de la regresi\'on sobre cuantiles se define como $q_p(y|x) = f_p(x)$, y luego suponer una distribuci\'on para la dispersi\'on alrededor de ese valor.
+Retomando las ideas del cap\'itulo anterior, los modelos de regresi\'on tienen como objetivo describir la distribuci\'on de una variable aleatoria $y$, condicional a los valores de las covariables $x$, es decir $y|x \sim \mathbb{P}(y|x)$. Dado que es complicado aproximar con exactitud toda la distribuci\'on, com\'unmente se enfocan en un estad\'istico particular, que en el caso de la regresi\'on sobre cuantiles se define como $f_p(x) = q_p(y|x)$, y luego suponer una distribuci\'on para el error aleatorio alrededor de ese valor.
 
 Con el objetivo de ajustar un modelo, se utiliza el supuesto que
 \begin{equation*}
@@ -70,13 +70,13 @@ En el modelo tradicional se utiliza el supuesto de relaci\'on lineal $f_p(x) = x
 
 Es importante recordar que la función $f_p$ es pensada fija, pero desconocida. De nueva cuenta, para reflejar la incertidumbre del modelador, es posible darle una distribución de probabilidad. Pero a diferencia del modelo lineal, ya no existir\'a el parámetro $\beta_p$ al cual canalizarle esta incertidumbre, por lo que ahora tendrá que ser sobre toda la función.
 
-Para ello, se puede pensar a $f_p$ como aleatoria. Pero como $f_p$ est\'a definida para m\'ultiples valores $x$ ya no se podr\'a pensar como una variable aleatoria, sino como un conjunto de variables aleatorias que depende de variables de entrada, es decir, un proceso estoc\'astico. Para el caso particular de esta tesis, se pensar\'a que sigue un proceso \textit{proceso Gaussiano}, concepto que se introduce a continuaci\'on.
+Para ello, se puede pensar a $f_p$ como aleatoria. Pero como $f_p$ est\'a definida para m\'ultiples valores de $x$, ya no se podr\'a pensar como una variable aleatoria, sino como un conjunto de variables aleatorias que depende de variables de entrada, es decir, un proceso estoc\'astico. Para el caso particular de esta tesis, se pensar\'a que sigue un \textit{proceso Gaussiano}, concepto que se introduce a continuaci\'on.
 
 \begin{defin}
     Un \textbf{proceso Gaussiano} es un conjunto de variables aleatorias, tal que todo subconjunto finito de ellas tendr\'a una distribuci\'on Gaussiana (Normal) conjunta.
 \end{defin}
 
-As\'i, sean $x \in \mathbb{R}$ un vector de covariables, cada $f_p(x)$ tiene una distribuci\'on Normal univariada, con media $m(x)$ y varianza $k(x,x)$, las cuales reflejan el conocimiento previo que se tiene del fenómeno de estudio. 
+As\'i, sean $x \in \mathbb{R}$ un vector de covariables, cada $f_p(x)$ tiene una distribuci\'on Normal univariada, con media $m(x)$ y varianza $k(x)$, las cuales reflejan el conocimiento previo que se tiene del fenómeno de estudio. 
 
 Para continuar con la notación matricial del cap\'itulo anterior, sean $Y \in \mathbb{R}^m$ y $X \in \mathbb{R}^{m \times n}$, y $\mathcal{E}_p \in \mathbb{R}^m$ el vector de errores aleatorios, es posible describir al modelo como
 \begin{equation*}
@@ -191,7 +191,7 @@ A partir de este punto, y cuando el contexto lo permita, por simplicidad de nota
 
 \subsection{Funciones de covarianza}
 
-Recordando que $k$ describe la covarianza entre dos variables aleatorias que pertenecen el proceso estoc\'astico $f_p$, las propiedades que $k(x,x')$ tiene que cumplir son
+Recordando que $k$ describe la covarianza entre dos variables aleatorias que pertenecen al mismo proceso estoc\'astico $f_p$, las propiedades que $k(x,x')$ tiene que cumplir son
 \begin{equation*}
 \begin{aligned}
     k(x,x') &= k(x',x) \text{ (simetr\'ia),} \\
@@ -199,9 +199,9 @@ Recordando que $k$ describe la covarianza entre dos variables aleatorias que per
 \end{aligned}
 \end{equation*}
 
-Si bien es cierto que dadas esas restricciones hay una variedad muy grande de funciones con las que se puede describir $k(x,x')$, por practicidad, y tomando en cuenta que es un supuesto sensato para la mayor\'ia de los casos, es com\'un describir a la funci\'on $k$ en relaci\'on a la distancia entre $x$ y $x'$, escrita usualmente como $\norm{x,x'}$. Es decir, $k(x,x') = k(\norm{x,x'})$. A este tipo de funciones de covarianza se les denomina \textbf{estacionarias}.
+Si bien es cierto que dadas esas restricciones hay una variedad muy grande de funciones con las que se puede describir $k$, por practicidad, y tomando en cuenta que es un supuesto sensato para la mayor\'ia de los casos, es com\'un describirla en relaci\'on a la distancia entre $x$ y $x'$, escrita usualmente como $\norm{x,x'}$. Es decir, $k(x,x') = k(\norm{x,x'})$. A este tipo de funciones de covarianza se les denomina \textbf{estacionarias}.
 
-Adem\'as, esta relaci\'on entre covarianza y distancia suele ser inversa, es decir, entre menor sea la distancia, mayor ser\'a la covarianza, y viceversa. De esta manera, para valores $x \approx x'$, se obtendr\'a que $f_p(x) \approx f_p(x')$, por lo que se hace de forma impl\'icita el supuesto de que $f_p$ es una funci\'on continua.
+Esta relaci\'on entre covarianza y distancia suele ser inversa, es decir, entre menor sea la distancia, mayor ser\'a la covarianza, y viceversa. De esta manera, para valores $x \approx x'$, se obtendr\'a que $f_p(x) \approx f_p(x')$, por lo que se hace de forma impl\'icita el supuesto de que $f_p$ es una funci\'on continua.
 
 Un ejemplo de este tipo de funciones son las $\bm{\gamma}$\textbf{\textit{-exponencial}}, mismas que se definen de la siguiente manera:
 \begin{equation*}
@@ -223,10 +223,11 @@ Otra posible funci\'on de covarianza es la \textbf{\textit{racional cudr\'atica}
 con $\alpha,\lambda,\tau > 0$.
 
 \subsection{Predicción}
+\label{subsec:GPPred}
 
 Para esta subsecci\'on se supondr\'a que se cuenta con datos de $f_p(X)$, mismos que en la pr\'actica son imposibles de observar directamente y \'unicamente se pueden aproximar con el modelo descrito anteriormente. La intenci\'on de este supuesto es sentar las bases te\'oricas para realizar predicci\'on con el modelo central de esta tesis (GPDP), tema que ser\'a explorado con m\'as detalle en el siguiente cap\'itulo.
 
-Sea un conjunto de observaciones $\{(X,f_p(X))|X \in \mathbb{R}^{m \times n},f_p(X) \in \mathbb{R}^{m}\}$. Por otro lado, se tiene un nuevo conjunto de covariables $X_* \in \mathbb{R}^{r \times n}$, y se desea predecir $f_p(X_*) \in \mathbb{R}^r$, subconjunto del proceso Gaussiano $f_p$.
+Sea un conjunto de observaciones $\{X,f_p(X)|X \in \mathbb{R}^{m \times n},f_p(X) \in \mathbb{R}^{m}\}$. Por otro lado, se tiene un nuevo conjunto de covariables $X_* \in \mathbb{R}^{r \times n}$, y se desea predecir $f_p(X_*) \in \mathbb{R}^r$, subconjunto del proceso Gaussiano $f_p$.
 
 La distribución inicial conjunta de los datos de entrenamiento $f_p(X)$ y los datos a predecir $f_p(X_*)$ es: 
 \begin{equation*}

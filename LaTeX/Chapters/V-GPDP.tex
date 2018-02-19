@@ -1,16 +1,15 @@
 \chapter[Modelo GPDP para regresi\'on sobre cuantiles]{Modelo GPDP para regresi\'on sobre cuantiles}
+\label{chap:GPDP}
 
 \section{Definici\'on}
 
-Despu\'es de analizar la introducci\'on de componentes no param\'etricos en las distribuciones, tanto de $f_p$, como de $\varepsilon_p$, a continuaci\'on se enunciar\'a el modelo central de esta tesis, con sus especificaciones correspondientes.
-
-A partir de este punto, a dicho modelo se le denominar\'a \textbf{Modelo GPDP} (por las siglas en ingl\'es de procesos Gaussianos y procesos de Dirichlet).
+Despu\'es de analizar la introducci\'on de componentes no param\'etricos en las distribuciones, tanto de $f_p$, como de $\varepsilon_p$, a continuaci\'on se enunciar\'a el modelo central de esta tesis, al cual se le denominar\'a \textbf{Modelo GPDP} (por las siglas en ingl\'es de procesos Gaussianos y procesos de Dirichlet).
 
 Sea $\{(y_i,x_i)|i=1,...,m\}$ el conjunto de observaciones de la variable de respuesta y sus respectivas covariables, cuya relaci\'on se supone como
 \begin{equation*}
-    y = f_p(x) + {\varepsilon_p},
+    y_i = f_p(x_i) + {\varepsilon_{p_i}},
 \end{equation*}
-donde $f_p: \mathbb{R}^n \times \mathbb{R}$ es la funci\'on cuantil y ${\varepsilon_p} \in \mathbb{R}$ es el error aleatorio, ambos desconocidos.
+donde $f_p: \mathbb{R}^n \times \mathbb{R}$ es la funci\'on cuantil y ${\varepsilon_{p_i}} \in \mathbb{R}$ es el error aleatorio, ambos desconocidos.
 
 Para reflejar la incertidumbre y el conocimiento previo del modelador, se supone a $f_p \sim \mathcal{GP}(m,k)$, con funci\'on de medias $m$ dada por el modelador y funci\'on de covarianza $k$ del tipo 2-\textit{exponencial}, con par\'ametro de rango fijo $\tau = 1$. Es decir,
 \begin{equation*}
@@ -36,10 +35,11 @@ En resumen, el Modelo GPDP queda descrito de la siguiente forma:
 \end{equation*}
 
 \section{Inferencia con el simulador de Gibbs}
+\label{sec:Gibbs}
 
-Dado que el modelo descrito no es conjugado, las distribuciones posteriores tienen que ser aproximadas mediante m\'etodos computacionales. Para hacer esto, se puede hacer uso de algoritmos MCMC (Markov chain Monte Carlo), y particularmente del simulador de Gibbs. \footnote{En caso de que el lector no est\'e familiarizado con este tipo de algoritmos, puede consultar una breve descripci\'on de ellos en el \autoref{chap:MCMC}.}
+Dado que el modelo descrito no es conjugado, las distribuciones posteriores tienen que ser aproximadas mediante m\'etodos computacionales. Para hacer esto, es posible hacer uso de algoritmos MCMC (Markov chain Monte Carlo), y particularmente del simulador de Gibbs. \footnote{En caso de que el lector no est\'e familiarizado con este tipo de algoritmos, puede consultar una breve descripci\'on de ellos en el \autoref{chap:MCMC}.}
 
-En este orden de ideas, a continuaci\'on se detallan las distribuciones condicionales posteriores de los par\'ametros del modelo, as\'i como la inclusi\'on de algunas variables latentes para permitir el funcionamiento del algoritmo. Es oportuno recordar que dichas distribuciones posteriores resultan de multiplicar la verosimilitud por la probabilidad inicial, como se revis\'o en el cap\'itulo 2 de este trabajo.
+En este orden de ideas, a continuaci\'on se detallan las distribuciones condicionales posteriores de los par\'ametros del modelo, as\'i como la inclusi\'on de algunas variables latentes para permitir el funcionamiento del algoritmo. Es oportuno recordar que dichas distribuciones posteriores resultan de multiplicar la verosimilitud por la probabilidad inicial, como se revis\'o en el cap\'itulo \ref{chap:Bayesian} de este trabajo.
 
 Antes de correr los algoritmos, usualmente resulta conveniente estandarizar los datos. En primer lugar, para que la estructura de covarianza tenga más sentido, ya que la escala de las covariables afectaría la correlación que existe entre los datos, al depender esta de la distancia entre ellas. Además, estandarizar los datos suele mejorar el rendimiento computacional de este tipo de algoritmos. Asimismo, vuelve m\'as sencillo definir el valor inicial de los hiper-par\'ametros, como se detallar\'a m\'as adelante.
 
@@ -47,14 +47,14 @@ Antes de correr los algoritmos, usualmente resulta conveniente estandarizar los 
 
 Recordando que los centros de masa y los pesos de un proceso de Dirichlet son independientes, pueden ser actualizados por separado, con el inconveniente de que hay un n\'umero infinito de par\'ametros que actualizar. Para resolverlo, se utilizará el algoritmo de truncamiento del \textit{slice sampling}, propuesto por \cite{Kalli_Slice}, y adaptado para el modelo propuesto en esta tesis. A grandes rasgos consiste en truncar las posibles subpoblaciones a un número finito, el cual se actualizar\'a de forma din\'amica, de acuerdo a lo que vaya aprendiendo de los datos. 
 
-Sea $\xi_1,\xi_2,\xi_3,...$ una secuencia positiva, generalmente elegida de forma determinista y decreciente. Sea $N$ una variable aleatoria con soporte en los n\'umeros naturales, una variable auxiliar incorporada al modelo.
+Sea $\xi_1,\xi_2,\xi_3,...$ una secuencia positiva, generalmente elegida de forma determinista y decreciente. Sea $N$ una variable aleatoria auxiliar con soporte en los n\'umeros naturales, la cual representa el n\'umero de truncamiento de posibles distintas subpoblaciones, y se actualiza en cada iteraci\'on.
 
 \subsubsection{Actualizaci\'on de los centros de masa}
 
 Para cada $k \in \{1,2,...,N\}$, se obtiene que 
 \begin{equation*}
 \begin{gathered}
-    \sigma_k | \{{\varepsilon_p}_i, z_i | z_i = k\}, c, d \sim GI(\bar{c}_{DP}, \bar{d}_{DP}),\\
+    \sigma_k | \{{\varepsilon_p}_i| z_i = k\}, c, d \sim GI(\bar{c}_{DP}, \bar{d}_{DP}),\\
     \bar{c}_{DP} = c_{DP} + |\{i| z_i = k\}|, \\
     \bar{d}_{DP} = d_{DP} 
     + p \left[\sum_{\{i| z_i = k,\text{ }{\varepsilon_p}_i \geq 0\}} {\varepsilon_p}_i\right]
@@ -113,7 +113,7 @@ Posteriormente se actualiza
 
 \subsection{Actualizaci\'on de la tendencia}
 
-Se define la siguiente variable aleatoria auxiliar, con la finalidad de anticipar si $\varepsilon_p = y - f_p(x)$ ser\'a positiva o negativa, y as\'i simplificar el c\'alculo de la actualizaci\'on de $f_p$.
+Se define la variable aleatoria auxiliar $b$, con la finalidad de anticipar si $\varepsilon_p = y - f_p(x)$ ser\'a positiva o negativa, y as\'i simplificar el c\'alculo de la actualizaci\'on de $f_p$.
 \begin{equation*}
 \begin{aligned}
     b_i | p, \sigma_i &\sim 
@@ -157,7 +157,7 @@ Una vez calculada la variable auxiliar $b$ que reci\'en se acaba de definir, dic
 \end{gather*}
 Por lo tanto, la verosimilitud de las observaciones se puede calcular como
 \begin{gather*}
-    P(y | f_p(X),\sigma,b) \\
+    P(Y | f_p(X),\sigma,b) \\
     \propto exp \left\{
         -\sum_{\{i|b_i > 0\}} \frac{p}{\sigma_i}(y_i-f_p(x_i)) -
         \sum_{\{i|b_i < 0\}} -\frac{1-p}{\sigma_i}(y_i-f_p(x_i))
@@ -217,11 +217,11 @@ Condicional a los dem\'as valores obtenidos, se obtiene la distribuci\'on poster
 
 \section{Predicci\'on}
 
-Una de las desventajas de los modelos no param\'etricos es que, a diferencia de los modelos param\'etricos, es complicado interpretar los resultados del ajuste del modelo. Por ello, resulta particularmente importante la faceta de la predicci\'on, que es donde m\'as se puede explotar la flexibilidad de los modelos no param\'etricos, debido a que el objetivo es tener precisi\'on en la estimaci\'on. Espec\'ificamente esta secci\'on se enfocar\'a en la predicci\'on de $f_p$, que es el par\'ametro de mayor inter\'es del modelo.
+Una de las desventajas de los modelos no param\'etricos es que, a diferencia de los modelos param\'etricos, es complicado interpretar los par\'ametros de ajuste del modelo. Por ello, resulta particularmente importante la faceta de la predicci\'on, que es donde m\'as se puede explotar la flexibilidad de los modelos no param\'etricos, debido a que su objetivo es tener precisi\'on en la estimaci\'on. Espec\'ificamente, esta secci\'on se enfocar\'a en la predicci\'on de $f_p$, que es el par\'ametro de mayor inter\'es del modelo, para efectos de este trabajo.
 
-Debido al uso del simulador de Gibbs, despu\'es de realizar el ajuste se cuenta con un conjunto grande de realizaciones aproximadas de $f_p(X)$, provenientes de las cadenas de Markov.
+Debido al uso del simulador de Gibbs, despu\'es de realizar el ajuste, se cuenta con un conjunto grande de realizaciones aproximadas de $f_p(X)$, provenientes de las cadenas de Markov.
 
-Recordando lo visto en la secci\'on 4.2.4, cuando se tienen valores de $f_p(X)$, es posible usar la propiedad de la \textit{Normal condicional} para realizar predicci\'on. Sea $X \in \mathbb{R}^m \times \mathbb{R}^n$ la matriz de datos originales, $X_* \in \mathbb{R}^r \times \mathbb{R}^n$ la matriz de datos a predecir, $f_p(X)$ una realizaci\'on de la distribuci\'on posterior correspondiente a X, y $f_p(X_*)$ el vector aleatorio de los datos a predecir. Se tiene entonces que 
+Recordando lo visto en la secci\'on \ref{subsec:GPPred}, cuando se tienen valores de $f_p(X)$, es posible usar la propiedad de la \textit{Normal condicional} para realizar predicci\'on. Sea $X \in \mathbb{R}^m \times \mathbb{R}^n$ la matriz de datos originales, $X_* \in \mathbb{R}^r \times \mathbb{R}^n$ la matriz de datos a predecir, $f_p(X)$ una realizaci\'on de la distribuci\'on posterior correspondiente a X, y $f_p(X_*)$ el vector aleatorio de los datos a predecir. Se tiene entonces que 
 \begin{equation*}
     f_p(X_*)|f_p(X) 
     \sim \mathcal{N}
@@ -243,17 +243,17 @@ con
 \end{equation*}
 donde $K(X_1,X_2) = K(X_1,X_2|\lambda=1)$, y $X_1$ y $X_2$ pueden ser $X$ o $X_*$.
 
-Por lo antes descrito, es posible obtener una realizaci\'on de $f_p(X_*)$ simulando de dicha distribuci\'on Normal. De esta manera, por cada valor de $f_p(X)$ y $\lambda$ en la cadena de Markov, se simula una realizaci\'on de $f_p(X_*)$, y entonces es posible aproximar la distribuci\'on posterior de $q_p(y|x)$, para los datos $X_*$.
+Por lo antes descrito, es posible obtener una realizaci\'on de $f_p(X_*)$ simulando de dicha distribuci\'on Normal. De esta manera, por cada valor de $f_p(X)$ y $\lambda$ en la cadena de Markov, se simula una realizaci\'on de $f_p(X_*)$, y entonces es posible aproximar la distribuci\'on posterior de $q_p(y|x) = f_p(x)$, para los datos $X_*$.
 
 \section{Hiper-par\'ametros iniciales del modelo}
 
-Una complicaci\'on que puede tener un modelo jer\'arquico, como el GPDP, es que es complicado darle una interpretaci\'on intuitiva a los hiper-par\'ametros de las diversas capas, de forma que el conocimiento previo del modelador pueda reflejarse en valores asignados a ellos.
+Una complicaci\'on que puede tener un modelo jer\'arquico, como el GPDP, es que es no es sencillo darle una interpretaci\'on intuitiva a los hiper-par\'ametros de las diversas capas, de forma que el conocimiento previo del modelador pueda reflejarse en valores asignados a ellos.
 
-Para mitigar este problema, a continuaci\'on se proponen una serie de heur\'isticas para definirlos, mismas que se derivan de algunas ideas que me parecen sensatas, pero no se originan de ning\'un cuerpo axiom\'atico y bien podr\'ian ser mejoradas. Tambi\'en es importante aclarar que por lo comentado al inicio de la secci\'on 5.2, para todas ellas se pensar\'a que los datos est\'an estandarizados.
+Para mitigar este problema, a continuaci\'on se proponen una serie de heur\'isticas para definirlos, mismas que se derivan de algunas ideas que me parecen sensatas, pero no se originan de ning\'un cuerpo axiom\'atico y bien podr\'ian ser mejoradas. Tambi\'en es importante aclarar que por lo comentado al inicio de la secci\'on \ref{sec:Gibbs}, para todas ellas se pensar\'a que los datos est\'an estandarizados.
 
 \subsection{Funci\'on de medias $m$}
 
-Este es el hiper-par\'ametro al que se le puede dar una mayor interpretaci\'on, debido a que representa el nivel donde el modelador estima que se encontrar\'a el cuantil p-\'esimo de $y$, para cada valor de las covariables $x$.
+Este es el hiper-par\'ametro al que se le puede dar una mayor interpretaci\'on, debido a que representa el nivel donde el modelador estima que se encontrar\'a el cuantil \textit{p-\'esimo} de $y$, para cada valor de las covariables $x$.
 
 Para simplificar el proceso de definici\'on de la funci\'on de medias $m$, se puede partir de la hip\'otesis que es constante, y, por lo tanto, las variaciones son \'unicamente producto de la varianza de $\varepsilon_p$. Dada la estructura de probabilidad posterior, la media de $f_p$ podr\'a actualizarse si los datos brindan informaci\'on suficiente para suponer lo contrario. 
 
@@ -275,12 +275,11 @@ Tanto $c_\lambda$ y $d_\lambda$, como $c_{DP}$ y $d_{DP}$ son par\'ametros de di
 \end{aligned}
 \end{equation*}
 
-En este orden de ideas, si se elige $c = 2$, $Var(U)$ ser\'a infinita y $\mathbb{E}[U] = d$. Asignar a $c_\lambda$ y $c_{DP}$ de esta manera permitir\'a darle a $d_\lambda$ y $d_{DP}$ el valor que se piense como el mejor estimador puntual \textit{a priori} de $\lambda$ y $\sigma$, pero con una varianza tal que permitir\'a a los datos tener el peso principal en la actualizaci\'on del modelo. 
+En este orden de ideas, si se elige $c = 2$, $Var(U)$ ser\'a infinita y $\mathbb{E}[U] = d$. Asignar a $c_\lambda$ y $c_{DP}$ de esta manera permitir\'a darle a $d_\lambda$ y $d_{DP}$ el valor que se piense como el mejor estimador puntual \textit{a priori} de $\lambda$ y $\sigma$, pero con una varianza holgada, que permitir\'a a los datos tener el peso principal en la actualizaci\'on del modelo. 
 
 Debido a la estandarizaci\'on de los datos, la varianza muestral de $y$ es igual a 1. Es posible pensarla como el resultado de sumar la varianza de $f_p(x)$ y la de $\varepsilon_p$, que adem\'as se suponen independientes. Entonces, se puede definir una heur\'istica tal que $Var(f_p(x)) = \frac{1}{2}$ y $Var(\varepsilon_p) = \frac{1}{2}$, a falta de mayor informaci\'on.
 
 La varianza de $f_p(x)$ es igual a $\lambda$, por lo que lo coherente con lo dicho en los p\'arrafos anteriores ser\'a asignar $d_\lambda = \frac{1}{2}$. 
-
 Por el otro lado, si \'unicamente para este ejercicio, y con el af\'an de volver an\'alitico el c\'alculo, se piensa a $\varepsilon_p \sim AL_p(\sigma = d_{DP})$. Entonces, su varianza estar\'ia dada por
 \begin{equation*}
     Var(\varepsilon_p) = 
@@ -325,7 +324,7 @@ Si se define $\alpha = \frac{\sqrt{m}}{2}$, se tiene que
 \end{aligned}
 \end{equation*}
 
-Es decir, si se tienen alrededor de 100 observaciones, el n\'umero esperado de subpoblaciones ser\'a alrededor de la s\'eptima parte de las observaciones. Valor que a falta de mayor exploraci\'on en este tema, no suena descabellado. De nuevo, a mayor cantidad de datos, se tendr\'a una menor dependencia de esta arbitraria decisi\'on inicial.
+Es decir, si se tienen alrededor de 100 observaciones, el n\'umero esperado de subpoblaciones ser\'a alrededor de la s\'eptima parte de las observaciones. Valor que a falta de mayor exploraci\'on en este tema, no suena descabellado. De nuevo, vale la pena tener presente que a mayor cantidad de datos, se tendr\'a una menor dependencia de esta arbitraria decisi\'on inicial.
 
 \section{Consideraciones sobre la bondad de ajuste}
 
@@ -333,9 +332,9 @@ El modelo GPDP descrito en este trabajo pretende ser una opci\'on m\'as de model
 
 Sin embargo, no est\'a de m\'as recordar que existen muchos otros modelos de regresi\'on, a la media y sobre cuantiles, lineales y no lineales, param\'etricos y no param\'etricos. Todos ellos cumplen el mismo cometido de estimar la distribuci\'on condicional de $y|x$.
 
-En la siguiente secci\'on se har\'a un an\'alisis de los resultados obtenidos por el modelo GPDP, que har\'a uso de herramientas b\'asicas, como la exploraci\'on visual o la correlaci\'on. En este sentido, hay una evidente \'area de mejora, ya que se podr\'ia encontrar alguna medida robusta, estad\'isticamente hablando, de bondad de ajuste. \'Esta permitir\'ia saber qu\'e tan bueno resulta el modelo para describir un conjunto dado de datos, y permitir\'ia compararlo con otros, para seleccionar cu\'al es el que presenta mejores resultados. 
+En la siguiente secci\'on se har\'a un an\'alisis de los resultados obtenidos por el modelo GPDP, que har\'a uso de herramientas b\'asicas, como la exploraci\'on visual, la correlaci\'on o el error cuadr\'atico medio. En este sentido, hay una evidente \'area de mejora, ya que se podr\'ia encontrar alguna medida robusta, estad\'isticamente hablando, de bondad de ajuste. \'Esta permitir\'ia saber qu\'e tan bueno resulta el modelo para describir un conjunto dado de datos, y permitir\'ia compararlo con otros, para seleccionar cu\'al es el que presenta mejores resultados. 
 
-Desafortunadamente, realizar esto con un modelo con la estructura del GPDP resulta complejo y la literatura para medir la bondad de ajuste de modelos de regresi\'on bayesianos, sobre cuantiles y no parame\'etricos, est\'a apenas en sus pininos. Por lo tanto, una estimaci\'on robusta de la bondad de ajuste del modelo GPDP y la selecci\'on del mejor modelo quedan fuera del alcance de este trabajo.
+Desafortunadamente, realizar esto con un modelo con la estructura del GPDP resulta complejo y la literatura para medir la bondad de ajuste de modelos de regresi\'on bayesianos, sobre cuantiles y no param\'etricos, est\'a apenas en sus pininos. Por lo tanto, una estimaci\'on robusta de la bondad de ajuste del modelo GPDP y la selecci\'on del mejor modelo quedan fuera del alcance de este trabajo.
 
 
 \section{Paquete \textit{GPDPQuantReg} en R}
