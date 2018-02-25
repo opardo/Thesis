@@ -5,7 +5,7 @@
 
 Despu\'es de analizar la introducci\'on de componentes no param\'etricos en las distribuciones, tanto de $f_p$, como de $\varepsilon_p$, a continuaci\'on se enunciar\'a el modelo central de esta tesis, al cual se le denominar\'a \textbf{Modelo GPDP} (por las siglas en ingl\'es de procesos Gaussianos y procesos de Dirichlet).
 
-Sea $\{(y_i,x_i)|i=1,...,m\}$ el conjunto de observaciones de la variable de respuesta y sus respectivas covariables, cuya relaci\'on se supone como
+Sea el \textit{p-\'esimo} cuantil aquel de inter\'es para el modelador, el cual predefine con anterioridad. Sea $\{(y_i,x_i)|i=1,...,m\}$ el conjunto de observaciones de la variable de respuesta y sus respectivas covariables, cuya relaci\'on se supone como
 \begin{equation*}
     y_i = f_p(x_i) + {\varepsilon_{p_i}},
 \end{equation*}
@@ -33,6 +33,8 @@ En resumen, el Modelo GPDP queda descrito de la siguiente forma:
     k(x_i, x_j | \lambda) &= \lambda \text{ } exp\{-\norm{x_i - x_j}_2\}.
 \end{aligned}
 \end{equation*}
+
+Es posible notar que dicha representaci\'on del modelo tambi\'en podr\'ia incorporar a $p$ como un par\'ametro a estimar, d\'andole su respectiva distribuci\'on inicial. Eso ser\'ia particularmente \'util para mejorar la estimaci\'on de la distribuci\'on condicional $y|x$. Sin embargo, a pesar de que el modelo ajusta te\'oricamente tal distribuci\'on, el par\'ametro de mayor inter\'es para este trabajo es $f_p(x) = q_p(y|x)$, una vez que ya se predefini\'o que el cuantil \textit{p-\'esimo} es el de inter\'es para el modelador.
 
 \section{Inferencia con el simulador de Gibbs}
 \label{sec:Gibbs}

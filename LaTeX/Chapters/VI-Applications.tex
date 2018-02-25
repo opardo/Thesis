@@ -20,7 +20,7 @@ Para todos los casos se simularon 60 datos sin reemplazo dentro del intervalo $(
 
 Una vez simulados los datos, se ajustaron el modelo tradicional de regresi\'on a la media (descrito en la secci\'on \ref{trad_mean_reg} de este trabajo) y el GPDP. Es importante recordar que el primero, adem\'as de ser sobre la media, es lineal en los  par\'ametros de las covariables y con error normal. Por otro lado, el modelo GPDP propone ideas alternativas, como centrar su estimaci\'on en el cuantil de inter\'es, y utilizar componentes no param\'etricos, tanto para modelar la tendencia, como el error. En medio queda una amplia gama de modelos, como el modelo tradicional de regresi\'on sobre cuantiles, o alg\'un modelo de regresi\'on a la media que contemple errores no param\'etricos, por ejemplo. 
 
-Sin embargo, decidi\'i realizar esa particular comparaci\'on para descubrir qu\'e tan bueno podr\'ia ser un modelo que contempla ideas alternativas en todas las facetas de la regresi\'on (estad\'istico a modelar, tendencia y error aleatorio), cuando se le comparara con el que utiliza \'unicamente supuestos tradicionales. Eso no significa que si se mezclan algunas ideas alternativas, con algunas tradicionales, no se pueda obtener un tercer modelo, que resulte a\'un mejor. Pero el alcance de esta tesis se limita a comparar \'unicamente esos dos modelos.
+Sin embargo, decid\'i realizar esa particular comparaci\'on para descubrir qu\'e tan bueno podr\'ia ser un modelo que contempla ideas alternativas en todas las facetas de la regresi\'on (estad\'istico a modelar, tendencia y error aleatorio), cuando se le comparara con el que utiliza \'unicamente supuestos tradicionales. Eso no significa que si se mezclan algunas ideas alternativas, con algunas tradicionales, no se pueda obtener un tercer modelo, que resulte a\'un mejor. Pero el alcance de esta tesis se limita a comparar \'unicamente esos dos modelos.
 
 Para el ajuste del modelo tradicional se utiliz\'o un poliniomio de orden 5. Es decir, se utilizaron como covariables los valores de $x, x^2, \ldots, x^5$, adem\'as del t\'ermino independiente. A\'un as\'i, dicho ajuste fue simple, computacionalmente hablando, ya que requiri\'o \'unicamente de multiplicaciones matriciales para actualizar sus par\'ametros posteriores. Como par\'ametros iniciales de la distribuci\'on Normal de $\beta$, se utiliz\'o el vector de medias con valores iguales a 0, y como matriz de varianzas y covarianzas, la identidad. En el caso de la \textit{Gamma-Inversa} de $\sigma^2$, el valor de forma usado fue 2, y el de escala, 1.
 
@@ -119,16 +119,16 @@ Por otro lado, como se detall\'o en el cap\'itulo anterior, con el uso del paque
 	\centering
 	\caption{Diagn\'osticos de las cadenas de Markov del cu\'antil $0.5$-\textit{\'esimo}, de datos que cumplen los supuestos tradicionales de regresi\'on.}
 	\subfloat[Ergodicidad]{
-	    \includegraphics[width=0.45\textwidth]{Figures/Simulation/simple_g_simple_error/ergodicity.png}
+	    \includegraphics[width=0.45\textwidth]{Figures/Simulation/classic/diagnostics/ergodicity.png}
 	}
 	\subfloat[Autocorrelaci\'on]{
-	    \includegraphics[width=0.45\textwidth]{Figures/Simulation/simple_g_simple_error/autocorrelation.png}
+	    \includegraphics[width=0.45\textwidth]{Figures/Simulation/classic/diagnostics/autocorrelation.png}
 	}\\
 	\subfloat[Correlaci\'on cruzada]{
-	    \includegraphics[width=0.45\textwidth]{Figures/Simulation/simple_g_simple_error/crosscorrelation.png}
+	    \includegraphics[width=0.45\textwidth]{Figures/Simulation/classic/diagnostics/crosscorrelation.png}
 	}
 	\subfloat[Traza]{
-	    \includegraphics[width=0.45\textwidth]{Figures/Simulation/simple_g_simple_error/trace.png}
+	    \includegraphics[width=0.45\textwidth]{Figures/Simulation/classic/diagnostics/trace.png}
 	}
 	\label{diag_sgse}
 \end{figure}

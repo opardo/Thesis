@@ -119,7 +119,7 @@ cuando $F_y$ es continua y estrictamente creciente en el soporte de $y$.
 \end{defin}
 Dicho de manera m\'as intuitiva, si se tiene un conjunto grande de realizaciones de una variable aleatoria $y$, se esperar\'a que el $p \times 100\%$ est\'e por debajo de $q_p(y)$ y el $(1-p) \times 100\%$ est\'e por arriba. Por ejemplo, la mediana es un caso particular de un cuantil, espec\'ificamente el $0.5$-\'esimo. 
 
-En notaci\'on probabil\'istica, se buscar\'a aproximar a la funci\'on $f_p$, tal que 
+Sea el \textit{p-\'esimo} cuantil aquel predefinido como el de inter\'es para el modelador. En notaci\'on probabil\'istica, se buscar\'a aproximar a la funci\'on $f_p$, tal que 
 \begin{equation*}
     f_p(x) = q_p(y|x),
 \end{equation*}
@@ -137,7 +137,7 @@ Al igual que con la regresi\'on a la media, se supone independencia entre los er
 
 Cuando surgi\'o entre la comunidad estad\'istica el problema de regresi\'on sobre cuantiles, inicialmente fue modelado bajo un enfoque no Bayesiano, como se describe en \cite{Yu_BayQuantReg}.  Posteriormente, Koenker \& Bassett (1978) retomaron esas ideas, y las aplicaron en el paradigma Bayesiano. 
 
-Al igual que en la regresi\'on a la media, el primer y m\'as popular modelo ha sido el lineal. Es decir, para $p \in (0,1)$ fijo arbitrario, se define
+Al igual que en la regresi\'on a la media, el primer y m\'as popular modelo ha sido el lineal. Es decir, para $p \in (0,1)$ fijo y elegido por el modelador, se define
 \begin{equation*}
     f_p(x) = x^T\beta_p, 
 \end{equation*}
