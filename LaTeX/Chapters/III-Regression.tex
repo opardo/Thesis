@@ -18,7 +18,7 @@ Tambi\'en es importante resaltar que este trabajo tiene inter\'es en modelar a $
 
 \subsection{Planteamiento general}
 
-La \textit{regresi\'on a la media} es el caso particular m\'as usado de los modelos de regresi\'on, tanto en el paradigma Bayesiano, como en otros. Esto sucede debido al bajo uso de recursos que requiere su estimaci\'on. En el caso particular Bayesiano, diversas familias conjugadas tienen sentido dentro de este contexto; y en otros paradigmas, tambi\'en suelen ser utilizados debido a que se asocian con la minimizaci\'on de t\'erminos cuadrados, con las bondades de diferenciabilidad que eso implica. 
+La \textit{regresi\'on a la media} es el caso m\'as usado dentro de los modelos de regresi\'on, tanto en el paradigma Bayesiano, como en otros. Esto sucede debido al bajo uso de recursos que requiere su estimaci\'on. En el caso particular Bayesiano, diversas familias conjugadas tienen sentido dentro de este contexto; y en otros paradigmas, tambi\'en suelen ser utilizados debido a que se asocian con la minimizaci\'on de t\'erminos cuadrados, con las bondades de diferenciabilidad que eso implica. 
 
 En notaci\'on probabil\'istica, retomando el hecho de que $y|x \sim \mathbb{P}(y|x)$, el modelo de regresi\'on a la media busca aproximar a la funci\'on $f$, tal que 
 \begin{equation*}
@@ -45,7 +45,7 @@ donde $\beta \in \mathbb{R}^n$ se piensa con valores constantes, pero desconocid
 
 Cabe señalar que una gran ventaja de plantear de esta manera el modelo, y por la que ha sido ampliamente usado, es la interpretaci\'on que se le puede dar al vector de par\'ametros $\beta$, como cu\'anto aumenta o disminuye el valor de la variable de respuesta, cuando se aumenta o disminuye una unidad de la variable explicativa.
 
-Sea $\{(x_i,y_i)| x_i \in \mathbb{R}^n, y_i \in \mathbb{R}, i \in \{1,...,m\} \}$ el conjunto de datos observados de las variables de respuesta y de las covariables. Es posible representar este mismo conjunto con la notaci\'on matricial $\{X,Y | X \in \mathbb{R}^{m \times n}, Y \in \mathbb{R}^m\}$. \footnote{Por simplificaci\'on y limpieza de notaci\'on en este trabajo se escribir\'an de igual manera variables aleatorias y los datos en efecto observados, considerando que en cada caso el contexto ser\'a suficiente para saber de cu\'al se est\'a hablando. Por otro lado, se asociar\'an las letras min\'usculas a una \'unica observaci\'on y las may\'usuclas a una matriz de observaciones.} Sea $\mathcal{E} \in \mathbb{R}^m$ el vector de errores aleatorios, tal que $\mathcal{E} \sim \mathcal{N}(0,\sigma^2 I)$. El modelo se puede reescribir como
+Sea $\{(x_i,y_i)| x_i \in \mathbb{R}^n, y_i \in \mathbb{R}, i \in \{1,...,m\} \}$ el conjunto de datos observados de las variables de respuesta y de las covariables. Es posible representar este mismo conjunto con la notaci\'on matricial $\{X,Y | X \in \mathbb{R}^{m \times n}, Y \in \mathbb{R}^m\}$. \footnote{Por simplificaci\'on y limpieza de notaci\'on en este trabajo se escribir\'an de igual manera variables aleatorias y los datos en efecto observados, considerando que en cada caso el contexto ser\'a suficiente para saber de cu\'al se est\'a hablando. Por otro lado, se asociar\'an las letras min\'usculas a una \'unica observaci\'on y las may\'usculas a una matriz de observaciones.} Sea $\mathcal{E} \in \mathbb{R}^m$ el vector de errores aleatorios, tal que $\mathcal{E} \sim \mathcal{N}(0,\sigma^2 I)$. El modelo se puede reescribir como
 \begin{equation*}
 \begin{aligned}
     Y &= X\beta + \mathcal{E} \\
@@ -69,7 +69,7 @@ Por el Teorema de Bayes,
 \end{equation*}
 donde $\mathbb{P}(Y| X, \beta, \sigma^2)$ es la verosimilitud de los datos observados, es decir, $ \mathcal{N}(X\beta,\sigma^2 I) = \prod_{i=1}^m \mathcal{N}(x_i^T\beta,\sigma^2)$. 
 
-Por conveniencia anal\'itica, hay una distribuci\'on inicial com\'unmente usada para los par\'ametros $\beta$ y $\sigma^2$ debido a que es conjugada respecto a la distribuci\'on Normal de los datos. Su nombre es \textit{Normal-Gamma Inversa (NGI)} y se dice que $\beta,\sigma^2 \sim \mathcal{NGI}(M,V,a,b)$, si
+Por conveniencia anal\'itica, hay una distribuci\'on inicial com\'unmente usada para los par\'ametros $\beta$ y $\sigma^2$ debido a que es conjugada respecto a la distribuci\'on normal de los datos. Su nombre es \textit{Normal-Gamma Inversa (NGI)} y se dice que $\beta,\sigma^2 \sim \mathcal{NGI}(M,V,a,b)$, si
 \begin{equation*}
 \begin{aligned}
     \mathbb{P}(\beta,\sigma^2) 
@@ -93,7 +93,7 @@ donde
 \begin{aligned}
     \bar{M} &= (V^{-1} + X^TX)^{-1} (V^{-1}M + X^TY), \\
     \bar{V} &= (V^{-1} + X^TX)^{-1}, \\
-    \bar{a} &= a + n/2, \\
+    \bar{a} &= a + m/2, \\
     \bar{b} &= b + \frac{\bar{M}^TV^{-1}M + Y^TY - \bar{M}^T\bar{V}^{-1}\bar{M}}{2}.
 \end{aligned}
 \end{equation*}
@@ -103,6 +103,8 @@ Es decir, la distribuci\'on posterior de $(\beta,\sigma^2)$ es \textit{Normal - 
 \section{Regresión sobre cuantiles}
 
 \subsection{Planteamiento general}
+
+Cuando surgi\'o entre la comunidad estad\'istica el problema de regresi\'on sobre cuantiles, inicialmente fue modelado bajo un enfoque no Bayesiano, como se describe en \cite{Yu_BayQuantReg}.  Posteriormente, Koenker \& Bassett (1978) retomaron esas ideas, y las aplicaron en el paradigma Bayesiano. 
 
 La \textit{regresi\'on sobre cuantiles} es una alternativa que se ha desarrollado reci\'entemente y que permite enfocarse en aspectos alternativos de la distribuci\'on, por ejemplo, centrar la estimaci\'on en estad\'isticos que son valores extremos, o en alg\'un decil de inter\'es. 
 
@@ -134,8 +136,6 @@ con $\varepsilon_p \in \mathbb{R}$, una variable aleatoria tal que $q_p(\varepsi
 Al igual que con la regresi\'on a la media, se supone independencia entre los errores, y, por lo tanto, hay independencia condicional entre las observaciones.
 
 \subsection{Modelo tradicional}
-
-Cuando surgi\'o entre la comunidad estad\'istica el problema de regresi\'on sobre cuantiles, inicialmente fue modelado bajo un enfoque no Bayesiano, como se describe en \cite{Yu_BayQuantReg}.  Posteriormente, Koenker \& Bassett (1978) retomaron esas ideas, y las aplicaron en el paradigma Bayesiano. 
 
 Al igual que en la regresi\'on a la media, el primer y m\'as popular modelo ha sido el lineal. Es decir, para $p \in (0,1)$ fijo y elegido por el modelador, se define
 \begin{equation*}
@@ -190,7 +190,7 @@ Como se puede observar, el par\'ametro $p$ representa la asimetr\'ia de la distr
 
 Por otro lado, el par\'ametro $\sigma$ representa la dispersi\'on de la distribuci\'on. A menor $\sigma$, los datos, aunque sesgados, estar\'an m\'as concentrados; en cambio, conforme crezca $\sigma$, la cola de la distribuci\'on ser\'a m\'as pesada.
 
-Dicho esto, la propiedad m\'as relevante para este trabajo es que se puede demostrar que si $\varepsilon_p|\sigma \sim AL_p(\sigma)$, entonces $q_p(\varepsilon_p|\sigma) = 0$, independientemente del valor de $\sigma$. Recordando que esa es la \'unica caracter\'istica que pide el modelo general, el modelo tradicional utiliza esta distribuci\'on para explicar la dispersi\'on del error.
+Dicho esto, la propiedad m\'as relevante para este trabajo es que si $\varepsilon_p|\sigma \sim AL_p(\sigma)$, entonces $q_p(\varepsilon_p|\sigma) = 0$, independientemente del valor de $\sigma$. Recordando que esa es la \'unica caracter\'istica que pide el modelo general, el modelo tradicional utiliza esta distribuci\'on para explicar la dispersi\'on del error.
 
 Es posible, entonces, reescribir el modelo como
 \begin{equation*}
@@ -220,6 +220,6 @@ Por otro lado, $\mathbb{P}(\beta_p,\sigma^2)$ es la distribuci\'on inicial de lo
 
 A diferencia del modelo tradicional de regresi\'on a la media, este modelo no es conjugado. Por lo tanto se requieren m\'etodos computacionales (como los que ser\'an descritos en el cap\'itulo \ref{chap:GPDP}) para aproximar la distribuci\'on posterior.
 
-Adem\'as, es importante resaltar que, al igual que el modelo de regresi\'on sobre la media, la salida de este modelo es una distribuci\'on completa para $y$, dado el valor de las covariables $x$. Ambos modelos difieren \'unicamente en cu\'ales son los par\'ametros que aproximan y que son suficientes para expresar a la distribuci\'on respectiva en su totalidad.
+Adem\'as, es importante resaltar que, al igual que el modelo de regresi\'on sobre la media, la salida de este modelo es una distribuci\'on completa para $y$, dado el valor de las covariables $x$. Ambos modelos difieren \'unicamente en cu\'ales son los par\'ametros a aproximar y que son suficientes para expresar en su totalidad a la distribuci\'on respectiva.
 
-Si bien este modelo de regresi\'on sobre cuantiles representa una buena alternativa, a\'un queda la posibilidad de retomar estas ideas y crear modelos m\'as flexibles, que capturen con mayor precisi\'on las particularidades de cada fen\'omeno y la interacci\'on entre las variables de salida y las covariables. En el siguiente cap\'itulo se discutir\'a la importancia de capturar mayor complejidad en la distribuciones mediante el de uso de m\'etodos no param\'etricos.
+Si bien este modelo de regresi\'on sobre cuantiles representa una buena alternativa, a\'un queda la posibilidad de retomar estas ideas y crear modelos m\'as flexibles, que capturen con mayor precisi\'on las particularidades de cada fen\'omeno y la interacci\'on entre las variables de salida y las explicativas. En el siguiente cap\'itulo se discutir\'a la importancia de capturar mayor complejidad en la distribuciones mediante el de uso de m\'etodos no param\'etricos.

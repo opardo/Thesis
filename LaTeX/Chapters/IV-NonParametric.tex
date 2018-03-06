@@ -37,7 +37,7 @@ con
 \end{equation*}
 y el procedimiento se convierte, de nuevo, en el del modelo tradicional.
 
-La intenci\'on de presentar estos ejemplos es que el lector se de cuenta del gran conjunto de funciones que es posible cubrir usando el modelo tradicional de regresi\'on lineal. Sin embargo, tambi\'en le permitir\'an observar c\'omo se puede complicar la relaci\'on de dependencia entre $y$ y las covariables $x$, de tal manera que si la funci\'on de la que realmente se originaron los datos tiene un comportamiento at\'ipico, podr\'ia no ser capturado por el modelo planteado hasta ahora. As\'i surge la necesidad de buscar un m\'etodo que permita aproximar cualquier tipo de relaci\'on entre $y$ y $x$, sin restringirla al subconjunto de polinomios. 
+La intenci\'on de presentar estos ejemplos es que el lector se de cuenta del gran conjunto de funciones que es posible cubrir usando el modelo tradicional de regresi\'on lineal. Sin embargo, tambi\'en le permitir\'an observar c\'omo se puede complicar la relaci\'on de dependencia entre $y$ y las covariables $x$, de tal manera que el comportamiento de la funci\'on de la que realmente se originaron los datos podr\'ia no ser capturado por el modelo planteado hasta ahora. As\'i surge la necesidad de buscar un m\'etodo que permita aproximar cualquier tipo de relaci\'on entre $y$ y $x$.
 
 Por otro lado, en cuanto el error, la distribuci\'on asim\'etrica de Laplace cumple el cometido de que el cuantil \textit{p-\'esimo} sea igual a 0. Es decir, impl\'icitamente provoca la asimetr\'ia necesaria para que el porcentaje de valores por debajo de $f_p(x)$ se aproxime al $p \times 100\%$, y por arriba, al $(1-p) \times 100\%$.
 
@@ -68,9 +68,9 @@ tal que $q_p(\varepsilon_p)=0$.
 
 En el modelo tradicional se utiliza el supuesto de relaci\'on lineal $f_p(x) = x^T\beta_p$, mismo que se buscar\'a relajar en esta secci\'on, para obtener un modelo m\'as general.
 
-Es importante recordar que la función $f_p$ es pensada fija, pero desconocida. De nueva cuenta, para reflejar la incertidumbre del modelador, es posible darle una distribución de probabilidad. Pero a diferencia del modelo lineal, ya no existir\'a el parámetro $\beta_p$ al cual canalizarle esta incertidumbre, por lo que ahora tendrá que ser sobre toda la función.
+Es importante recordar que la función $f_p$ es pensada fija, pero desconocida. De nueva cuenta, como reflejo de la incertidumbre respecto al valor real con la que cuenta modelador, es posible asignarle una medida de probabilidad. Pero a diferencia del modelo lineal, ya no existir\'a el parámetro $\beta_p$ al cual canalizarle esta incertidumbre, por lo que ahora tendrá que ser sobre toda la función.
 
-Para ello, se puede pensar a $f_p$ como aleatoria. Pero como $f_p$ est\'a definida para m\'ultiples valores de $x$, ya no se podr\'a pensar como una variable aleatoria, sino como un conjunto de variables aleatorias que depende de variables de entrada, es decir, un proceso estoc\'astico. Para el caso particular de esta tesis, se pensar\'a que sigue un \textit{proceso Gaussiano}, concepto que se introduce a continuaci\'on.
+Para ello, se puede pensar en una medida de probabilidad para la funci\'on $f_p$. Pero como $f_p$ est\'a definida para m\'ultiples valores de $x$ (un n\'umero infinito no numerable, cuando tiene dominio en alg\'un intervalo real), ya no se podr\'a pensar como una variable aleatoria, sino como un conjunto de variables aleatorias que depende de variables de entrada, es decir, un proceso estoc\'astico. Para el caso particular de esta tesis, se pensar\'a que sigue la ley de probabilidad de un \textit{proceso Gaussiano}, concepto que se introduce a continuaci\'on.
 
 \begin{defin}
     Un \textbf{proceso Gaussiano} es un conjunto de variables aleatorias, tal que todo subconjunto finito de ellas tendr\'a una distribuci\'on Gaussiana (Normal) conjunta.
@@ -183,8 +183,7 @@ La \textbf{función matriz de covarianzas de $\bm{f_p}$ (K\textsubscript{$\bm{f_
 \end{equation*}
 \end{defin*}
 
-Dadas estas definiciones, se puede observar que el proceso Gaussiano $f_p$ está completamente caracterizado por su función de medias $m_{f_p}$ y su función de covarianzas $k_{f_p}$. Por lo tanto, la manera en que se definan estas dos funciones representar\'a el conocimiento inicial que se tiene del objeto de estudio. 
-A partir de este punto, y cuando el contexto lo permita, por simplicidad de notaci\'on se omitirá el uso del subíndice $f_p$ en las funciones reci\'en definidas. Además, cuando se des\'ee referirse al proceso estoc\'astico $f_p$ que se distribuye como un proceso Gaussiano, se har\'a con la notaci\'on
+Dadas estas definiciones, se puede observar que el proceso Gaussiano está completamente caracterizado por su función de medias $m_{f_p}$ y su función de covarianzas $k_{f_p}$. Por lo tanto, la manera en que se definan estas dos funciones representar\'a el conocimiento inicial que se tiene del objeto de estudio. A partir de este punto, y cuando el contexto lo permita, por simplicidad de notaci\'on se omitirá el uso del subíndice $f_p$ en las funciones reci\'en definidas. Además, cuando se des\'ee referirse al proceso estoc\'astico $f_p$ que sigue la ley de probabilidad de un proceso Gaussiano, se har\'a con la notaci\'on
 \begin{equation*}
     f_p \sim \mathcal{GP} (m,k).
 \end{equation*}
@@ -276,19 +275,17 @@ De esta manera quedan sentadas las bases de la distribuci\'on no param\'etrica d
     \footnote{Las ideas de esta secci\'on son retomadas de \cite{Yee_DirProc}.}
 }
 
-Un proceso de Dirichlet, visto de manera general, es una distribuci\'on sobre distribuciones. Es decir, cada realizaci\'on de él es en sí misma una distribuci\'on de probabilidad. Adem\'as, cada una de esas distribuciones es no param\'etrica, debido a que no es posible describirla con un n\'umero finito de par\'ametros.
-
-En el caso particular de este trabajo, cuya misi\'on es encontrar un modelo Bayesiano y no param\'etrico para la regresi\'on sobre cuantiles, los procesos de Dirichlet ser\'an utilizados para ajustar la distribuci\'on del error $\varepsilon_p$ alrededor de $f_p$.
+Un proceso de Dirichlet, visto de manera intuitiva, es una medida de probabilidad sobre funciones distribuci\'on. Es decir, cada realizaci\'on de él es en sí misma una funci\'on distribuci\'on. En el caso particular de este trabajo, cuya misi\'on es encontrar un modelo Bayesiano y no param\'etrico para la regresi\'on sobre cuantiles, la ley de probabilidad de los procesos de Dirichlet ser\'a utilizada para reflejar la incertidumbre que tiene el modelador acerca de la distribuci\'on verdadera del error aleatorio $\varepsilon_p$.
 
 \subsection{Definici\'on de los procesos de Dirichlet}
 
-En t\'erminos generales, para que una distribuci\'on de probabilidad $G$ se distribuya de acuerdo a un proceso de Dirichlet, toda partici\'on finita de su soporte tiene que tener una distribuci\'on Dirichlet\footnote{Antes de revisar la definici\'on formal de los Procesos de Dirichlet, es conveniente recordar la definici\'on de la distribuci\'on de Dirichlet, misma que se ubica en el \autoref{chap:Distributions}.}. A continuaci\'on se enuncia una definici\'on m\'as detallada.
+En t\'erminos generales, para que una distribuci\'on de probabilidad $G$ siga la ley de probabilidad de un proceso de Dirichlet, toda partici\'on finita de su soporte tiene que seguir una distribuci\'on Dirichlet\footnote{Antes de revisar la definici\'on formal de los Procesos de Dirichlet, es conveniente recordar la definici\'on de la distribuci\'on de Dirichlet, misma que se ubica en el \autoref{chap:Distributions}.}. A continuaci\'on se enuncia una definici\'on m\'as detallada.
 
 \begin{defin}
     Sean $G$ y $H$ dos distribuciones cuyo soporte es el conjunto $\Theta$ y sea $\alpha \in \mathbb{R}_+$. Si se toma una partici\'on finita cualquiera $(A_1,\ldots,A_r)$ del conjunto $\Theta$, se entender\'a que $G(A_i)$ es la probabilidad de que una realizaci\'on de $G$ pertenezca al conjunto $A_i$.
-    A su vez, $G$ ser\'a realizaci\'on de otra variable aleatoria, por lo que el vector $(G(A_1),\ldots,G(A_r))$ tambi\'en ser\'a aleatorio.
+    A su vez, $G$ ser\'a realizaci\'on de otra distribuci\'on de probabilidad, por lo que el vector $(G(A_1),\ldots,G(A_r))$ tambi\'en ser\'a aleatorio.
     
-    Se dice que $G$ se distribuye de acuerdo a un \textbf{proceso de Dirichlet} $\bm{(G \sim DP(\alpha,H))}$, con distribuci\'on media $H$ y par\'ametro de concentraci\'on $\alpha$, si
+    Se dice que $G$ sigue la distribuci\'on de un \textbf{proceso de Dirichlet} $\bm{(G \sim DP(\alpha,H))}$, con distribuci\'on media $H$ y par\'ametro de concentraci\'on $\alpha$, si
     \begin{equation*}
         (G(A_1),\ldots,G(A_r)) \sim Dir(\alpha H(A_1),\ldots,\alpha H(A_r)), 
     \end{equation*}
@@ -320,7 +317,7 @@ En este orden de ideas, es posible darse cuenta que la distribuci\'on $H$ repres
 
 \subsection{Distribuci\'on posterior}
 
-Sea $(\phi_1,..., \phi_n)$ una sucesi\'on de realizaciones independientes provenientes de la distribuci\'on $G$, cuyo soporte es $\Theta$. Pero $G$ es desconocida, y para reflejar dicha incertidumbre se le asigna una distribuci\'on, particularmente la de un proceso de Dirichlet.
+Sea $(\phi_1,..., \phi_n)$ una sucesi\'on de realizaciones independientes provenientes de la funci\'on distribuci\'on $G$, cuyo soporte es $\Theta$. Pero $G$ es desconocida, y para reflejar la incertidumbre acerca de su ley de probabilidad real, a su vez se asigna una distribuci\'on sobre las posibles distribuciones, particularmente la de un proceso de Dirichlet.
 
 Sea de nuevo $(A_1,...,A_r)$ una partici\'on finita cualquiera del conjunto $\Theta$, y $n_k = |\{i: \phi_i \in A_k\}|$ el n\'umero de valores $\phi$ observados dentro del conjunto $A_k$. Por la propiedad conjugada entre la distribuci\'on de Dirichlet y la distribuci\'on Multinomial, se obtiene que
 \begin{equation*}
@@ -349,11 +346,11 @@ con
 \end{aligned}
 \end{equation*}
 
-Por lo tanto, $G|\phi_1,...,\phi_n \sim DP(\bar{\alpha},\bar{H})$. Es decir, la probabilidad posterior de $G$ sigue distribuy\'endose mediante un proceso de Dirichlet, con par\'ametros actualizados. Asimismo, se puede interpretar a la distribuci\'on media posterior $\bar{H}$ como una mezcla entre la distribuci\'on media inicial $H$, con peso proporcional al par\'ametro de concentraci\'on inicial $\alpha$, y la distribuci\'on emp\'irica de los datos, con peso proporcional al n\'umero de observaciones $n$. 
+Por lo tanto, $G|\phi_1,...,\phi_n \sim DP(\bar{\alpha},\bar{H})$. Es decir, la distribuci\'on posterior de $G$ sigue, de nuevo, la ley de probabilidad de un proceso de Dirichlet, con par\'ametros actualizados. Asimismo, se puede interpretar a la distribuci\'on media posterior $\bar{H}$ como una mezcla entre la distribuci\'on media inicial $H$, con peso proporcional al par\'ametro de concentraci\'on inicial $\alpha$, y la distribuci\'on emp\'irica de los datos, con peso proporcional al n\'umero de observaciones $n$. 
 
 \subsection{Distribuci\'on predictiva}
 
-Continuando con la idea de la secci\'on anterior de que ya se conoce el valor de $\phi_i,...,\phi_n$ realizaciones provenientes de la distribuci\'on aleatoria $G$, se desea hacer predicci\'on de la observaci\'on $\phi_{n+1}$, condicionada a los valores observados. As\'i,
+Continuando con la idea de la secci\'on anterior de que ya se conoce el valor de $\phi_i,...,\phi_n$ realizaciones provenientes de la funci\'on distribuci\'on $G$, se desea hacer predicci\'on de la observaci\'on $\phi_{n+1}$, condicionada a los valores observados. As\'i,
 \begin{equation*}
 \begin{aligned}
    P(\phi_{n+1} \in A_k|\phi_1,...,\phi_n)
@@ -391,6 +388,8 @@ Dicha probabilidad de ocurrencia ser\'a generada con la siguiente met\'afora.\fo
 \end{aligned}
 \end{equation*}
 Dada su construcci\'on, es inmediato darse cuenta que $\sum_{k=1}^\infty \pi_k = 1$. En algunas ocasiones se nombra a esta distribuci\'on $\pi \sim GEM(\alpha)$, en honor a Griffiths, Engen y McCloskey.
+
+Cabe notar que, bajo esta construcci\'on alternativa de los procesos de Dirichlet, el valor de cada centro de masa y su probabilidad de ocurrencia asociada, son independientes entre s\'i. En el siguiente cap\'itulo esta caracter\'istica ser\'a explotada por el algoritmo que realiza el ajuste del modelo, para calcular de manera separada ambos conjuntos de par\'ametros.
 
 \subsection{Modelo general de mezclas infinitas de Dirichlet}
 

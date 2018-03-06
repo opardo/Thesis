@@ -11,7 +11,7 @@ Sea el \textit{p-\'esimo} cuantil aquel de inter\'es para el modelador, el cual 
 \end{equation*}
 donde $f_p: \mathbb{R}^n \times \mathbb{R}$ es la funci\'on cuantil y ${\varepsilon_{p_i}} \in \mathbb{R}$ es el error aleatorio, ambos desconocidos.
 
-Para reflejar la incertidumbre y el conocimiento previo del modelador, se supone a $f_p \sim \mathcal{GP}(m,k)$, con funci\'on de medias $m$ dada por el modelador y funci\'on de covarianza $k$ del tipo 2-\textit{exponencial}, con par\'ametro de rango fijo $\tau = 1$. Es decir,
+Para reflejar la incertidumbre del modelador acerca del valor real de $f_p$, se supone a $f_p \sim \mathcal{GP}(m,k)$, con funci\'on de medias $m$ dada por el modelador y funci\'on de covarianza $k$ del tipo 2-\textit{exponencial}, con par\'ametro de rango fijo $\tau = 1$. Es decir,
 \begin{equation*}
     k(x_i, x_j|\lambda) = \lambda \text{ } exp\{-\norm{x_i - x_j}_2\},
 \end{equation*}
