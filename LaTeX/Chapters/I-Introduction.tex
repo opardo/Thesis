@@ -2,7 +2,7 @@
 
 Detr\'as de cualquier modelo de regresi\'on la intenci\'on es entender alguna caracter\'istica asociada con una variable aleatoria, en funci\'on de un conjunto de variables potencialmente explicativas o predictivas para tal caracter\'istica. Ha sido com\'un resumir esta dependencia mediante alguna medida de tendencia central, condicionada a los valores de las covariables.
 
-La medida de tendencia central tradicionalmente usada ha sido la media, dando lugar a los modelos de \textit{regresi\'on a la media}, con sus variantes lineal y no lineal, simple y m\'ultiple, con error normal y no normal. Este tipo de modelos tiene un buen n\'umero de ventajas, entre las que destacan el bajo costo de estimaci\'on y la facilidad de interpretaci\'on de sus par\'ametros (principalmente cuando es lineal). Sin embargo, como mencionan \cite{Hao_FrecQuantReg}, tienen tres grandes limitaciones, que a continuaci\'on se mencionan.
+La medida de tendencia central tradicionalmente usada ha sido la media, dando lugar a los modelos de \textit{regresi\'on a la media}, con sus variantes lineal y no lineal, simple y m\'ultiple, con error normal y no normal. Este tipo de modelos tiene un buen n\'umero de ventajas, entre las que destacan el bajo costo de estimaci\'on y la facilidad de interpretaci\'on de sus par\'ametros (principalmente en la versi\'on lineal). Sin embargo, como mencionan \cite{Hao_FrecQuantReg}, tienen tres grandes limitaciones, que a continuaci\'on se mencionan.
 
 La primera es que, generalmente, la estimaci\'on del modelo busca minimizar la diferencia entre el valor esperado te\'orico y la media observada. Por lo tanto, la inferencia sobre los valores lejanos a la media, que suelen ser de inter\'es en ciertos contextos, como los seguros o las finanzas, puede ser inexacta.
 
@@ -20,7 +20,7 @@ Los \textit{modelos de regresi\'on sobre cuantiles} fueron introducidos por \cit
 
 El paradigma Bayesiano ha desarrollado este tipo de modelos de forma posterior a otros paradigmas. \cite{Walker_BayesAccFail}, \cite{Kottas_BaySemiparamMed} y \cite{Hanson_PolyaTrees} desarrollaron modelos para la mediana, suponiendo una distribuci\'on no param\'etrica del error. \cite{Yu_BayQuantReg} y \cite{Tsionas_BayQuantInf} desarrollaron inferencia param\'etrica, basados en la distribuci\'on asim\'etrica de Laplace para los errores. Por otro lado, \cite{Lavine_LikeQuant} y \cite{Dunson_ApproxBayes} usaron una perspectiva distinta y propusieron una aproximaci\'on de la verosimilitud para cuantiles.
 
-Por la misma naturaleza compleja del nuevo desaf\'io, los modelos de regresi\'on sobre cuantiles han retomado un concepto que tambi\'en ha tomado auge en los de regresi\'on a la media: la distribuci\'on no param\'etrica de los errores, misma que generaliza la idea tradicional del error normal. 
+Por la misma naturaleza compleja del nuevo desaf\'io, los modelos de regresi\'on sobre cuantiles han retomado un concepto que tambi\'en ha tenido auge en los de regresi\'on a la media: la distribuci\'on no param\'etrica de los errores, misma que generaliza la idea tradicional del error normal. 
 
 Desafortunadamente, a diferencia de los modelos de regresi\'on a la media, que ya han propuesto alternativas para este tema, los modelos Bayesianos de regresi\'on sobre cuantiles han hecho muy poco por romper con la relaci\'on lineal en los par\'ametros entre la variable de respuesta y las covariables. Y casi todos aquellos que lo han logrado, han tenido que recurrir a estimaciones no probabil\'isticas o no Bayesianas, para resolver alguna parte del problema.
 

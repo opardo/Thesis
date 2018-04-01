@@ -1,6 +1,6 @@
 \chapter{Predicci\'on de cuantiles, utilizando el modelo tradicional de regresi\'on a la media} \label{trad_mean_alg}
 
-Una vez ajustado el modelo tradicional de regresi\'on a la media (descrito en la secci\'on \ref{trad_mean_reg}), un problema de inter\'es es predecir alg\'un cuantil en espec\'ifico de la variable de respuesta, dado un nuevo valor en las covariables.
+Una vez ajustado el modelo tradicional de regresi\'on a la media (descrito en la secci\'on \ref{trad_mean_reg}), un problema de inter\'es es obtener la distribuci\'on predictiva de alg\'un cuantil en espec\'ifico de la variable de respuesta, dado un nuevo valor en las covariables.
 
 Recordando los supuestos del modelo, se tiene que
 \begin{equation*}
@@ -43,7 +43,7 @@ Se tiene, entonces, que el algoritmo para obtener realizaciones de la distribuci
         $3. \text{ Obtener } q_p(y_*)_t = x_*^T\beta_t + q_p(\varepsilon|\sigma^2_t) \;$
      }
  }
- \caption{Simulador predictivo del cuantil \textit{p-\'esimo}, usando el modelo tradicional de regresi\'on a la media.}
+ \caption{Simulador de la distribuci\'on predictiva del cuantil \textit{p-\'esimo}, usando el modelo tradicional de regresi\'on a la media.}
 \end{algorithm}
 \BlankLine
 

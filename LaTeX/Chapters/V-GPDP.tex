@@ -27,7 +27,7 @@ En resumen, el Modelo GPDP queda descrito de la siguiente forma:
     y_i| f_p(x_i), z_i, \sigma_k^* &\sim AL_p({\varepsilon_p}_i = y_i - f_p(x_i) | \sigma_{z_i}), \\
     f_p|m, k, \lambda &\sim \mathcal{GP}(m,k(\lambda)|\lambda), \\
     \lambda &\sim GI(c_\lambda,d_\lambda), \\
-    z_i | \pi &\sim Mult_\infty(\pi), \\
+    z_i | \pi &\sim \mathrm{Mult}_{\infty}(\pi), \\
     \pi | \alpha &\sim GEM(\alpha), \\
     \sigma_k^* | c_{DP}, d_{DP} &\sim GI(\sigma_k|c_{DP}, d_{DP}),\\
     k(x_i, x_j | \lambda) &= \lambda \text{ } exp\{-\norm{x_i - x_j}_2\}.
@@ -43,13 +43,13 @@ Dado que el modelo descrito no es conjugado, las distribuciones posteriores tien
 
 En este orden de ideas, a continuaci\'on se detallan las distribuciones condicionales posteriores de los par\'ametros del modelo, as\'i como la inclusi\'on de algunas variables latentes para permitir el funcionamiento del algoritmo. Es oportuno recordar que dichas distribuciones posteriores resultan de multiplicar la verosimilitud por la probabilidad inicial, como se revis\'o en el cap\'itulo \ref{chap:Bayesian} de este trabajo.
 
-Antes de correr los algoritmos, usualmente resulta conveniente estandarizar los datos. En primer lugar, para que la estructura de covarianza tenga más sentido, ya que la escala de las covariables afectaría la correlación que existe entre los datos, al depender esta de la distancia entre ellas. Además, estandarizar los datos suele mejorar el rendimiento computacional de este tipo de algoritmos. Asimismo, vuelve m\'as sencillo definir el valor inicial de los hiper-par\'ametros, como se detallar\'a m\'as adelante.
+Antes de correr los algoritmos, usualmente resulta conveniente estandarizar los datos. En primer lugar, para que la estructura de covarianza tenga más sentido, ya que la escala de las covariables afectaría la correlación que existe entre los datos, al depender \'esta de la distancia entre ellas. Además, estandarizar los datos suele mejorar el rendimiento computacional de este tipo de algoritmos. Asimismo, vuelve m\'as sencillo definir el valor inicial de los hiper-par\'ametros, como se detallar\'a m\'as adelante.
 
 \subsection{Actualizaci\'on del error}
 
-Recordando que los centros de masa y los pesos de un proceso de Dirichlet son independientes, pueden ser actualizados por separado, con el inconveniente de que hay un n\'umero infinito de par\'ametros que actualizar. Para resolverlo, se utilizará el algoritmo de truncamiento del \textit{slice sampling}, propuesto por \cite{Kalli_Slice}, y adaptado para el modelo propuesto en esta tesis. A grandes rasgos consiste en truncar las posibles subpoblaciones a un número finito, el cual se actualizar\'a de forma din\'amica, de acuerdo a lo que vaya aprendiendo de los datos. 
+Recordando que los centros de masa y los pesos de un proceso de Dirichlet son independientes, pueden ser actualizados por separado, con el inconveniente de que hay un n\'umero infinito de par\'ametros que actualizar. Para resolverlo, se utilizará el algoritmo de truncamiento del \textit{slice sampling}, propuesto por \cite{Kalli_Slice}, y adaptado para el modelo propuesto en esta tesis. A grandes rasgos, consiste en truncar las posibles subpoblaciones a un número finito, el cual se actualizar\'a de forma din\'amica, de acuerdo a lo que vaya aprendiendo de los datos. 
 
-Sea $\xi_1,\xi_2,\xi_3,...$ una secuencia positiva, generalmente elegida de forma determinista y decreciente. Sea $N$ una variable aleatoria auxiliar con soporte en los n\'umeros naturales, la cual representa el n\'umero de truncamiento de posibles distintas subpoblaciones, y se actualiza en cada iteraci\'on.
+Sea $\xi_1,\xi_2,\xi_3,...$ una secuencia positiva, generalmente elegida de forma determinista y decreciente. De hecho, para este trabajo en particular se tomar\'a $\xi_j = \left(\frac{1}{2}\right)^{j}$. Sea $N$ una variable aleatoria auxiliar con soporte en los n\'umeros naturales, la cual representa el n\'umero de truncamiento de posibles distintas subpoblaciones, y se actualiza en cada iteraci\'on.
 
 \subsubsection{Actualizaci\'on de los centros de masa}
 

@@ -134,7 +134,7 @@ Sea $X \in \mathbb{R}^m \times \mathbb{R}^n$ y $X' \in \mathbb{R}^r \times \math
     \left[
         \begin{array}{c}
         x_1  \\
-        ... \\
+        \vdots \\
         x_m
         \end{array}
     \right],
@@ -144,7 +144,7 @@ Sea $X \in \mathbb{R}^m \times \mathbb{R}^n$ y $X' \in \mathbb{R}^r \times \math
     \left[
         \begin{array}{c}
         x'_1  \\
-        ... \\
+        \vdots \\
         x'_r
         \end{array}
     \right].
@@ -159,7 +159,7 @@ La \textbf{función vector de medias de $\bm{f_p}$ (M\textsubscript{$\bm{f_p}$})
     \left[
         \begin{array}{c}
         m_{f_p}(x_1)  \\
-        ... \\
+        \vdots \\
         m_{f_p}(x_m)
         \end{array}
     \right].
@@ -175,7 +175,7 @@ La \textbf{función matriz de covarianzas de $\bm{f_p}$ (K\textsubscript{$\bm{f_
     \left[
         \begin{array}{ccc}
         k_{f_p}(x_1,x_1') & ... & k_{f_p}(x_1,x_r')  \\
-        ... & ... & ... \\
+        \vdots & \ddots & \vdots \\
         k_{f_p}(x_m,x_1') & ... & k_{f_p}(x_m,x_r')
         \end{array}
     \right].
@@ -198,7 +198,7 @@ Recordando que $k$ describe la covarianza entre dos variables aleatorias que per
 \end{aligned}
 \end{equation*}
 
-Si bien es cierto que dadas esas restricciones hay una variedad muy grande de funciones con las que se puede describir $k$, por practicidad, y tomando en cuenta que es un supuesto sensato para la mayor\'ia de los casos, es com\'un describirla en relaci\'on a la distancia entre $x$ y $x'$, escrita usualmente como $\norm{x,x'}$. Es decir, $k(x,x') = k(\norm{x,x'})$. A este tipo de funciones de covarianza se les denomina \textbf{estacionarias}.
+Si bien es cierto que dadas esas restricciones hay una variedad muy grande de funciones con las que se puede describir $k$, por practicidad, y tomando en cuenta que es un supuesto sensato para la mayor\'ia de los casos, es com\'un describirla en relaci\'on a la distancia entre $x$ y $x'$, escrita usualmente como $\norm{x-x'}$. Es decir, $k(x,x') = k(\norm{x-x'})$. A este tipo de funciones de covarianza se les denomina \textbf{estacionarias}.
 
 Esta relaci\'on entre covarianza y distancia suele ser inversa, es decir, entre menor sea la distancia, mayor ser\'a la covarianza, y viceversa. De esta manera, para valores $x \approx x'$, se obtendr\'a que $f_p(x) \approx f_p(x')$, por lo que se hace de forma impl\'icita el supuesto de que $f_p$ es una funci\'on continua.
 
@@ -279,7 +279,7 @@ Un proceso de Dirichlet, visto de manera intuitiva, es una medida de probabilida
 
 \subsection{Definici\'on de los procesos de Dirichlet}
 
-En t\'erminos generales, para que una distribuci\'on de probabilidad $G$ siga la ley de probabilidad de un proceso de Dirichlet, toda partici\'on finita de su soporte tiene que seguir una distribuci\'on Dirichlet\footnote{Antes de revisar la definici\'on formal de los Procesos de Dirichlet, es conveniente recordar la definici\'on de la distribuci\'on de Dirichlet, misma que se ubica en el \autoref{chap:Distributions}.}. A continuaci\'on se enuncia una definici\'on m\'as detallada.
+En t\'erminos generales, para que una distribuci\'on de probabilidad $G$ siga la ley de probabilidad de un proceso de Dirichlet, todas las particiones finitas de su soporte tienen que seguir la ley de probabilidad de la distribuci\'on de Dirichlet\footnote{Antes de revisar la definici\'on formal de los Procesos de Dirichlet, es conveniente recordar la definici\'on de la distribuci\'on de Dirichlet, misma que se ubica en el \autoref{chap:Distributions}.}. A continuaci\'on se enuncia una definici\'on m\'as detallada.
 
 \begin{defin}
     Sean $G$ y $H$ dos distribuciones cuyo soporte es el conjunto $\Theta$ y sea $\alpha \in \mathbb{R}_+$. Si se toma una partici\'on finita cualquiera $(A_1,\ldots,A_r)$ del conjunto $\Theta$, se entender\'a que $G(A_i)$ es la probabilidad de que una realizaci\'on de $G$ pertenezca al conjunto $A_i$.
@@ -407,12 +407,12 @@ Es posible reescribir este modelo usando la equivalencia entre los procesos de D
 \begin{equation*}
 \begin{aligned}
    y_i | z_i, \phi_k^* &\sim F(y_i | \phi_{z_i}), \\
-   z_i | \pi &\sim Mult_\infty(\pi)\footnotemark, \\
+   z_i|\pi &\sim \mathrm{Mult}_{\infty}(\pi) \footnotemark, \\
    \pi | \alpha &\sim GEM(\alpha), \\
    \phi_k^* | H &\sim H.
 \end{aligned}
 \end{equation*}
-\footnotetext{Se usar\'a la notaci\'on $Mult_\infty$ para denotar al l\'imite de la distribuci\'on Multinomial, cuando el n\'umero de posibles categor\'ias tiende a infinito.}
+\footnotetext{Se usar\'a la notaci\'on $\mathrm{Mult}_{\infty}$ para denotar al l\'imite de la distribuci\'on Multinomial, cuando el n\'umero de posibles categor\'ias tiende a infinito.}
 
 
 De esta manera, el modelo de mezclas de Dirichlet es un modelo de mezclas infinitas, debido a que tiene un n\'umero infinito de posibles subpoblaciones. Intuitivamente, la importancia realmente recae s\'olo en aquellas subpoblaciones que tienen un peso $\pi$ posterior mayor a cierto umbral. Sin embargo, dichos pesos son detectados hasta despu\'es de observar los datos, a diferencia de los modelos de mezclas finitas, que ya tienen un n\'umero de subpoblaciones definidas previamente.
@@ -432,7 +432,7 @@ Adem\'as, por construcci\'on, esta formulaci\'on es equivalente al modelo de mez
 \begin{equation*}
 \begin{aligned}
    {\varepsilon_p}_i | z_i, \sigma_k^* &\sim AL_p({\varepsilon_p}_i | \sigma_{z_i}), \\
-   z_i | \pi &\sim Mult_\infty(\pi), \\
+   z_i | \pi &\sim \mathrm{Mult}_{\infty}(\pi), \\
    \pi | \alpha &\sim GEM(\alpha), \\
    \sigma_k^* | H &\sim H.
 \end{aligned}

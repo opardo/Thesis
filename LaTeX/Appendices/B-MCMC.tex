@@ -46,9 +46,9 @@ El correspondiente algoritmo de Gibbs está dado por:
  {
     $1. \text{ } X_1^{(t)} \sim f_1(x_1|x_2^{(t-1)},...,x_p^{(t-1)})\;$\\
     $2. \text{ } X_2^{(t)} \sim f_2(x_2|x_1^{(t)},x_3^{(t-1)},...,x_p^{(t-1)})\;$\\
-    $...\;$\\
+    $\vdots \;$\\
     $k.  \text{ } X_k^{(t)} \sim f_k(x_k|x_1^{(t)},...,x_{k-1}^{(t)},x_{k+1}^{(t-1)},...,x_p^{(t-1)})\;$\\
-    $...\;$\\
+    $\vdots\;$\\
     $p.  \text{ }X_p^{(t)} \sim f_p(x_p|x_1^{(t)},...,x_{p-1}^{(t)})\;$\\
  }
  \caption{Simulador de Gibbs de múltiples pasos}
@@ -79,7 +79,7 @@ La herramienta inicial y más natural suele ser el graficar la evolución del es
 
 \subsection{Monitoreo de convergencia a una muestra \textit{iid}}
 
-Para finalizar, idealmente, la aproximación de $f$ obtenida de los algortimos MCMC se debería extender a la producción (aproximada) de muestras $iid$ de $f$. La técnica más usada para lograr esto es el \textit{submuestreo o refinamiento}, donde se consideran s\'olo los valores $y^{(t)} = x^{(kt)}$, para cierta $k$.
+Para finalizar, idealmente, la aproximación de $f$ obtenida de los algoritmos MCMC se debería extender a la producción (aproximada) de muestras $iid$ de $f$. La técnica más usada para lograr esto es el \textit{submuestreo o refinamiento}, donde se consideran s\'olo los valores $y^{(t)} = x^{(kt)}$, para cierta $k$.
 
 Como medidas diagn\'ostico normalmente se usan las siguientes: la autocorrelaci\'on dentro de cada variable aleatoria que es parte del simulador de Gibbs; y la correlaci\'on cruzada entre las distintas variables aleatorias, dado que se busca independencia entre ellas.
 

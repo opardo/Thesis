@@ -1,4 +1,4 @@
-\chapter[Paradigma Bayesiano]{Paradigma bayesiano\footnote{Las ideas de este cap\'itulo son retomadas de \cite{Denison_BayesMethods}.}\textsuperscript{,}\footnote{Esta tesis da como aceptados los axiomas de coherencia de la Teoría de la Decisión, mismos que pueden ser encontrados, por ejemplo, en \cite{Fishburn_Axioms}. Por lo tanto, entiende al paradigma Bayesiano como el coherente para hacer estad\'istica, cuando una toma de decisi\'on con incertidumbre es el objetivo final del estudio. 
+\chapter[Paradigma Bayesiano]{Paradigma Bayesiano\footnote{Las ideas de este cap\'itulo son retomadas de \cite{Denison_BayesMethods}.}\textsuperscript{,}\footnote{Esta tesis da como aceptados los axiomas de coherencia de la Teoría de la Decisión, mismos que pueden ser encontrados, por ejemplo, en \cite{Fishburn_Axioms}. Por lo tanto, entiende al paradigma Bayesiano como el coherente para hacer estad\'istica, cuando una toma de decisi\'on con incertidumbre es el objetivo final del estudio. 
 }}
 \label{chap:Bayesian}
 
@@ -41,7 +41,7 @@ Dicho esto, es momento de plantear el \textbf{\textit{Teorema de represesentaci\
     \begin{equation*}
         G_n(y) = \frac{1}{n} \sum_{i=1}^n I(y_i \leq y).
     \end{equation*}
-    En otras palabras, el Teorema de de Finetti dice que $\{y_1,y_2,\ldots\}$ es un conjunto de variables aleatorias condicionalmente independientes, dado que se supone provienen de la distribuci\'on $G$. Al mismo tiempo, $G$ es una realizaci\'on de otra variable aleatoria cuya distribuci\'on est\'a dada por $F(G)$.
+    En otras palabras, el Teorema de de Finetti dice que $\{y_1,y_2,\ldots\}$ es un conjunto de variables aleatorias condicionalmente independientes, dado que se supone provienen de la distribuci\'on $G$. Al mismo tiempo, $G$ es una realizaci\'on de otra variable aleatoria cuya distribuci\'on est\'a dada por $F(G)$, la cual puede ser vista como la distribuci\'on li\'mite sobre una funci\'on de variables observables, cuando el n\'umero de ellas tiende a infinito.
 \end{theorem*}
 
 Cabe hacer notar que dicho teorema plantea la distribuci\'on conjunta de $(y_1,y_2,\ldots)$ como una mezcla de verosimilitudes condicionalmente independientes en $G$, donde el peso asociada a cada una depende de $F(G)$. Por lo tanto, $F(G)$ expresa la incertidumbre acerca de cu\'an probable es que $G$ sea id\'onea para explicar el fen\'omeno, a\'un sin observar los datos.
@@ -92,7 +92,7 @@ Por lo tanto, se confirma que el aprendizaje en el paradigma Bayesiano se obtien
 \end{equation*}
 Es decir, el conocimiento final surge de conjuntar el conocimiento inicial con la informaci\'on contenida en los datos.
 
-Es importante notar que bajo este enfoque se obtiene una distribuci\'on de probabilidad para un valor futuro de $y_{n+1}$. \'Esta se puede utilizar para el c\'alculo de predicciones puntuales o intervalos (que en el caso del paradigma Bayesiano son de \textit{probabilidad}), mediante el uso de la Teor\'ia de la Decisi\'on y funciones de utilidad o p\'erdida.
+Es importante notar que bajo este enfoque se obtiene una distribuci\'on de probabilidad para un valor futuro de $y_{n+1}$, llamada \textit{distribuci\'on predictiva}. \'Esta se puede utilizar para el c\'alculo de predicciones puntuales o intervalos (que en el caso del paradigma Bayesiano son de \textit{probabilidad}), mediante el uso de la Teor\'ia de la Decisi\'on y funciones de utilidad o p\'erdida.
 
 \section{Propiedad conjugada}
 
