@@ -25,7 +25,7 @@ setwd(paste0(local_path,"Thesis/Applications/Simulation/classic/"))
 run <- FALSE
 save <- FALSE
 load <- TRUE
-plots <- FALSE
+plots <- TRUE
 
 set.seed(2018)
 
@@ -161,7 +161,17 @@ results_95 <- plot_results(prediction_95, 0.95)
   results_25,
   ncol = 2
 )
-
+ 
+ presentation_plot <- grid.arrange(
+   trad_results_25,
+   trad_results_50,
+   trad_results_95,
+   results_25,
+   results_50,
+   results_95,
+   ncol = 3
+ )
+ 
 # Save plots
 if (plots) {
   ggsave(
@@ -176,6 +186,13 @@ if (plots) {
     width = 9,
     height = 11
   )
+  ggsave(
+    filename = "results/presentation.png",
+    plot = presentation_plot ,
+    width = 15,
+    height = 10
+  )
+  
 }
 
 # Comparison
