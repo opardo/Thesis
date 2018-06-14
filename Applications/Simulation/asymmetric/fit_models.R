@@ -25,7 +25,7 @@ setwd(paste0(local_path,"Thesis/Applications/Simulation/asymmetric/"))
 run <- FALSE
 save <- FALSE
 load <- TRUE
-plots <- FALSE
+plots <- TRUE
 
 set.seed(20183)
 
@@ -162,6 +162,16 @@ predictions_plot <- grid.arrange(
   ncol = 2
 )
 
+presentation_plot <- grid.arrange(
+  trad_results_25,
+  trad_results_50,
+  trad_results_95,
+  results_25,
+  results_50,
+  results_95,
+  ncol = 3
+)
+
 # Save plots
 if (plots) {
   ggsave(
@@ -175,6 +185,12 @@ if (plots) {
     plot = predictions_plot ,
     width = 9,
     height = 11
+  )
+  ggsave(
+    filename = "results/presentation.png",
+    plot = presentation_plot ,
+    width = 15,
+    height = 10
   )
 }
 
